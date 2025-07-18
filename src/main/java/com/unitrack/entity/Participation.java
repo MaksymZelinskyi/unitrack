@@ -1,8 +1,10 @@
 package com.unitrack.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Participation {
 
     @Id
@@ -17,7 +19,12 @@ public class Participation {
     @Enumerated
     private Role role;
 
-    enum Role {
+    public Participation(Collaborator collaborator, Project project, Role role) {
+        this.collaborator = collaborator;
+        this.project = project;
+    }
+
+    public enum Role {
         INTERN,
         DEV,
         LEAD_DEV,

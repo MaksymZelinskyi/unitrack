@@ -25,11 +25,15 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public Task updateById(Long id, TaskDto dto) {
+    public Task update(Long id, TaskDto dto) {
         Task task = taskRepository.findById(id).orElseThrow();
         task.setTitle(dto.title());
         task.setDescription(dto.description());
         taskRepository.save(task);
         return task;
+    }
+
+    public Task getById(Long id) {
+        return taskRepository.findById(id).orElseThrow();
     }
 }

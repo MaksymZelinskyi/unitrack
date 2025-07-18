@@ -1,10 +1,14 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.ProjectDto;
+import com.unitrack.entity.Collaborator;
+import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +18,10 @@ public class ProjectService {
 
     public Project getByTitle(String title) {
         return projectRepository.findByTitle(title).orElse(null);
+    }
+
+    public Project getById(Long id) {
+        return projectRepository.findById(id).orElse(null);
     }
 
     public void add(ProjectDto dto) {
@@ -34,5 +42,10 @@ public class ProjectService {
         project.setStatus(Project.Status.valueOf(dto.status()));
         projectRepository.save(project);
         return project;
+    }
+
+    public List<Collaborator> getMembers(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+        return project.getAssignees().stream().map(Participation::getCollaborator).toList();
     }
 }

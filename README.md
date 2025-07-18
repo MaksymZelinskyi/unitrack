@@ -39,7 +39,7 @@
 - Rephrase project notes
 - Prioritize urgent tasks
 - Powered by OpenAI or Mistral API
-
+- Add collaborator based on their CV
 ---
 
 ## 🧰 Tech Stack
