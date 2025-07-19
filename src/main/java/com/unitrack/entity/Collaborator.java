@@ -40,6 +40,14 @@ public class Collaborator {
         projects.add(participation);
     }
 
+    public void addSkill(Skill skill) {
+        skills.add(skill);
+    }
+
+    public void deleteSkill(Skill skill) {
+        skills.remove(skill);
+    }
+
     enum GlobalRole {
         ADMIN, USER
     }

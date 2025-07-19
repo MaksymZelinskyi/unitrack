@@ -3,9 +3,11 @@ package com.unitrack.controller;
 import com.unitrack.dto.CollaboratorDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
+import com.unitrack.entity.Skill;
 import com.unitrack.service.CollaboratorService;
 
 import com.unitrack.service.ProjectService;
+import com.unitrack.service.SkillService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.List;
 public class CollaboratorController {
 
     private final CollaboratorService collaboratorService;
+    private final SkillService skillService;
 
     @PostMapping("/")
     public void addCollaborator(CollaboratorDto collaborator) {
@@ -49,5 +52,15 @@ public class CollaboratorController {
     @GetMapping("/{id}/projects")
     public List<Project> getCollaboratorProjects(@PathVariable Long id) {
         return collaboratorService.getProjects(id);
+    }
+
+    @PostMapping("/collaborators/{collaboratorId}/skills")
+    public void addSkillToCollaborator(@PathVariable Long collaboratorId, Skill skill) {
+        skillService.addCollaboratorSkill(collaboratorId, skill);
+    }
+
+    @DeleteMapping("/collaborators/{collaboratorId}/skills")
+    public void deleteCollaboratorSkill(@PathVariable Long collaboratorid, Skill skill) {
+        skillService.deleteCollaboratorSkill(collaboratorid, skill);
     }
 }
