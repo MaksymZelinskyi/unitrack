@@ -1,4 +1,4 @@
 package com.unitrack.dto;
 
-public record TaskDto(String title, String description) {
+public record TaskDto(String title, String description, Long projectId) {
 }

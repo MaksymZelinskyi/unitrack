@@ -3,6 +3,9 @@ package com.unitrack.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 public class Participation {
@@ -17,17 +20,16 @@ public class Participation {
     private Project project;
 
     @Enumerated
-    private Role role;
+    private Set<Role> roles = new HashSet<>();
 
     public Participation(Collaborator collaborator, Project project, Role role) {
         this.collaborator = collaborator;
         this.project = project;
+        roles.add(role);
     }
 
-    public enum Role {
-        INTERN,
-        DEV,
-        LEAD_DEV,
-        MANAGER
+    public void addRole(Role role) {
+        roles.add(role);
     }
+
 }

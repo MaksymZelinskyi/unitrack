@@ -6,7 +6,6 @@ import com.unitrack.entity.Project;
 import com.unitrack.entity.Skill;
 import com.unitrack.service.CollaboratorService;
 
-import com.unitrack.service.ProjectService;
 import com.unitrack.service.SkillService;
 import lombok.RequiredArgsConstructor;
 
@@ -59,7 +58,7 @@ public class CollaboratorController {
         skillService.addCollaboratorSkill(collaboratorId, skill);
     }
 
-    @DeleteMapping("/collaborators/{collaboratorId}/skills")
+    @DeleteMapping("/{collaboratorId}/skills")
     public void deleteCollaboratorSkill(@PathVariable Long collaboratorid, Skill skill) {
         skillService.deleteCollaboratorSkill(collaboratorid, skill);
     }

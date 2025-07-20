@@ -26,7 +26,7 @@ public class Collaborator {
     private Set<Participation> projects = new HashSet<>();
 
     private LocalDate joinDate;
-    private GlobalRole globalRole;
+    private boolean isAdmin;
 
     public Collaborator(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -35,7 +35,7 @@ public class Collaborator {
         this.password = password;
     }
 
-    public void addProject(Project project, Participation.Role role) {
+    public void addProject(Project project, Role role) {
         Participation participation = new Participation(this, project, role);
         projects.add(participation);
     }

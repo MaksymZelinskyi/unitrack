@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/skills")
 @RequiredArgsConstructor
 public class SkillController {
 
     private final SkillService skillService;
 
-    @GetMapping("/skills")
+    @GetMapping("/")
     public List<Skill> getAllSkills() {
         return skillService.getAll();
     }
 
-    @PostMapping("/skills")
+    @PostMapping("/")
     public void addSkill(String skillName) {
         skillService.add(skillName);
     }
 
-    @DeleteMapping("/skills/{id}")
+    @DeleteMapping("/{id}")
     public void deleteSkill(@PathVariable Long id) {
         skillService.delete(id);
     }
