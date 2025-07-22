@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Uni-Track</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<header class="sticky top-0 z-50 bg-gray-100 shadow-md py-4 px-6">
+    <div class="max-w-screen-xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <h1 class="text-4xl font-bold text-blue-500">Uni-Track</h1>
+        </div>
+
+        <h2 class="hidden md:block text-lg text-gray-600 italic">
+            The most complete team-management tool
+        </h2>
+
+        <div class="flex space-x-2">
+            <button><img src="../static/british-flag.jfif" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="EN" /></button>
+            <button><img src="../static/french-flag.jfif" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="FR" /></button>
+        </div>
+    </div>
+</header>
+
+
+<div class="font-sans">
+        <div class="relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100 ">
+            <div class="relative sm:max-w-sm w-full">
+                <div class="card bg-yellow-400 shadow-lg  w-full h-full rounded-3xl absolute  transform -rotate-6"></div>
+                <div class="card bg-blue-400 shadow-lg  w-full h-full rounded-3xl absolute  transform rotate-6"></div>
+                <div class="relative w-full rounded-3xl  px-6 py-4 bg-gray-100 shadow-md">
+                    <label class="block mt-3 text-sm text-gray-700 text-center font-semibold">
+                        Login
+                    </label>
+                    <form method="#" action="#" class="mt-10">
+
+                        <div>
+                            <input type="email" placeholder=" Email" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">
+                        </div>
+
+                        <div class="mt-7">
+                            <input type="password" placeholder=" Password" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">
+                        </div>
+
+                        <div class="mt-7 flex">
+
+                            <div class="w-full text-right">
+                                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="#">
+                                    Forgot your password?
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="mt-7">
+                            <button class="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
+                                Login
+                            </button>
+                        </div>
+
+                        <div class="mt-7">
+                            <div class="flex justify-center items-center">
+                                <label class="mr-2" >No account?</label>
+                                <h5 class="text-gray-500">
+                                    Ask you employer for credentials
+                                </h5>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
