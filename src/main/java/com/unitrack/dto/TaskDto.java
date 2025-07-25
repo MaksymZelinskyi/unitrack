@@ -1,4 +1,6 @@
 package com.unitrack.dto;
 
-public record TaskDto(String title, String description, Long projectId) {
+import java.time.LocalDateTime;
+
+public record TaskDto(String title, String description, String project, LocalDateTime deadline) {
 }

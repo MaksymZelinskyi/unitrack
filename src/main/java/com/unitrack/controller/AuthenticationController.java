@@ -1,14 +1,13 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.LoginDto;
+import com.unitrack.dto.request.LoginDto;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AuthenticationController {
 
-
-    @PostMapping("/login")
+    @GetMapping("/login")
     public String login(LoginDto dto) {
         return "login";
     }

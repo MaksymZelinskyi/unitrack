@@ -1,6 +1,6 @@
 package com.unitrack.service;
 
-import com.unitrack.dto.AssignmentDto;
+import com.unitrack.dto.request.AssignmentDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;

@@ -26,4 +26,9 @@ public class AuthorizationService {
         return participation.getRoles().contains(role);
     }
 
+    public boolean isAdmin(String email) {
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        return collaborator.isAdmin();
+    }
+
 }

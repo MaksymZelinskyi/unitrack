@@ -1,8 +1,6 @@
 package com.unitrack.controller;
 
-import com.unitrack.config.AuthorizationService;
-import com.unitrack.dto.ProjectDto;
-import com.unitrack.dto.TaskDto;
+import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.service.ProjectService;
@@ -10,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller

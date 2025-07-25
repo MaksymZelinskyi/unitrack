@@ -1,6 +1,6 @@
 package com.unitrack.service;
 
-import com.unitrack.dto.CollaboratorDto;
+import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
@@ -54,5 +54,14 @@ public class CollaboratorService {
     public List<Project> getProjects(Long id) {
         Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
+    }
+
+    public List<Project> getProjects(String email) {
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        return collaborator.getProjects().stream().map(Participation::getProject).toList();
+    }
+
+    public Collaborator getByEmail(String email) {
+        return collaboratorRepository.findByEmail(email).orElseThrow();
     }
 }

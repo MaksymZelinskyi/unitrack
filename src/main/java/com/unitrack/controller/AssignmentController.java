@@ -1,7 +1,7 @@
 package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
-import com.unitrack.dto.AssignmentDto;
+import com.unitrack.dto.request.AssignmentDto;
 import com.unitrack.entity.Role;
 import com.unitrack.service.AssignmentService;
 import lombok.RequiredArgsConstructor;

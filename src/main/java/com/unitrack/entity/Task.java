@@ -3,6 +3,7 @@ package com.unitrack.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -14,6 +15,7 @@ public class Task {
     private Long id;
     private String title;
     private String description;
+    private LocalDateTime deadline;
 
     @ManyToMany
     private Set<Collaborator> assignees;

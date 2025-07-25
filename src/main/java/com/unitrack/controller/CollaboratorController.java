@@ -1,12 +1,12 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.CollaboratorDto;
+import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Skill;
 import com.unitrack.service.CollaboratorService;
-
 import com.unitrack.service.SkillService;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
@@ -62,4 +62,6 @@ public class CollaboratorController {
     public void deleteCollaboratorSkill(@PathVariable Long collaboratorid, Skill skill) {
         skillService.deleteCollaboratorSkill(collaboratorid, skill);
     }
+
+
 }

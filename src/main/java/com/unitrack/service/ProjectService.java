@@ -1,6 +1,6 @@
 package com.unitrack.service;
 
-import com.unitrack.dto.ProjectDto;
+import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;

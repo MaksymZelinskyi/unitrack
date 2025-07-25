@@ -1,7 +1,7 @@
 package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
-import com.unitrack.dto.TaskDto;
+import com.unitrack.dto.request.TaskDto;
 import com.unitrack.entity.Role;
 import com.unitrack.entity.Task;
 import com.unitrack.service.TaskService;

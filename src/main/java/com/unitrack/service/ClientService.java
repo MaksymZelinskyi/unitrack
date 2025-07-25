@@ -1,6 +1,6 @@
 package com.unitrack.service;
 
-import com.unitrack.dto.ClientDto;
+import com.unitrack.dto.request.ClientDto;
 import com.unitrack.entity.Client;
 import com.unitrack.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;

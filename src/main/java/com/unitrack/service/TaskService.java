@@ -1,6 +1,6 @@
 package com.unitrack.service;
 
-import com.unitrack.dto.TaskDto;
+import com.unitrack.dto.request.TaskDto;
 import com.unitrack.entity.Task;
 import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
