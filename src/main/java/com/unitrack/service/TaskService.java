@@ -1,10 +1,14 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.request.TaskDto;
+import com.unitrack.entity.Project;
 import com.unitrack.entity.Task;
 import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +39,9 @@ public class TaskService {
 
     public Task getById(Long id) {
         return taskRepository.findById(id).orElseThrow();
+    }
+
+    public Set<Task> getByProject(Project project) {
+        return taskRepository.findAllByProject(project);
     }
 }

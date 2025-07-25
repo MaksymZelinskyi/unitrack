@@ -4,7 +4,7 @@ import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorDto;
 import com.unitrack.dto.ProjectDto;
 import com.unitrack.dto.ProjectParticipationDto;
-import com.unitrack.dto.TaskDto;
+import com.unitrack.dto.CollaboratorTaskDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;
@@ -12,7 +12,6 @@ import com.unitrack.entity.Skill;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
-import com.unitrack.service.CollaboratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +57,7 @@ public class HomeController {
         );
         model.addAttribute("tasks", taskRepository.findAllByAssigneesContains(collaborator)
                 .stream()
-                .map(x -> new TaskDto(x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
+                .map(x -> new CollaboratorTaskDto(x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
                 .collect(Collectors.toSet()));
         return "home.html";
     }

@@ -16,6 +16,8 @@ public class Task {
     private String title;
     private String description;
     private LocalDateTime deadline;
+    @Enumerated
+    private Status status;
 
     @ManyToMany
     private Set<Collaborator> assignees;
@@ -26,5 +28,9 @@ public class Task {
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
+    }
+
+    public enum Status {
+        TODO, IN_PROGRESS, DONE
     }
 }

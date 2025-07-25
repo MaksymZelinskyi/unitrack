@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="UTF-8">
         <title>Uni-Track</title>
@@ -12,13 +12,16 @@
         <header class="sticky top-0 z-50 bg-gray-100 shadow-md py-2 px-4">
             <div class="max-w-screen-xl mx-auto flex items-center justify-between flex-wrap gap-4">
 
+
                 <div class="flex items-center space-x-2">
                     <h1 class="text-3xl font-bold text-blue-500">Uni-Track</h1>
                 </div>
 
+
                 <h2 class="hidden md:block text-base text-gray-600 italic">
                     The most complete team-management tool
                 </h2>
+
 
                 <div class="flex flex-row space-x-5 items-center -mr-5">
                     <button>
@@ -29,114 +32,141 @@
                     </button>
                 </div>
 
+
                 <div class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
-                    <img
-                            src="https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_640.png"
+                    <th:img
+                            src="${currentUser.avatarUrl}"
                             class="w-10 h-10 rounded-full border-2 border-blue-500"
                             alt="Profile Picture"
                     />
                     <div class="text-sm">
-                        <h3 class="font-semibold">John Doe</h3>
-                        <p class="text-gray-600">Software Engineer</p>
+                        <h3 class="font-semibold" th:text="${username}"></h3>
+                        <p class="text-gray-600" th:text="${status}"></p>
                     </div>
                 </div>
 
             </div>
         </header>
-        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">Project-name</h1>
+
+        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5" th:text="${project.title}">Project-name</h1>
 
         <section class="w-full flex-grow bg-gray-50 py-12 border-r-4 ">
             <div class="flex flex-row justify-center gap-8 overflow-x-auto px-4">
 
-                <!-- Add New Task Card -->
-                <div class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition min-w-[18rem]">
-                    <img src="../static/plus-image.jfif" alt="Add Project" class="w-16 h-16 mb-4" />
+                <a th:href="@{/projects/${id}}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition min-w-[18rem]">
+                    <img src="../static/plus-image.jfif" alt="Add task" class="w-16 h-16 mb-4" />
                     <p class="text-lg font-semibold">Add New task</p>
-                </div>
-
-                <!-- To Do Column -->
+                </a>
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">To Do</h1>
-                    <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
-                        <div class="absolute w-5 h-5 top-2 left-2">
-                            <button>
-                                <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
-                            </button>
-                        </div>
-                        <div class="absolute w-5 h-5 top-2 right-2">
-                            <button>
-                                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
-                            </button>
-                        </div>
-                        <h4 class="text-2xl font-semibold text-blue-700">Task 1</h4>
-                        <p class="mt-2 text-lg text-gray-600">Create a GitHub repository.</p>
-                        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Assignees: </span>
-                            <span class="ml-2"> Worker1, janitor1, intern1</span>
-                        </div>
-                        <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Deadline:</span>
-                            <span>August 10</span>
-                        </div>
-                    </div>
+                    <ul>
+                        <li th:each="task : todo" class="min-w-[18rem]">
+                            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                                <div class="absolute w-5 h-5 top-2 left-2">
+                                    <button>
+                                        <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
+                                    </button>
+                                </div>
+                                <div class="absolute w-5 h-5 top-2 right-2">
+                                    <button>
+                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
+                                    </button>
+                                </div>
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Assignees: </span>
+                                    <span class="ml-2">
+                                        <ul class="list-none flex space-x-1">
+                                            <li th:each="assignee : ${task.assignee}">
+                                                <p th:text="${assignee}"></p>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${task.deadline}">August 10</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
-                <!-- In Progress Column -->
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">In Progress</h1>
-                    <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-green-500">
-                        <div class="absolute w-5 h-5 top-2 left-2">
-                            <button>
-                                <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
-                            </button>
-                        </div>
-                        <div class="absolute w-5 h-5 top-2 right-2">
-                            <button>
-                                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
-                            </button>
-                        </div>
-                        <h4 class="text-2xl font-semibold text-blue-700">Task 1</h4>
-                        <p class="mt-2 text-lg text-gray-600">Create a GitHub repository.</p>
-                        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Assignees: </span>
-                            <span class="ml-2"> Worker1, janitor1, intern1</span>
-                        </div>
-                        <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Deadline:</span>
-                            <span>August 10</span>
-                        </div>
-                    </div>
+
+                    <ul>
+                        <li th:each="task : in-progress" class="min-w-[18rem]">
+                            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                                <div class="absolute w-5 h-5 top-2 left-2">
+                                    <button>
+                                        <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
+                                    </button>
+                                </div>
+                                <div class="absolute w-5 h-5 top-2 right-2">
+                                    <button>
+                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
+                                    </button>
+                                </div>
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Assignees: </span>
+                                    <span class="ml-2">
+                                    <ul class="list-none flex space-x-1">
+                                        <li th:each="assignee : ${task.assignee}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </span>
+                                </div>
+                                <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${task.deadline}">August 10</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
-                <!-- Done Column -->
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">Done</h1>
-                    <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-blue-500">
-                        <div class="absolute w-5 h-5 top-2 left-2">
-                            <button>
-                                <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
-                            </button>
-                        </div>
-                        <div class="absolute w-5 h-5 top-2 right-2">
-                            <button>
-                                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
-                            </button>
-                        </div>
-                        <h4 class="text-2xl font-semibold text-blue-700">Task 1</h4>
-                        <p class="mt-2 text-lg text-gray-600">Create a GitHub repository.</p>
-                        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Assignees: </span>
-                            <span class="ml-2"> Worker1, janitor1, intern1</span>
-                        </div>
-                        <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Deadline:</span>
-                            <span>August 10</span>
-                        </div>
-                    </div>
+                    <ul>
+                        <li th:each="task : todo" class="min-w-[18rem]">
+                            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                                <div class="absolute w-5 h-5 top-2 left-2">
+                                    <button>
+                                        <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
+                                    </button>
+                                </div>
+                                <div class="absolute w-5 h-5 top-2 right-2">
+                                    <button>
+                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
+                                    </button>
+                                </div>
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Assignees: </span>
+                                    <span class="ml-2">
+                                    <ul class="list-none flex space-x-1">
+                                        <li th:each="assignee : ${task.assignee}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </span>
+                                </div>
+                                <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${task.deadline}">August 10</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
             </div>
         </section>
-
     </body>
 </html>
