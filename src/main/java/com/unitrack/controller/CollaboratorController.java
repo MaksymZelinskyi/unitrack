@@ -10,6 +10,7 @@ import com.unitrack.service.SkillService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,15 +54,18 @@ public class CollaboratorController {
         return collaboratorService.getProjects(id);
     }
 
-    @PostMapping("/collaborators/{collaboratorId}/skills")
+    @PostMapping("/{collaboratorId}/skills")
     public void addSkillToCollaborator(@PathVariable Long collaboratorId, Skill skill) {
         skillService.addCollaboratorSkill(collaboratorId, skill);
     }
 
     @DeleteMapping("/{collaboratorId}/skills")
-    public void deleteCollaboratorSkill(@PathVariable Long collaboratorid, Skill skill) {
-        skillService.deleteCollaboratorSkill(collaboratorid, skill);
+    public void deleteCollaboratorSkill(@PathVariable Long collaboratorId, Skill skill) {
+        skillService.deleteCollaboratorSkill(collaboratorId, skill);
     }
 
-
+    @GetMapping("/new")
+    public String newCollaborator(Model model) {
+        return "new-collaborator";
+    }
 }
