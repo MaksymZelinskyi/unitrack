@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CollaboratorRepository extends JpaRepository<Collaborator, Long> {
 
-    List<Collaborator> findAllBySkill(Skill skill);
+    List<Collaborator> findAllBySkillsContains(Skill skill);
 
     Optional<Collaborator> findByEmail(String email);
 }

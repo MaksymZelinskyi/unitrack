@@ -23,6 +23,8 @@ public class Project {
     private LocalDateTime start;
     private LocalDateTime end;
     private Status status;
+
+    @ManyToOne
     private Client client;
 
     public Project(String title, String description, LocalDateTime start, LocalDateTime end, Status status) {

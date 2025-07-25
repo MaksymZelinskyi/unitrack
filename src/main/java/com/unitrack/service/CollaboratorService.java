@@ -6,7 +6,6 @@ import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Skill;
 import com.unitrack.repository.CollaboratorRepository;
-import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +48,7 @@ public class CollaboratorService {
 
     public List<Collaborator> searchBySkill(String skillName) {
         Skill skill = skillRepository.findByName(skillName).orElseThrow();
-        return collaboratorRepository.findAllBySkill(skill);
+        return collaboratorRepository.findAllBySkillsContains(skill);
     }
 
     public List<Project> getProjects(Long id) {
