@@ -3,6 +3,7 @@ package com.unitrack.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,15 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
                 .anyRequest().authenticated())
+                .formLogin(f ->
+                        f.loginPage("/login")
+                                .successForwardUrl("/home")
+                                .failureForwardUrl("/login?error=true")
+                                .loginProcessingUrl("/process-login")
+                )
+                .logout(x ->
+                        x.logoutSuccessUrl("/login?logout=true"))
+                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 

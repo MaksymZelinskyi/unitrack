@@ -9,7 +9,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public void login(LoginDto dto) {
-
+    public String login(LoginDto dto) {
+        return "login";
     }
 }

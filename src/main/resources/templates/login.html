@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Uni-Track</title>
@@ -29,34 +29,39 @@
 
 <div class="font-sans">
         <div class="relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100 ">
+            <div th:if="${param.logout}" class="-mt-9 mb-9">
+                <h3 class="text-red-600">You were logged out. Log in again to keep using the app</h3>
+            </div>
             <div class="relative sm:max-w-sm w-full">
+
                 <div class="card bg-yellow-400 shadow-lg  w-full h-full rounded-3xl absolute  transform -rotate-6"></div>
                 <div class="card bg-blue-400 shadow-lg  w-full h-full rounded-3xl absolute  transform rotate-6"></div>
                 <div class="relative w-full rounded-3xl  px-6 py-4 bg-gray-100 shadow-md">
                     <label class="block mt-3 text-sm text-gray-700 text-center font-semibold">
                         Login
                     </label>
-                    <form method="#" action="#" class="mt-10">
+
+                    <form method="post" th:action="/process-login" class="mt-10">
 
                         <div>
-                            <input type="email" placeholder=" Email" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">
+                            <input name="username" type="email" placeholder=" Email" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">
                         </div>
 
                         <div class="mt-7">
-                            <input type="password" placeholder=" Password" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">
+                            <input name="password" type="password" placeholder=" Password" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">
                         </div>
 
                         <div class="mt-7 flex">
 
                             <div class="w-full text-right">
-                                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="#">
+                                <a href="@{/forgot-password}" class="underline text-sm text-gray-600 hover:text-gray-900">
                                     Forgot your password?
                                 </a>
                             </div>
                         </div>
 
                         <div class="mt-7">
-                            <button class="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
+                            <button type="submit" class="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
                                 Login
                             </button>
                         </div>
@@ -72,8 +77,13 @@
                     </form>
                 </div>
             </div>
+            <div th:if="${param.error}" class="mt-9">
+                <h3 class="text-red-600">Wrong credentials</h3>
+            </div>
+
         </div>
 
     </div>
+
 </body>
 </html>
