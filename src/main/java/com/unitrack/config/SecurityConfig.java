@@ -15,19 +15,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(x -> x
-                .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
-                .anyRequest().authenticated())
+                        .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .anyRequest().authenticated())
                 .formLogin(f ->
                         f.loginPage("/login")
                                 .successForwardUrl("/home")
-                                .failureForwardUrl("/login?error=true")
+                                .failureUrl("/login?error=true")
                                 .loginProcessingUrl("/process-login")
                 )
                 .logout(x ->
-                        x.logoutSuccessUrl("/login?logout=true"))
+                        x.logoutSuccessUrl("/login?logout=true")
+                        .deleteCookies("JSESSIONID"))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }

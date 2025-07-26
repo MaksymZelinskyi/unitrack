@@ -27,15 +27,14 @@
             
             <div class="flex flex-row space-x-5 items-center -mr-5">
                 <button>
-                    <img src="../static/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
+                    <img src="/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
                 </button>
                 <button>
-                    <img src="../static/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
+                    <img src="/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
                 </button>
             </div>
 
-            
-            <div class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
+            <a th:href="@{/collaborators/${id}(id=${user-id})}" class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
                 <th:img
                         src="${currentUser.avatarUrl}"
                         class="w-10 h-10 rounded-full border-2 border-blue-500"
@@ -45,7 +44,7 @@
                     <h3 class="font-semibold" th:text="${username}"></h3>
                     <p class="text-gray-600" th:text="${status}"></p>
                 </div>
-            </div>
+            </a>
 
         </div>
     </header>
@@ -60,12 +59,15 @@
             <ul class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
                 <li th:if="${projects == null || #lists.isEmpty(projects)}">No projects yet</li>
                 <li th:forEach="project : ${projects}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
-                    <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
-                    <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
-                    <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                        <span class="font-medium">Role:</span>
-                        <span th:text="${project.role}"></span>
-                    </div>
+                    <a th:href="@{/projects/{id}(id=${project.id})}">
+                        <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
+                        <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
+                        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                            <span class="font-medium">Role:</span>
+                            <span th:text="${project.role}"></span>
+                        </div>
+                    </a>
+
                 </li>
 
             </ul>
@@ -80,22 +82,24 @@
 
                 <li th:if="${tasks == null || #lists.isEmpty(tasks)}">No tasks yet</li>
                 <li th:each="task : tasks" class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
-                    <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${task.title}"></h4>
+                    <a th:href="@{tasks/{id}}(id=${task.id})}">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${task.title}"></h4>
 
-                    <div class="mb-4">
-                        <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Project</h5>
-                        <p class="text-md text-gray-700 mt-1" th:text="${task.project}"></p>
-                    </div>
+                        <div class="mb-4">
+                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Project</h5>
+                            <p class="text-md text-gray-700 mt-1" th:text="${task.project}"></p>
+                        </div>
 
-                    <div>
-                        <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h5>
-                        <p class="text-md text-gray-700 mt-1" th:text="${task.description}"></p>
-                    </div>
+                        <div>
+                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h5>
+                            <p class="text-md text-gray-700 mt-1" th:text="${task.description}"></p>
+                        </div>
 
-                    <div>
-                        <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">deadline</h5>
-                        <span class="text-md text-gray-700 mt-1" th:text="${#dates.format(myDate, 'dd/MM/yyyy')}"></span>
-                    </div>
+                        <div>
+                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">deadline</h5>
+                            <span class="text-md text-gray-700 mt-1" th:text="${#dates.format(myDate, 'dd/MM/yyyy')}"></span>
+                        </div>
+                    </a>
                 </li>
 
             </ul>

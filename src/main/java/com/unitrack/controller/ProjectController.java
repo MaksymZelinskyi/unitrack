@@ -51,7 +51,7 @@ public class ProjectController {
                     done.add(task);
             }
         }
-        model.addAttribute("project", new com.unitrack.dto.ProjectDto(project.getTitle(), project.getDescription(), project.getClient().getName(), project.getStart(), project.getEnd()));
+        model.addAttribute("project", new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(), project.getStart(), project.getEnd()));
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);

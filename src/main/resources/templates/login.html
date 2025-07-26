@@ -20,9 +20,10 @@
         </h2>
 
         <div class="flex space-x-2">
-            <button><img src="../static/british-flag.jfif" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="EN" /></button>
-            <button><img src="../static/french-flag.jfif" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="FR" /></button>
+            <button><img src="/british-flag.jfif" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="EN" /></button>
+            <button><img src="/french-flag.jfif" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="FR" /></button>
         </div>
+
     </div>
 </header>
 
@@ -41,7 +42,7 @@
                         Login
                     </label>
 
-                    <form method="post" th:action="/process-login" class="mt-10">
+                    <form method="post" th:action="@{/process-login}" class="mt-10">
 
                         <div>
                             <input name="username" type="email" placeholder=" Email" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0">

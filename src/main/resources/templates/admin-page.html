@@ -25,23 +25,24 @@
 
                 <div class="flex flex-row space-x-5 items-center -mr-5">
                     <button>
-                        <img src="../static/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
+                        <img src="/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
                     </button>
                     <button>
-                        <img src="../static/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
+                        <img src="/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
                     </button>
                 </div>
 
-
-                <th:img
-                        src="${currentUser.avatarUrl}"
-                        class="w-10 h-10 rounded-full border-2 border-blue-500"
-                        alt="Profile Picture"
-                />
-                <div class="text-sm">
-                    <h3 class="font-semibold" th:text="${username}"></h3>
-                    <p class="text-gray-600" th:text="${status}"></p>
-                </div>
+                <a th:href="@{/collaborators/${id}(id=${user-id})}" class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
+                    <th:img
+                            src="${currentUser.avatarUrl}"
+                            class="w-10 h-10 rounded-full border-2 border-blue-500"
+                            alt="Profile Picture"
+                    />
+                    <div class="text-sm">
+                        <h3 class="font-semibold" th:text="${username}"></h3>
+                        <p class="text-gray-600" th:text="${status}"></p>
+                    </div>
+                </a>
 
             </div>
         </header>
@@ -61,12 +62,15 @@
 
                     <ul>
                         <li th:forEach="project : ${projects}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
-                            <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
-                            <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
-                            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Deadline:</span>
-                                <span th:text="${project.deadline}"></span>
-                            </div>
+                            <a th:href="@{projects/{id}(id=${project.id})}">
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${project.deadline}"></span>
+                                </div>
+                            </a>
+
                         </li>
                     </ul>
                 </div>
@@ -77,7 +81,7 @@
                 <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-8">My Team</h1>
 
 
-                <a th:href="/collaborators/new" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-6 mb-8 cursor-pointer hover:shadow-lg transition">
+                <a th:href="@{/collaborators/new}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-6 mb-8 cursor-pointer hover:shadow-lg transition">
                     <img src="../static/plus-image.jfif" alt="Add Member" class="w-16 h-16 mb-3" />
                     <p class="text-lg font-semibold">Add New Member</p>
                 </a>
@@ -85,29 +89,31 @@
 
                 <ul class="space-y-6">
                     <li th:each="collaborator : ${collaborators}" class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
-                        <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${collaborator.name}"></h4>
+                        <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
+                            <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${collaborator.name}"></h4>
 
-                        <div class="mb-4">
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Projects</h5>
-                            <p class="text-md text-gray-700 mt-1" th:text="collaborator">🛠️
+                            <div class="mb-4">
+                                <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Projects</h5>
+                                <p class="text-md text-gray-700 mt-1" th:text="collaborator">🛠️
                                 <ul class="list-none flex space-x-1">
                                     <li th:each="project : ${collaborator.projects}">
                                         <p th:text="${project}"></p>
                                     </li>
                                 </ul>
-                            </p>
-                        </div>
+                                </p>
+                            </div>
 
-                        <div>
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Skills</h5>
-                            <p class="text-md text-gray-700 mt-1">
+                            <div>
+                                <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Skills</h5>
+                                <p class="text-md text-gray-700 mt-1">
                                 <ul class="list-none flex space-x-1">
                                     <li th:each="skill : ${collaborator.skills}">
                                         <p th:text="${skill}"></p>
                                     </li>
                                 </ul>
-                            </p>
-                        </div>
+                                </p>
+                            </div>
+                        </a>
                     </li>
                 </ul>
             </aside>

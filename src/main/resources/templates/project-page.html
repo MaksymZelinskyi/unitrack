@@ -25,15 +25,15 @@
 
                 <div class="flex flex-row space-x-5 items-center -mr-5">
                     <button>
-                        <img src="../static/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
+                        <img src="/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
                     </button>
                     <button>
-                        <img src="../static/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
+                        <img src="/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
                     </button>
                 </div>
 
 
-                <div class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
+                <a th:href="@{/collaborators/${id}(id=${user-id})}" class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
                     <th:img
                             src="${currentUser.avatarUrl}"
                             class="w-10 h-10 rounded-full border-2 border-blue-500"
@@ -43,17 +43,17 @@
                         <h3 class="font-semibold" th:text="${username}"></h3>
                         <p class="text-gray-600" th:text="${status}"></p>
                     </div>
-                </div>
+                </a>
 
             </div>
         </header>
 
-        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5" th:text="${project.title}">Project-name</h1>
+        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5" th:text="${project.title}"></h1>
 
         <section class="w-full flex-grow bg-gray-50 py-12 border-r-4 ">
             <div class="flex flex-row justify-center gap-8 overflow-x-auto px-4">
 
-                <a th:href="@{/projects/${id}}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition min-w-[18rem]">
+                <a th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition min-w-[18rem]">
                     <img src="../static/plus-image.jfif" alt="Add task" class="w-16 h-16 mb-4" />
                     <p class="text-lg font-semibold">Add New task</p>
                 </a>
@@ -61,7 +61,7 @@
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">To Do</h1>
                     <ul>
                         <li th:each="task : todo" class="min-w-[18rem]">
-                            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                            <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div class="absolute w-5 h-5 top-2 left-2">
                                     <button>
                                         <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
@@ -88,17 +88,16 @@
                                     <span class="font-medium">Deadline:</span>
                                     <span th:text="${task.deadline}">August 10</span>
                                 </div>
-                            </div>
+                            </a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">In Progress</h1>
-
                     <ul>
-                        <li th:each="task : in-progress" class="min-w-[18rem]">
-                            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                        <li th:each="task : in_progress" class="min-w-[18rem]">
+                            <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div class="absolute w-5 h-5 top-2 left-2">
                                     <button>
                                         <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
@@ -125,7 +124,7 @@
                                     <span class="font-medium">Deadline:</span>
                                     <span th:text="${task.deadline}">August 10</span>
                                 </div>
-                            </div>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -134,7 +133,7 @@
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">Done</h1>
                     <ul>
                         <li th:each="task : todo" class="min-w-[18rem]">
-                            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                            <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div class="absolute w-5 h-5 top-2 left-2">
                                     <button>
                                         <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
@@ -161,11 +160,10 @@
                                     <span class="font-medium">Deadline:</span>
                                     <span th:text="${task.deadline}">August 10</span>
                                 </div>
-                            </div>
+                            </a>
                         </li>
                     </ul>
                 </div>
-
             </div>
         </section>
     </body>

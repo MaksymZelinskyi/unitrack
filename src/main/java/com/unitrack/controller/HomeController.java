@@ -43,13 +43,14 @@ public class HomeController {
 
     public String getUserHome(Principal principal, Model model) {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
+        model.addAttribute("user-id", collaborator.getId());
         model.addAttribute("username", collaborator.getFirstName() + " " + collaborator.getLastName());
         model.addAttribute("status", "User");
         model.addAttribute(
                 "projects",
                 collaborator.getProjects()
                         .stream()
-                        .map(x -> new ProjectParticipationDto(x.getProject().getTitle(), x.getProject().getDescription(), x.getRoles()
+                        .map(x -> new ProjectParticipationDto(x.getProject().getId(), x.getProject().getTitle(), x.getProject().getDescription(), x.getRoles()
                                 .stream()
                                 .map(Role::toString)
                                 .collect(Collectors.toSet())))
@@ -57,9 +58,9 @@ public class HomeController {
         );
         model.addAttribute("tasks", taskRepository.findAllByAssigneesContains(collaborator)
                 .stream()
-                .map(x -> new CollaboratorTaskDto(x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
+                .map(x -> new CollaboratorTaskDto(x.getId(), x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
                 .collect(Collectors.toSet()));
-        return "home.html";
+        return "home";
     }
 
     public String getAdminHome(Principal principal, Model model) {
@@ -72,7 +73,7 @@ public class HomeController {
                 "projects",
                 projects
                         .stream()
-                        .map(x -> new ProjectDto(x.getTitle(), x.getDescription(), x.getClient().getName(), x.getStart(), x.getEnd()))
+                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient().getName(), x.getStart(), x.getEnd()))
                         .collect(Collectors.toSet())
         );
         model.addAttribute("collaborators", collaborators
@@ -86,6 +87,6 @@ public class HomeController {
                         )
                 )
                 .collect(Collectors.toSet()));
-        return "admin-page.html";
+        return "admin-page";
     }
 }
