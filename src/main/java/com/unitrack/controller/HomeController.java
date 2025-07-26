@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class HomeController {
 
@@ -32,7 +32,7 @@ public class HomeController {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String getHome(Principal principal, Model model) {
         if(authorizationService.isAdmin(principal.getName())) {
             return getAdminHome(principal, model);
@@ -43,9 +43,14 @@ public class HomeController {
 
     public String getUserHome(Principal principal, Model model) {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
-        model.addAttribute("user-id", collaborator.getId());
-        model.addAttribute("username", collaborator.getFirstName() + " " + collaborator.getLastName());
-        model.addAttribute("status", "User");
+        model.addAttribute("currentUser", new CollaboratorDto(
+                collaborator.getId(),
+                collaborator.getFirstName()+" "+collaborator.getLastName(),
+                collaborator.getAvatarUrl(),
+                collaborator.getSkills().stream().map(Skill::getName).toList(),
+                collaborator.getProjects().stream().map(x -> x.getProject().getTitle()).toList()
+        ));
+       model.addAttribute("status", "User");
         model.addAttribute(
                 "projects",
                 collaborator.getProjects()
@@ -67,8 +72,14 @@ public class HomeController {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
         List<Project> projects = projectRepository.findAll();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
-        model.addAttribute("username", collaborator.getFirstName() + " " + collaborator.getLastName());
-        model.addAttribute("status", "Admin");
+        model.addAttribute("currentUser", new CollaboratorDto(
+                collaborator.getId(),
+                collaborator.getFirstName()+" "+collaborator.getLastName(),
+                collaborator.getAvatarUrl(),
+                collaborator.getSkills().stream().map(Skill::getName).toList(),
+                collaborator.getProjects().stream().map(x -> x.getProject().getTitle()).toList()
+        ));
+         model.addAttribute("status", "Admin");
         model.addAttribute(
                 "projects",
                 projects
@@ -82,6 +93,7 @@ public class HomeController {
                         new CollaboratorDto(
                                 x.getId(),
                                 x.getFirstName() + " " + x.getLastName(),
+                                x.getAvatarUrl(),
                                 x.getSkills().stream().map(Skill::getName).toList(),
                                 x.getProjects().stream().map(y -> y.getProject().getTitle()).collect(Collectors.toList())
                         )

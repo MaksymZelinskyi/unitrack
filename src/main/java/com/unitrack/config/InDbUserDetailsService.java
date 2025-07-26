@@ -21,7 +21,7 @@ public class InDbUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Collaborator collaborator = collaboratorRepository.findByEmail(username).orElseThrow();
-        String role = collaborator.isAdmin() ? "ADMIN" : "USER";
+        String role = collaborator.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
         return new User(collaborator.getEmail(), collaborator.getPassword(), Collections.singleton(new SimpleGrantedAuthority(role)));
     }
 }

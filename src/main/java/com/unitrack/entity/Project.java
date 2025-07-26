@@ -2,6 +2,7 @@ package com.unitrack.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -9,10 +10,11 @@ import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Project {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;

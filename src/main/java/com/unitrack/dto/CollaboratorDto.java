@@ -1,6 +1,14 @@
 package com.unitrack.dto;
 
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
-public record CollaboratorDto(Long id, String fullName, List<String> skills, List<String> projects) {
+@AllArgsConstructor
+public class CollaboratorDto {
+    public Long id;
+    public String name;
+    public String avatarUrl;
+    public List<String> skills;
+    public List<String> projects;
 }

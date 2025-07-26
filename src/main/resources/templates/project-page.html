@@ -23,25 +23,22 @@
                 </h2>
 
 
-                <div class="flex flex-row space-x-5 items-center -mr-5">
-                    <button>
-                        <img src="/british-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="EN" />
-                    </button>
-                    <button>
-                        <img src="/french-flag.jfif" class="w-8 h-8 rounded-full border border-blue-500" alt="FR" />
-                    </button>
+                <div class="flex space-x-2">
+                    <button><img src="https://wiki2.railml.org/images/b/b8/UK_flag.png" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="EN" /></button>
+                    <button><img src="https://tse2.mm.bing.net/th/id/OIP.mO2EfRE-TxiZgZ20kE6aOwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="FR" /></button>
                 </div>
 
 
-                <a th:href="@{/collaborators/${id}(id=${user-id})}" class="flex items-center space-x-3 border border-gray-300 rounded-lg p-2">
-                    <th:img
-                            src="${currentUser.avatarUrl}"
-                            class="w-10 h-10 rounded-full border-2 border-blue-500"
-                            alt="Profile Picture"
-                    />
-                    <div class="text-sm">
-                        <h3 class="font-semibold" th:text="${username}"></h3>
-                        <p class="text-gray-600" th:text="${status}"></p>
+                <a th:href="@{/profile}"
+                   class="flex items-center gap-4 w-72 max-w-sm px-4 py-3 bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-300">
+
+                    <img th:src="${currentUser.avatarUrl}"
+                         class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
+                         alt="Profile Picture" />
+
+                    <div class="flex flex-col">
+                        <h3 class="text-lg font-semibold text-gray-800" th:text="${currentUser.name}">Maksym Zelinskyi</h3>
+                        <p class="text-sm text-gray-500" th:text="${status}">Admin</p>
                     </div>
                 </a>
 
@@ -54,7 +51,7 @@
             <div class="flex flex-row justify-center gap-8 overflow-x-auto px-4">
 
                 <a th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition min-w-[18rem]">
-                    <img src="../static/plus-image.jfif" alt="Add task" class="w-16 h-16 mb-4" />
+                    <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add task" class="w-16 h-16 mb-4" />
                     <p class="text-lg font-semibold">Add New task</p>
                 </a>
                 <div class="min-w-[18rem]">

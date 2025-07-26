@@ -1,10 +1,12 @@
 package com.unitrack.config;
 
+import com.unitrack.repository.CollaboratorRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,19 +21,18 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated())
-                .formLogin(f ->
-                        f.loginPage("/login")
-                                .successForwardUrl("/home")
+                .csrf(x -> x.disable())
+                .formLogin(f -> f.loginPage("/login")
+                                .defaultSuccessUrl("/home", true)
+                                .permitAll()
                                 .failureUrl("/login?error=true")
                                 .loginProcessingUrl("/process-login")
                 )
                 .logout(x ->
                         x.logoutSuccessUrl("/login?logout=true")
                         .deleteCookies("JSESSIONID"))
-                .httpBasic(Customizer.withDefaults())
                 .build();
     }
 

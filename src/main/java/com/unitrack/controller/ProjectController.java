@@ -40,7 +40,7 @@ public class ProjectController {
         List<ProjectTaskDto> inProgress = new ArrayList<>();
         List<ProjectTaskDto> done = new ArrayList<>();
         for(ProjectTaskDto task : tasks) {
-            switch(task.status()) {
+            switch(task.status) {
                 case "TODO":
                     todo.add(task);
                     break;
