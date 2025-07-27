@@ -66,15 +66,14 @@
                     <input type="checkbox" th:name="assignees[__${iterStat.index}__].id" th:value="${collaborator.id}" />
                     <span th:text="${collaborator.firstName + ' ' + collaborator.lastName}"></span>
                     <select th:name="assignees[__${iterStat.index}__].role" class="ml-2 border rounded p-1">
-                        <option value="BACKEND_DEV">DEV</option>
-                        <option value="FRONTEND_DEV">TESTER</option>
-                        <option value="FULLSTACK_DEV">MANAGER</option>
-                        <option value="PROJECT_MANAGER">DEV</option>
+                        <option value="BACKEND_DEV">BACKEND DEV</option>
+                        <option value="FRONTEND_DEV">FRONTEND DEV</option>
+                        <option value="FULLSTACK_DEV">FULLSTACK DEV</option>
                         <option value="TESTER">TESTER</option>
-                        <option value="DEVOPS">MANAGER</option>
-                        <option value="DESIGNER">DEV</option>
-                        <option value="PRODUCT_OWNER">TESTER</option>
-                        <option value="INTERN">MANAGER</option>
+                        <option value="DEVOPS">DEVOPS</option>
+                        <option value="DESIGNER">DESIGNER</option>
+                        <option value="PRODUCT_OWNER">PRODUCT OWNER</option>
+                        <option value="INTERN">INTERN</option>
                     </select>
                 </div>
 

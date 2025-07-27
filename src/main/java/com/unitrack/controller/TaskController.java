@@ -22,7 +22,7 @@ public class TaskController {
     @PostMapping("/tasks")
     public void createTask(@RequestBody TaskDto task,
                            Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), task.projectId(), Role.MANAGER))
+        if(!authService.hasRole(principal.getName(), task.projectId(), Role.PROJECT_MANAGER))
             throw new IllegalAccessException();
         taskService.add(task);
     }
@@ -35,7 +35,7 @@ public class TaskController {
     @PutMapping("/tasks/{id}")
     public Task updateTask(@PathVariable Long id,
                            @RequestBody TaskDto task, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), task.projectId(), Role.MANAGER))
+        if(!authService.hasRole(principal.getName(), task.projectId(), Role.PROJECT_MANAGER))
             throw new IllegalAccessException();
         return taskService.update(id, task);
     }
@@ -43,7 +43,7 @@ public class TaskController {
     @DeleteMapping("/tasks/{id}")
     public void deleteTask(@PathVariable Long id,
                            @RequestBody TaskDto task, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), task.projectId(), Role.MANAGER))
+        if(!authService.hasRole(principal.getName(), task.projectId(), Role.PROJECT_MANAGER))
             throw new IllegalAccessException();
         taskService.deleteById(id);
     }

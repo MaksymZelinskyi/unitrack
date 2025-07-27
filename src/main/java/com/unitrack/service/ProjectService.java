@@ -29,6 +29,9 @@ public class ProjectService {
         return projectRepository.findById(id).orElse(null);
     }
 
+    public List<Project> getAll() {
+        return projectRepository.findAll();
+    }
     public void add(ProjectDto dto) {
         Project project = new Project(dto.title(), dto.description(), dto.start(), dto.deadline());
         Set<Participation> assignees = dto.assignees().stream().map(x -> new Participation(collaboratorRepository.findById(x.id()).orElseThrow(), project, Role.valueOf(x.role()))).collect(Collectors.toSet());

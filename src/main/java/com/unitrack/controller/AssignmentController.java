@@ -20,7 +20,7 @@ public class AssignmentController {
 
     @PostMapping("/")
     public void addAssignment(AssignmentDto assignment, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), assignment.projectId(), Role.MANAGER))
+        if(!authService.hasRole(principal.getName(), assignment.projectId(), Role.PROJECT_MANAGER))
             throw new IllegalAccessException();
 
         assignmentService.add(assignment);
@@ -28,7 +28,7 @@ public class AssignmentController {
 
     @DeleteMapping("/{id}")
     public void deleteAssignment(@PathVariable Long id, @RequestParam Long projectId, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), projectId, Role.MANAGER))
+        if(!authService.hasRole(principal.getName(), projectId, Role.PROJECT_MANAGER))
             throw new IllegalAccessException();
         assignmentService.remove(id);
     }
