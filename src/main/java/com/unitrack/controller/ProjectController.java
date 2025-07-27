@@ -1,9 +1,11 @@
 package com.unitrack.controller;
 
+import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
+import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -12,20 +14,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/projects")
 @RequiredArgsConstructor
+@SessionAttributes({"collaborators", "assignees"})
 public class ProjectController {
 
     private final ProjectService projectService;
     private final TaskService taskService;
+    private final CollaboratorService collaboratorService;
 
-    @PostMapping("/")
-    public void createProject(ProjectDto project) {
-        projectService.add(project);
+    @ModelAttribute("collaborators")
+    public Set<CollaboratorInListDto> collaborators() {
+        return collaboratorService.getAll().stream().map(x->new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl())).collect(Collectors.toSet());
     }
+
+    @ModelAttribute("assignees")
+    public Set<CollaboratorInListDto> assignees() {
+        return new HashSet<>();
+    }
+
 
     @GetMapping("/{id}")
     public String getProjectById(@PathVariable Long id, Model model) {
@@ -56,6 +69,17 @@ public class ProjectController {
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
         return "project-page";
+    }
+
+    @GetMapping("/new")
+    public String newProject(Model model) {
+        return "new-project";
+    }
+
+    @PostMapping("/new")
+    public String newProject(@RequestBody ProjectDto dto) {
+        projectService.add(dto);
+        return "redirect:/projects";
     }
 
     @PutMapping("/{id}")

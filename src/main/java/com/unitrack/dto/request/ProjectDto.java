@@ -1,8 +1,7 @@
 package com.unitrack.dto.request;
 
+import java.time.LocalDate;
+import java.util.Set;
 
-import java.time.LocalDateTime;
-
-public record ProjectDto(String title, String description, LocalDateTime start, LocalDateTime end, String status) {
-
+public record ProjectDto(String title, String description, String client, LocalDate start, LocalDate deadline, Set<AssigneeDto> assignees) {
 }

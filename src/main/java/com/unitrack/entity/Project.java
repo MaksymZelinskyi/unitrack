@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,19 +23,18 @@ public class Project {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Participation> assignees = new HashSet<>();
 
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDate start;
+    private LocalDate end;
     private Status status;
 
     @ManyToOne
     private Client client;
 
-    public Project(String title, String description, LocalDateTime start, LocalDateTime end, Status status) {
+    public Project(String title, String description, LocalDate start, LocalDate end) {
         this.title = title;
         this.description = description;
         this.start = start;
         this.end = end;
-        this.status = status;
     }
 
     public enum Status {

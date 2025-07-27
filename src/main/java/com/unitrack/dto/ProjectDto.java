@@ -2,6 +2,7 @@ package com.unitrack.dto;
 
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -11,7 +12,7 @@ public class ProjectDto {
     public String title;
     public String description;
     public String client;
-    public LocalDateTime start;
-    public LocalDateTime end;
+    public LocalDate start;
+    public LocalDate end;
 
 }
