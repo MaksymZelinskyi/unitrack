@@ -13,7 +13,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/assignments")
 @RequiredArgsConstructor
-public class AssignmentController {
+public class AssignmentController extends AuthenticatedController {
 
     private final AssignmentService assignmentService;
     private final AuthorizationService authService;

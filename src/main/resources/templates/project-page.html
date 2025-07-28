@@ -37,8 +37,8 @@
                          alt="Profile Picture" />
 
                     <div class="flex flex-col">
-                        <h3 class="text-lg font-semibold text-gray-800" th:text="${currentUser.name}">Maksym Zelinskyi</h3>
-                        <p class="text-sm text-gray-500" th:text="${status}">Admin</p>
+                        <h3 class="text-lg font-semibold text-gray-800" th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></h3>
+                        <p class="text-sm text-gray-500" th:text="${currentUser.status}"></p>
                     </div>
                 </a>
 
@@ -74,7 +74,9 @@
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">To Do</h1>
                     <ul>
-                        <li th:each="task : todo" class="min-w-[18rem]">
+                        <li th:if="${todo == null || #lists.isEmpty(todo)}">Nothing yet</li>
+                        <li th:if="${todo != null && !#lists.isEmpty(todo)}" th:each="task : todo" class="min-w-[18rem]">
+
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div class="absolute w-5 h-5 top-2 left-2">
                                     <button>
@@ -92,7 +94,7 @@
                                     <span class="font-medium">Assignees: </span>
                                     <span class="ml-2">
                                         <ul class="list-none flex space-x-1">
-                                            <li th:each="assignee : ${task.assignee}">
+                                            <li th:each="assignee : ${task.assignees}">
                                                 <p th:text="${assignee}"></p>
                                             </li>
                                         </ul>
@@ -107,10 +109,11 @@
                     </ul>
                 </div>
 
-                <div class="min-w-[18rem]">
+               <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">In Progress</h1>
                     <ul>
-                        <li th:each="task : in_progress" class="min-w-[18rem]">
+                        <li th:if="${in_progress == null || #lists.isEmpty(in_progress)}">Nothing yet</li>
+                        <li th:if="${in_progress != null && !#lists.isEmpty(in_progress)}" th:each="task : in_progress" class="min-w-[18rem]">
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div class="absolute w-5 h-5 top-2 left-2">
                                     <button>
@@ -128,7 +131,7 @@
                                     <span class="font-medium">Assignees: </span>
                                     <span class="ml-2">
                                     <ul class="list-none flex space-x-1">
-                                        <li th:each="assignee : ${task.assignee}">
+                                        <li th:each="assignee : ${task.assignees}">
                                             <p th:text="${assignee}"></p>
                                         </li>
                                     </ul>
@@ -146,7 +149,8 @@
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">Done</h1>
                     <ul>
-                        <li th:each="task : todo" class="min-w-[18rem]">
+                        <li th:if="${done == null || #lists.isEmpty(done)}">Nothing yet</li>
+                        <li th:if="${done != null && !#lists.isEmpty(done)}" th:each="task : done" class="min-w-[18rem]">
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div class="absolute w-5 h-5 top-2 left-2">
                                     <button>
@@ -164,7 +168,7 @@
                                     <span class="font-medium">Assignees: </span>
                                     <span class="ml-2">
                                     <ul class="list-none flex space-x-1">
-                                        <li th:each="assignee : ${task.assignee}">
+                                        <li th:each="assignee : ${task.assignees}">
                                             <p th:text="${assignee}"></p>
                                         </li>
                                     </ul>

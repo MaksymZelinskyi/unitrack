@@ -2,6 +2,7 @@ package com.unitrack.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "assignees")
 public class Project {
 
     @Id
@@ -27,7 +29,7 @@ public class Project {
     private LocalDate end;
     private Status status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Client client;
 
     public Project(String title, String description, LocalDate start, LocalDate end) {

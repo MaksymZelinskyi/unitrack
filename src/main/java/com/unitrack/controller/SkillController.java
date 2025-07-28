@@ -1,10 +1,10 @@
 package com.unitrack.controller;
 
-import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Skill;
-import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.SkillService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +13,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/skills")
 @RequiredArgsConstructor
-public class SkillController {
+public class SkillController extends AuthenticatedController {
 
     private final SkillService skillService;
 

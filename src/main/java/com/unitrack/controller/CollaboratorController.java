@@ -1,6 +1,5 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.ProjectDto;
 import com.unitrack.dto.ProjectInListDto;
 import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.dto.request.ParticipationDto;
@@ -24,7 +23,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/collaborators")
 @RequiredArgsConstructor
-public class CollaboratorController {
+public class CollaboratorController extends AuthenticatedController {
 
     private final CollaboratorService collaboratorService;
     private final SkillService skillService;
@@ -78,14 +77,15 @@ public class CollaboratorController {
     public String newCollaborator(Model model) {
         List<Skill> skills = skillService.getAll();
         List<ProjectInListDto> projects = projectService.getAll().stream().map(x-> new ProjectInListDto(x.getId(), x.getTitle())).toList();
+        model.addAttribute("collaboratorForm", new CollaboratorDto());
         model.addAttribute("skills", skills);
         model.addAttribute("projects", projects);
         return "new-collaborator";
     }
 
     @PostMapping("/new")
-    public String newCollaborator(@RequestBody CollaboratorDto dto) {
+    public String newCollaborator(CollaboratorDto dto) {
         collaboratorService.add(dto);
-        return "redirect:/collaborators";
+        return "redirect:/home";
     }
 }

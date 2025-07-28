@@ -1,4 +1,15 @@
 package com.unitrack.dto.request;
 
-public record AssigneeDto(Long id, String role) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AssigneeDto {
+
+    private Long id;
+    private String role;
+
 }

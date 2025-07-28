@@ -1,10 +1,8 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.request.ProjectDto;
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Participation;
-import com.unitrack.entity.Project;
-import com.unitrack.entity.Role;
+import com.unitrack.entity.*;
+import com.unitrack.repository.ClientRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,7 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
+    private final ClientRepository clientRepository;
 
     public Project getByTitle(String title) {
         return projectRepository.findByTitle(title).orElse(null);
@@ -32,10 +31,12 @@ public class ProjectService {
     public List<Project> getAll() {
         return projectRepository.findAll();
     }
+
     public void add(ProjectDto dto) {
-        Project project = new Project(dto.title(), dto.description(), dto.start(), dto.deadline());
-        Set<Participation> assignees = dto.assignees().stream().map(x -> new Participation(collaboratorRepository.findById(x.id()).orElseThrow(), project, Role.valueOf(x.role()))).collect(Collectors.toSet());
-       project.setAssignees(assignees);
+        Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline());
+        Set<Participation> assignees = dto.getAssignees().stream().map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole()))).collect(Collectors.toSet());
+        project.setAssignees(assignees);
+        project.setClient(clientRepository.findByName(dto.getClient()).orElse(new Client(dto.getClient())));
         projectRepository.save(project);
     }
 
@@ -45,10 +46,10 @@ public class ProjectService {
 
     public Project update(Long id, ProjectDto dto) {
         Project project = projectRepository.findById(id).orElseThrow();
-        project.setTitle(dto.title());
-        project.setDescription(dto.description());
-        project.setStart(dto.start());
-        project.setEnd(dto.deadline());
+        project.setTitle(dto.getTitle());
+        project.setDescription(dto.getDescription());
+        project.setStart(dto.getStart());
+        project.setEnd(dto.getDeadline());
         projectRepository.save(project);
         return project;
     }

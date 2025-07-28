@@ -36,8 +36,8 @@
                          alt="Profile Picture" />
 
                     <div class="flex flex-col">
-                        <h3 class="text-lg font-semibold text-gray-800" th:text="${currentUser.name}">Maksym Zelinskyi</h3>
-                        <p class="text-sm text-gray-500" th:text="${status}">Admin</p>
+                        <h3 class="text-lg font-semibold text-gray-800" th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></h3>
+                        <p class="text-sm text-gray-500" th:text="${currentUser.status}"></p>
                     </div>
                 </a>
 
@@ -65,7 +65,7 @@
                                 <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
                                 <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
                                     <span class="font-medium">Deadline:</span>
-                                    <span th:text="${project.deadline}"></span>
+                                    <span th:text="${project.end}"></span>
                                 </div>
                             </a>
                         </li>
@@ -91,7 +91,7 @@
 
                             <div class="mb-4">
                                 <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Projects</h5>
-                                <p class="text-md text-gray-700 mt-1" th:text="collaborator">🛠️
+                                <p class="text-md text-gray-700 mt-1">🛠️
                                 <ul class="list-none flex space-x-1">
                                     <li th:each="project : ${collaborator.projects}">
                                         <p th:text="${project}"></p>

@@ -1,10 +1,7 @@
 package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
-import com.unitrack.dto.CollaboratorDto;
-import com.unitrack.dto.ProjectDto;
-import com.unitrack.dto.ProjectParticipationDto;
-import com.unitrack.dto.CollaboratorTaskDto;
+import com.unitrack.dto.*;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;
@@ -25,7 +22,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class HomeController {
+public class HomeController extends AuthenticatedController {
 
     private final AuthorizationService authorizationService;
     private final CollaboratorRepository collaboratorRepository;
@@ -43,14 +40,6 @@ public class HomeController {
 
     public String getUserHome(Principal principal, Model model) {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
-        model.addAttribute("currentUser", new CollaboratorDto(
-                collaborator.getId(),
-                collaborator.getFirstName()+" "+collaborator.getLastName(),
-                collaborator.getAvatarUrl(),
-                collaborator.getSkills().stream().map(Skill::getName).toList(),
-                collaborator.getProjects().stream().map(x -> x.getProject().getTitle()).toList()
-        ));
-       model.addAttribute("status", "User");
         model.addAttribute(
                 "projects",
                 collaborator.getProjects()
@@ -72,19 +61,11 @@ public class HomeController {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
         List<Project> projects = projectRepository.findAll();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
-        model.addAttribute("currentUser", new CollaboratorDto(
-                collaborator.getId(),
-                collaborator.getFirstName()+" "+collaborator.getLastName(),
-                collaborator.getAvatarUrl(),
-                collaborator.getSkills().stream().map(Skill::getName).toList(),
-                collaborator.getProjects().stream().map(x -> x.getProject().getTitle()).toList()
-        ));
-         model.addAttribute("status", "Admin");
         model.addAttribute(
                 "projects",
                 projects
                         .stream()
-                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient().getName(), x.getStart(), x.getEnd()))
+                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient()!=null ? x.getClient().getName() : "None", x.getStart(), x.getEnd()))
                         .collect(Collectors.toSet())
         );
         model.addAttribute("collaborators", collaborators

@@ -20,7 +20,7 @@ public class CollaboratorService {
     private final SkillRepository skillRepository;
 
     public void add(CollaboratorDto dto) {
-        Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), dto.password());
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword());
         collaboratorRepository.save(collaborator);
     }
 
@@ -34,10 +34,10 @@ public class CollaboratorService {
 
     public Collaborator update(Long id, CollaboratorDto dto) {
         Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
-        collaborator.setEmail(dto.email());
-        collaborator.setFirstName(dto.firstName());
-        collaborator.setLastName(dto.lastName());
-        collaborator.setPassword(dto.password());
+        collaborator.setEmail(dto.getEmail());
+        collaborator.setFirstName(dto.getFirstName());
+        collaborator.setLastName(dto.getLastName());
+        collaborator.setPassword(dto.getPassword());
 
         return collaboratorRepository.save(collaborator);
     }

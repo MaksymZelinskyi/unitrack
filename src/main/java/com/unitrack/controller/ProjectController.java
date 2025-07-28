@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/projects")
 @RequiredArgsConstructor
 @SessionAttributes({"collaborators", "assignees"})
-public class ProjectController {
+public class ProjectController extends AuthenticatedController{
 
     private final ProjectService projectService;
     private final TaskService taskService;
@@ -52,8 +52,9 @@ public class ProjectController {
         List<ProjectTaskDto> todo = new ArrayList<>();
         List<ProjectTaskDto> inProgress = new ArrayList<>();
         List<ProjectTaskDto> done = new ArrayList<>();
+
         for(ProjectTaskDto task : tasks) {
-            switch(task.status) {
+            switch(task.getStatus()) {
                 case "TODO":
                     todo.add(task);
                     break;
@@ -64,7 +65,7 @@ public class ProjectController {
                     done.add(task);
             }
         }
-        model.addAttribute("project", new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(), project.getStart(), project.getEnd()));
+        model.addAttribute("project", new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient()!=null ? project.getClient().getName() : "None", project.getStart(), project.getEnd()));
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
@@ -73,13 +74,15 @@ public class ProjectController {
 
     @GetMapping("/new")
     public String newProject(Model model) {
+        ProjectDto projectForm = new ProjectDto();
+        model.addAttribute("projectForm", projectForm);
         return "new-project";
     }
 
     @PostMapping("/new")
-    public String newProject(@RequestBody ProjectDto dto) {
+    public String newProject(ProjectDto dto) {
         projectService.add(dto);
-        return "redirect:/projects";
+        return "redirect:/home";
     }
 
     @PutMapping("/{id}")

@@ -14,7 +14,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
-public class TaskController {
+public class TaskController extends AuthenticatedController {
 
     private final TaskService taskService;
     private final AuthorizationService authService;

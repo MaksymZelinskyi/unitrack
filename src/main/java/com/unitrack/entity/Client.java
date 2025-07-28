@@ -26,5 +26,9 @@ public class Client {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
+    public Client(String name) {
+        this.name = name;
+    }
 }
 
