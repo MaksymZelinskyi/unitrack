@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: unitrack-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: unitrack-admin
+      POSTGRES_PASSWORD: ColaMartinys
+      POSTGRES_DB: unitrack-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  unitrack:
+    container_name: unitrack
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/unitrack-db
+      SPRING_DATASOURCE_USERNAME: unitrack-admin
+      SPRING_DATASOURCE_PASSWORD: ColaMartinys
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    ports:
+      - "2017:2017"
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
