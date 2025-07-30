@@ -39,7 +39,6 @@ public class ProjectController extends AuthenticatedController{
         return new HashSet<>();
     }
 
-
     @GetMapping("/{id}")
     public String getProjectById(@PathVariable Long id, Model model) {
         Project project = projectService.getById(id);
@@ -93,11 +92,6 @@ public class ProjectController extends AuthenticatedController{
     @DeleteMapping("/{id}")
     public void deleteProject(@PathVariable Long id) {
         projectService.delete(id);
-    }
-
-    @GetMapping("/{id}/members")
-    public List<Collaborator> getMembers(@PathVariable Long id) {
-        return projectService.getMembers(id);
     }
 
 }

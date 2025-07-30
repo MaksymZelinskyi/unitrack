@@ -33,6 +33,7 @@ public class CollaboratorController extends AuthenticatedController {
     public List<ParticipationDto> selectedProjects() {
         return new ArrayList<>();
     }
+
     @PostMapping("/")
     public void addCollaborator(CollaboratorDto collaborator) {
         collaboratorService.add(collaborator);
@@ -43,24 +44,9 @@ public class CollaboratorController extends AuthenticatedController {
         return collaboratorService.update(id, collaborator);
     }
 
-    @GetMapping("/")
-    public List<Collaborator> getAllCollaborators() {
-        return collaboratorService.getAll();
-    }
-
     @DeleteMapping("/{id}")
     public void deleteCollaborator(@PathVariable Long id) {
         collaboratorService.delete(id);
-    }
-
-    @GetMapping("/search")
-    public List<Collaborator> searchBySkill(@RequestParam String skill) {
-        return collaboratorService.searchBySkill(skill);
-    }
-
-    @GetMapping("/{id}/projects")
-    public List<Project> getCollaboratorProjects(@PathVariable Long id) {
-        return collaboratorService.getProjects(id);
     }
 
     @PostMapping("/{collaboratorId}/skills")

@@ -28,8 +28,8 @@ public class TaskController extends AuthenticatedController {
     }
 
     @GetMapping("/tasks/{id}")
-    public Task getTaskById(@PathVariable Long id) {
-        return taskService.getById(id);
+    public String getTaskById(@PathVariable Long id) {
+        return "task";
     }
 
     @PutMapping("/tasks/{id}")

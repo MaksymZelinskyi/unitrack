@@ -17,11 +17,6 @@ public class SkillController extends AuthenticatedController {
 
     private final SkillService skillService;
 
-    @GetMapping("/")
-    public List<Skill> getAllSkills() {
-        return skillService.getAll();
-    }
-
     @PostMapping("/")
     public void addSkill(String skillName) {
         skillService.add(skillName);
