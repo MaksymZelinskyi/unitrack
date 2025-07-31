@@ -59,4 +59,4 @@
 ```bash
 git clone https://github.com/MaksymZelinskyi/unitrack
 cd unitrack
-./mvnw spring-boot:run
+docker-compose up
