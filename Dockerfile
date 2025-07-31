@@ -1,6 +1,6 @@
 FROM maven AS build
 
-WORKDIR /univr
+WORKDIR /unitrack
 
 COPY pom.xml .
 COPY src ./src
@@ -9,9 +9,9 @@ RUN mvn clean package -DskipTests
 
 FROM amazoncorretto:21
 
-WORKDIR /univr
+WORKDIR /unitrack
 
-COPY --from=build /univr/target/unitrack-0.0.1-SNAPSHOT.jar /unitrack.jar
+COPY --from=build /unitrack/target/unitrack-0.0.1-SNAPSHOT.jar /unitrack.jar
 
 EXPOSE 2017
 
