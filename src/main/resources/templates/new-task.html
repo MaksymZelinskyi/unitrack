@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>New Collaborator</title>
+    <title>New Task</title>
     <link
             href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
             rel="stylesheet"
@@ -46,29 +46,22 @@
     </div>
 </header>
 <div>
-    <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New collaborator</h1>
+    <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New project</h1>
 
-    <form th:action="@{/collaborators/new}" th:object="${collaboratorForm}" method="post" class="flex flex-col gap-4 p-4 max-w-xl">
-        <label>First Name</label>
-        <input th:field="*{firstName}" type="text" placeholder="John" class="p-2 border rounded"/>
+    <form th:action="@{/tasks?projectId={projectId}(projectId=${projectId})}" th:object="${taskForm}" method="post" class="flex flex-col gap-4 p-4 max-w-xl">
+        <label>Task title</label>
+        <input th:field="*{title}" type="text" placeholder="Title" class="p-2 border rounded"/>
 
-        <label>Last Name</label>
-        <input th:field="*{lastName}" type="text" placeholder="Doe" class="p-2 border rounded"/>
+        <label>Task description</label>
+        <input th:field="*{description}" type="text" placeholder="Description" class="p-2 border rounded"/>
 
-        <label>Projects</label>
-        <div th:each="project, iterStat : ${projects}" class="flex items-center gap-2">
-            <input type="checkbox" th:name="selectedProjects[__${iterStat.index}__].projectId" th:value="${project.id}" />
-            <span th:text="${project.title}"></span>
-            <select th:name="selectedProjects[__${iterStat.index}__].role" class="ml-2 border rounded p-1" disabled>
-                <option value="BACKEND_DEV" selected>BACKEND DEV</option>
-                <option value="FRONTEND_DEV">FRONTEND DEV</option>
-                <option value="FULLSTACK_DEV">FULLSTACK DEV</option>
-                <option value="TESTER">TESTER</option>
-                <option value="DEVOPS">DEVOPS</option>
-                <option value="DESIGNER">DESIGNER</option>
-                <option value="PRODUCT_OWNER">PRODUCT OWNER</option>
-                <option value="INTERN">INTERN</option>
-            </select>
+        <label>Deadline</label>
+        <input th:field="*{deadline}" type="datetime-local" class="p-2 border rounded"/>
+
+        <label>Assignees</label>
+        <div th:each="collaborator, iterStat : ${collaborators}" class="flex items-center gap-2">
+            <input type="checkbox" th:name="assignees[__${iterStat.index}__]" th:value="${collaborator.id}" />
+            <span th:text="${collaborator.name}"></span>
         </div>
 
         <button type="submit" class="mt-4 bg-blue-600 text-white p-2 rounded">Submit</button>

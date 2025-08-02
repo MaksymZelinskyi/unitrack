@@ -34,8 +34,8 @@ public class ProjectService {
 
     public void add(ProjectDto dto) {
         Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline());
-        Set<Participation> assignees = dto.getAssignees().stream().map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole()))).collect(Collectors.toSet());
-        project.setAssignees(assignees);
+        Set<Participation> assignees = dto.getAssignees().stream().filter(x->x.getId()!=null).map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole()))).collect(Collectors.toSet());
+        project.addAssignees(assignees);
         project.setClient(clientRepository.findByName(dto.getClient()).orElse(new Client(dto.getClient())));
         projectRepository.save(project);
     }
@@ -58,4 +58,5 @@ public class ProjectService {
         Project project = projectRepository.findById(id).orElseThrow();
         return project.getAssignees().stream().map(Participation::getCollaborator).toList();
     }
+
 }

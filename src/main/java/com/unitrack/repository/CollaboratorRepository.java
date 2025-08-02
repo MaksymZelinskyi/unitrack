@@ -12,4 +12,5 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Long
     List<Collaborator> findAllBySkillsContains(Skill skill);
 
     Optional<Collaborator> findByEmail(String email);
+
 }

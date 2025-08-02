@@ -66,7 +66,7 @@
                     <input type="checkbox" th:name="assignees[__${iterStat.index}__].id" th:value="${collaborator.id}" />
                     <span th:text="${collaborator.name}"></span>
                     <select th:name="assignees[__${iterStat.index}__].role" class="ml-2 border rounded p-1">
-                        <option value="BACKEND_DEV">BACKEND DEV</option>
+                        <option value="BACKEND_DEV" selected>BACKEND DEV</option>
                         <option value="FRONTEND_DEV">FRONTEND DEV</option>
                         <option value="FULLSTACK_DEV">FULLSTACK DEV</option>
                         <option value="TESTER">TESTER</option>

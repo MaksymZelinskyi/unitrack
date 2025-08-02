@@ -51,7 +51,4 @@ public class Collaborator {
         skills.remove(skill);
     }
 
-    enum GlobalRole {
-        ADMIN, USER
-    }
 }

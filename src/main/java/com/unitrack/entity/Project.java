@@ -39,6 +39,10 @@ public class Project {
         this.end = end;
     }
 
+    public void addAssignees(Set<Participation> assignees) {
+        this.assignees.addAll(assignees);
+    }
+
     public enum Status {
         PLANNED, ACTIVE, DONE
     }

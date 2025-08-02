@@ -6,6 +6,7 @@ import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Skill;
 import com.unitrack.repository.CollaboratorRepository;
+import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class CollaboratorService {
 
     private final CollaboratorRepository collaboratorRepository;
     private final SkillRepository skillRepository;
+    private final ParticipationRepository participationRepository;
 
     public void add(CollaboratorDto dto) {
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword());
@@ -63,5 +65,10 @@ public class CollaboratorService {
 
     public Collaborator getByEmail(String email) {
         return collaboratorRepository.findByEmail(email).orElseThrow();
+    }
+
+    public List<Collaborator> getCollaboratorsByProject(Project project) {
+        List<Participation> participations = participationRepository.findAllByProject(project);
+        return participations.stream().map(Participation::getCollaborator).toList();
     }
 }

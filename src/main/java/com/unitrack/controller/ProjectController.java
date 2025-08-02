@@ -3,41 +3,31 @@ package com.unitrack.controller;
 import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.ProjectDto;
-import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
+
 import lombok.RequiredArgsConstructor;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/projects")
 @RequiredArgsConstructor
 @SessionAttributes({"collaborators", "assignees"})
+@Slf4j
 public class ProjectController extends AuthenticatedController{
 
     private final ProjectService projectService;
     private final TaskService taskService;
     private final CollaboratorService collaboratorService;
-
-    @ModelAttribute("collaborators")
-    public Set<CollaboratorInListDto> collaborators() {
-        return collaboratorService.getAll().stream().map(x->new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl())).collect(Collectors.toSet());
-    }
-
-    @ModelAttribute("assignees")
-    public Set<CollaboratorInListDto> assignees() {
-        return new HashSet<>();
-    }
 
     @GetMapping("/{id}")
     public String getProjectById(@PathVariable Long id, Model model) {
@@ -64,7 +54,10 @@ public class ProjectController extends AuthenticatedController{
                     done.add(task);
             }
         }
-        model.addAttribute("project", new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient()!=null ? project.getClient().getName() : "None", project.getStart(), project.getEnd()));
+        model.addAttribute("project",
+                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(),
+                        project.getClient()!=null ? project.getClient().getName() : "None", project.getStart(),
+                        project.getEnd()));
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
@@ -74,12 +67,21 @@ public class ProjectController extends AuthenticatedController{
     @GetMapping("/new")
     public String newProject(Model model) {
         ProjectDto projectForm = new ProjectDto();
+        List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
+                .stream()
+                .map(x-> {
+                    System.out.println("id: "+x.getId());
+                    return new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl());
+                }).toList();
+        model.addAttribute("collaborators", collaborators);
+        model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
         return "new-project";
     }
 
     @PostMapping("/new")
     public String newProject(ProjectDto dto) {
+        dto.getAssignees().forEach(System.out::println);
         projectService.add(dto);
         return "redirect:/home";
     }
