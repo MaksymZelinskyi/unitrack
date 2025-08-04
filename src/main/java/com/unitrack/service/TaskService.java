@@ -29,6 +29,7 @@ public class TaskService {
                 .map(x -> collaboratorRepository.findById(x).orElseThrow())
                 .toList();
         task.addAssignees(assignees);
+        task.setStatus(Task.Status.TODO);
         taskRepository.save(task);
     }
 

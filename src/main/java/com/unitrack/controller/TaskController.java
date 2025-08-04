@@ -65,10 +65,7 @@ public class TaskController extends AuthenticatedController {
     }
 
     @DeleteMapping("/tasks/{id}")
-    public void deleteTask(@PathVariable Long id,
-                           @RequestBody TaskDto task, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), task.getProjectId(), Role.PROJECT_MANAGER))
-            throw new IllegalAccessException();
+    public void deleteTask(@PathVariable Long id, Principal principal) throws IllegalAccessException {
         taskService.deleteById(id);
     }
 }

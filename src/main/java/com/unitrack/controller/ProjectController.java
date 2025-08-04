@@ -4,6 +4,7 @@ import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.entity.Project;
+import com.unitrack.entity.Task;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;

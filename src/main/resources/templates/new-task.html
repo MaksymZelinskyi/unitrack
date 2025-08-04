@@ -46,7 +46,7 @@
     </div>
 </header>
 <div>
-    <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New project</h1>
+    <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New task</h1>
 
     <form th:action="@{/tasks?projectId={projectId}(projectId=${projectId})}" th:object="${taskForm}" method="post" class="flex flex-col gap-4 p-4 max-w-xl">
         <label>Task title</label>
