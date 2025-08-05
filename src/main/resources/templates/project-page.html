@@ -193,5 +193,13 @@
                 </div>
             </div>
         </section>
+
+        <form th:action="@{/projects/{id}(id=${project.id})}" method="post" class="content-center">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="bg-red-500 flex items-center gap-2 px-2 py-1 text-white rounded">
+                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" class="w-5 h-5" /><h1>Delete project</h1>
+            </button>
+        </form>
+
     </body>
 </html>

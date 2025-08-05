@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "assignees")
+@EqualsAndHashCode(exclude = "assignees, tasks")
 public class Project {
 
     @Id
@@ -24,6 +24,8 @@ public class Project {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Participation> assignees = new HashSet<>();
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> tasks = new HashSet<>();
 
     private LocalDate start;
     private LocalDate end;

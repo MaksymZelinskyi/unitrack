@@ -45,8 +45,9 @@ public class CollaboratorController extends AuthenticatedController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCollaborator(@PathVariable Long id) {
+    public String deleteCollaborator(@PathVariable Long id) {
         collaboratorService.delete(id);
+        return "redirect:/home";
     }
 
     @PostMapping("/{collaboratorId}/skills")

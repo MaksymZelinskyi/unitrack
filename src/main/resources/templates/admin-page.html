@@ -85,7 +85,15 @@
 
 
                 <ul class="space-y-6">
-                    <li th:each="collaborator : ${collaborators}" class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
+                    <li th:each="collaborator : ${collaborators}" class="relative rounded-xl bg-white shadow-lg border border-gray-200 p-6">
+                        <div th:if="${collaborator.id!=currentUser.id}" class="absolute w-5 h-5 top-2 right-2">
+                            <form th:action="@{/collaborators/{id}(id=${collaborator.id})}" method="post">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit">
+                                    <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
+                                </button>
+                            </form>
+                        </div>
                         <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
                             <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${collaborator.name}"></h4>
 

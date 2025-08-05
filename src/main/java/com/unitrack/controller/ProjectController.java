@@ -70,10 +70,7 @@ public class ProjectController extends AuthenticatedController{
         ProjectDto projectForm = new ProjectDto();
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
                 .stream()
-                .map(x-> {
-                    System.out.println("id: "+x.getId());
-                    return new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl());
-                }).toList();
+                .map(x-> new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl())).toList();
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
@@ -93,8 +90,9 @@ public class ProjectController extends AuthenticatedController{
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id) {
+    public String deleteProject(@PathVariable Long id) {
         projectService.delete(id);
+        return "redirect:/home";
     }
 
 }
