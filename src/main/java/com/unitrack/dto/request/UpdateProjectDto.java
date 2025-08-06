@@ -6,20 +6,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDto {
+public class UpdateProjectDto {
 
+    private Long id;
     private String title;
     private String description;
     private String client;
     private LocalDate start;
     private LocalDate deadline;
-    private List<AssigneeDto> assignees = new ArrayList<>();
-
+    private List<UpdateAssigneeDto> assignees = new ArrayList<>();
 }

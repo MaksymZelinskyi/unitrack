@@ -3,6 +3,10 @@ package com.unitrack.controller;
 import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.ProjectDto;
+import com.unitrack.dto.request.UpdateAssigneeDto;
+import com.unitrack.dto.request.UpdateProjectDto;
+import com.unitrack.entity.Collaborator;
+import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Task;
 import com.unitrack.service.CollaboratorService;
@@ -84,9 +88,36 @@ public class ProjectController extends AuthenticatedController{
         return "redirect:/home";
     }
 
+    @GetMapping("/update/{id}")
+    public String updateProject(@PathVariable Long id, Model model) {
+        Project project = projectService.getById(id);
+
+        List<UpdateAssigneeDto> assignees = collaboratorService.getAll()
+                .stream()
+                .map(c-> {
+                    Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);
+                    var role = participation!=null ? participation.getRoles().stream().findFirst().orElse(null) : null;
+                    return new UpdateAssigneeDto(
+                            c.getId(), c.getFirstName()+" "+c.getLastName(), role!=null ? role.name() : null
+                            );
+                }).toList();
+        List<Participation> participations = projectService.getProjectAssignees(project);
+        model.addAttribute("project",
+                new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),
+                        project.getStart(), project.getEnd(),
+                        participations.stream().map(x -> {
+                            Collaborator collaborator = x.getCollaborator();
+                            var role = x.getRoles().stream().findFirst().orElseThrow();
+                            return new UpdateAssigneeDto(collaborator.getId(), collaborator.getFirstName()+" "+collaborator.getLastName(), role.name());
+                        }).toList()));
+        model.addAttribute("assignees", assignees);
+        return "update-project";
+    }
+
     @PutMapping("/{id}")
-    public Project updateProject(@PathVariable Long id, ProjectDto project) {
-        return projectService.update(id, project);
+    public String updateProject(@PathVariable Long id, UpdateProjectDto project) {
+        projectService.update(id, project);
+        return "redirect:" + id;
     }
 
     @DeleteMapping("/{id}")

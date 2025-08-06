@@ -1,9 +1,11 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.request.ProjectDto;
+import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.*;
 import com.unitrack.repository.ClientRepository;
 import com.unitrack.repository.CollaboratorRepository;
+import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
     private final ClientRepository clientRepository;
+    private final ParticipationRepository participationRepository;
 
     public Project getByTitle(String title) {
         return projectRepository.findByTitle(title).orElse(null);
@@ -44,12 +47,18 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-    public Project update(Long id, ProjectDto dto) {
+    public Project update(Long id, UpdateProjectDto dto) {
         Project project = projectRepository.findById(id).orElseThrow();
         project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
         project.setStart(dto.getStart());
         project.setEnd(dto.getDeadline());
+        Set<Participation> assignees = dto.getAssignees()
+                .stream()
+                .filter(x -> x.getId()!=null)
+                .map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole())))
+                .collect(Collectors.toSet());
+        project.setAssignees(assignees);
         projectRepository.save(project);
         return project;
     }
@@ -59,4 +68,7 @@ public class ProjectService {
         return project.getAssignees().stream().map(Participation::getCollaborator).toList();
     }
 
+    public List<Participation> getProjectAssignees(Project project) {
+        return participationRepository.findAllByProject(project);
+    }
 }
