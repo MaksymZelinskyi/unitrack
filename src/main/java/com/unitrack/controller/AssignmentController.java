@@ -5,6 +5,7 @@ import com.unitrack.dto.request.AssignmentDto;
 import com.unitrack.entity.Role;
 import com.unitrack.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,17 +20,14 @@ public class AssignmentController extends AuthenticatedController {
     private final AuthorizationService authService;
 
     @PostMapping("/")
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #id)")
     public void addAssignment(AssignmentDto assignment, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), assignment.projectId(), Role.PROJECT_MANAGER))
-            throw new IllegalAccessException();
-
         assignmentService.add(assignment);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #id)")
     public void deleteAssignment(@PathVariable Long id, @RequestParam Long projectId, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), projectId, Role.PROJECT_MANAGER))
-            throw new IllegalAccessException();
         assignmentService.remove(id);
     }
 }

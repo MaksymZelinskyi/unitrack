@@ -8,9 +8,11 @@ import com.unitrack.repository.AssignmentRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+import java.util.Set;
+
+@Component("authService")
 @RequiredArgsConstructor
 public class AuthorizationService {
 
@@ -18,12 +20,12 @@ public class AuthorizationService {
     private final CollaboratorRepository collaboratorRepository;
     private final ProjectRepository projectRepository;
 
-    public boolean hasRole(String email, Long projectId, Role role) {
+    public boolean canUpdate(String email, Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
         Participation participation = assignmentRepository.findByProjectAndCollaborator(project, collaborator);
-
-        return participation.getRoles().contains(role);
+        Set<Role> roles = participation.getRoles();
+        return roles.contains(Role.PRODUCT_OWNER) || roles.contains(Role.PROJECT_MANAGER);
     }
 
     public boolean isAdmin(String email) {

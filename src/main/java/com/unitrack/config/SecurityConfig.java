@@ -25,6 +25,7 @@ public class SecurityConfig {
         return http.authorizeHttpRequests(x -> x
                         .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/projects/new").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
                         .requestMatchers("/login").permitAll()

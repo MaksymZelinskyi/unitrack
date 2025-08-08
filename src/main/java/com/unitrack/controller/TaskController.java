@@ -4,20 +4,18 @@ import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.request.TaskDto;
 import com.unitrack.entity.Project;
-import com.unitrack.entity.Role;
 import com.unitrack.entity.Task;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -30,6 +28,7 @@ public class TaskController extends AuthenticatedController {
     private final ProjectService projectService;
 
     @PostMapping("/tasks")
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
     public String createTask(TaskDto task, @RequestParam Long projectId,
                            Principal principal) throws IllegalAccessException {
         task.setProjectId(projectId);
@@ -38,7 +37,8 @@ public class TaskController extends AuthenticatedController {
     }
 
     @GetMapping("/tasks/new")
-    public String createTask(@RequestParam Long projectId, Model model) {
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    public String createTask(@RequestParam Long projectId, Model model, Principal principal) {
         model.addAttribute("projectId", projectId);
         Project project = projectService.getById(projectId);
         model.addAttribute("collaborators",
@@ -57,15 +57,15 @@ public class TaskController extends AuthenticatedController {
     }
 
     @PutMapping("/tasks/{id}")
-    public Task updateTask(@PathVariable Long id,
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    public Task updateTask(@PathVariable Long id, @RequestParam Long projectId,
                            @RequestBody TaskDto task, Principal principal) throws IllegalAccessException {
-        if(!authService.hasRole(principal.getName(), task.getProjectId(), Role.PROJECT_MANAGER))
-            throw new IllegalAccessException();
         return taskService.update(id, task);
     }
 
     @DeleteMapping("/tasks/{id}")
-    public void deleteTask(@PathVariable Long id, Principal principal) throws IllegalAccessException {
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    public void deleteTask(@PathVariable Long id, @RequestParam Long projectId, Principal principal) throws IllegalAccessException {
         taskService.deleteById(id);
     }
 }

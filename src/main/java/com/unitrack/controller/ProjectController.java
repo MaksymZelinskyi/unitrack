@@ -8,7 +8,6 @@ import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
-import com.unitrack.entity.Task;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
@@ -16,10 +15,12 @@ import com.unitrack.service.TaskService;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +90,8 @@ public class ProjectController extends AuthenticatedController{
     }
 
     @GetMapping("/update/{id}")
-    public String updateProject(@PathVariable Long id, Model model) {
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #id)")
+    public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
 
         List<UpdateAssigneeDto> assignees = collaboratorService.getAll()
@@ -115,6 +117,7 @@ public class ProjectController extends AuthenticatedController{
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("@authService.canUpdate(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, UpdateProjectDto project) {
         projectService.update(id, project);
         return "redirect:" + id;
