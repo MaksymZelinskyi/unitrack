@@ -45,9 +45,9 @@
             </div>
         </header>
 
-        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5" th:text="${project.title}"></h1>
+        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-10 mt-5" th:text="${project.title}"></h1>
 
-        <section class="w-full flex-grow bg-gray-50 py-12 border-r-4 ">
+        <section class="w-9 flex-grow bg-gray-50 py-12 border-r-4 mb-7">
 
             <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
                 <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
@@ -78,12 +78,12 @@
                         <li th:each="task : ${todo}" class="min-w-[18rem]">
 
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
-                                <div class="absolute w-5 h-5 top-2 left-2">
-                                    <button>
+                                <div  th:if="${canUpdate}" class="absolute w-5 h-5 top-2 left-2">
+                                    <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
                                         <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
                                     </button>
                                 </div>
-                                <div class="absolute w-5 h-5 top-2 right-2">
+                                <div  th:if="${canDelete}" class="absolute w-5 h-5 top-2 right-2">
                                     <form th:action="@{/tasks/{id}(id=${task.id})}" method="post">
                                         <input type="hidden" name="_method" value="delete">
                                         <button type="submit">
@@ -112,13 +112,13 @@
                     </ul>
                 </div>
 
-               <div class="min-w-[18rem]">
+                <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">In Progress</h1>
                     <ul>
                         <li th:if="${in_progress == null || #lists.isEmpty(in_progress)}">Nothing yet</li>
                         <li th:each="task : ${in_progress}" class="min-w-[18rem]">
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
-                                <div class="absolute w-5 h-5 top-2 left-2">
+                                <div  th:if="${canDelete}" class="absolute w-5 h-5 top-2 left-2">
                                     <form th:action="@{/tasks/{id}(id=${task.id})}" method="post">
                                         <input type="hidden" name="_method" value="delete">
                                         <button type="submit">
@@ -126,8 +126,8 @@
                                         </button>
                                     </form>
                                 </div>
-                                <div class="absolute w-5 h-5 top-2 right-2">
-                                    <button>
+                                <div th:if="${canUpdate}" class="absolute w-5 h-5 top-2 right-2">
+                                    <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
                                         <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
                                     </button>
                                 </div>
@@ -158,12 +158,12 @@
                         <li th:if="${done == null || #lists.isEmpty(done)}">Nothing yet</li>
                         <li th:each="task : ${done}" class="min-w-[18rem]">
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
-                                <div class="absolute w-5 h-5 top-2 left-2">
-                                    <button>
+                                <div th:if="${canUpdate}" class="absolute w-5 h-5 top-2 left-2">
+                                    <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
                                         <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
                                     </button>
                                 </div>
-                                <div class="absolute w-5 h-5 top-2 right-2">
+                                <div th:if="${canDelete}" class="absolute w-5 h-5 top-2 right-2">
                                     <form th:action="@{/tasks/{id}(id=${task.id})}" method="post">
                                         <input type="hidden" name="_method" value="delete">
                                         <button type="submit">
@@ -194,12 +194,17 @@
             </div>
         </section>
 
-        <form th:action="@{/projects/{id}(id=${project.id})}" method="post" class="content-center">
+        <form th:if="${canDelete}" th:action="@{/projects/{id}(id=${project.id})}" method="post" class="content-center">
             <input type="hidden" name="_method" value="delete">
             <button type="submit" class="bg-red-500 flex items-center gap-2 px-2 py-1 text-white rounded">
-                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" class="w-5 h-5" /><h1>Delete project</h1>
+                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" class="w-5 h-5"/><h1>Delete project</h1>
             </button>
         </form>
 
+        <form th:if="${canUpdate}" th:action="@{/projects/update/{id}(id=${project.id})}" method="get" class="content-center">
+            <button type="submit" class="bg-blue-500 flex items-center gap-2 px-2 py-1 text-white rounded">
+                <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" class="w-5 h-5"/><h1>Modify</h1>
+            </button>
+        </form>
     </body>
 </html>

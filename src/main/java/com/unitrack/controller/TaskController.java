@@ -28,7 +28,7 @@ public class TaskController extends AuthenticatedController {
     private final ProjectService projectService;
 
     @PostMapping("/tasks")
-    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
     public String createTask(TaskDto task, @RequestParam Long projectId,
                            Principal principal) throws IllegalAccessException {
         task.setProjectId(projectId);
@@ -37,7 +37,7 @@ public class TaskController extends AuthenticatedController {
     }
 
     @GetMapping("/tasks/new")
-    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
     public String createTask(@RequestParam Long projectId, Model model, Principal principal) {
         model.addAttribute("projectId", projectId);
         Project project = projectService.getById(projectId);
@@ -57,14 +57,14 @@ public class TaskController extends AuthenticatedController {
     }
 
     @PutMapping("/tasks/{id}")
-    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
     public Task updateTask(@PathVariable Long id, @RequestParam Long projectId,
                            @RequestBody TaskDto task, Principal principal) throws IllegalAccessException {
         return taskService.update(id, task);
     }
 
     @DeleteMapping("/tasks/{id}")
-    @PreAuthorize("@authService.canUpdate(#principal.getName(), #projectId)")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
     public void deleteTask(@PathVariable Long id, @RequestParam Long projectId, Principal principal) throws IllegalAccessException {
         taskService.deleteById(id);
     }

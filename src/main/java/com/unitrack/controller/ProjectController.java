@@ -1,5 +1,6 @@
 package com.unitrack.controller;
 
+import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.ProjectDto;
@@ -34,9 +35,10 @@ public class ProjectController extends AuthenticatedController{
     private final ProjectService projectService;
     private final TaskService taskService;
     private final CollaboratorService collaboratorService;
+    private final AuthorizationService authService;
 
     @GetMapping("/{id}")
-    public String getProjectById(@PathVariable Long id, Model model) {
+    public String getProjectById(@PathVariable Long id, Model model, Principal principal) {
         Project project = projectService.getById(id);
         List<ProjectTaskDto> tasks = taskService.getByProject(project)
                 .stream()
@@ -67,6 +69,9 @@ public class ProjectController extends AuthenticatedController{
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
+
+        model.addAttribute("canUpdate", authService.canUpdateOrDelete(principal.getName(), id));
+        model.addAttribute("canDelete", authService.canUpdateOrDelete(principal.getName(), id));
         return "project-page";
     }
 
@@ -90,7 +95,7 @@ public class ProjectController extends AuthenticatedController{
     }
 
     @GetMapping("/update/{id}")
-    @PreAuthorize("@authService.canUpdate(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
 
@@ -117,7 +122,7 @@ public class ProjectController extends AuthenticatedController{
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("@authService.canUpdate(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, UpdateProjectDto project) {
         projectService.update(id, project);
         return "redirect:" + id;

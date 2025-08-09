@@ -20,7 +20,7 @@ public class AuthorizationService {
     private final CollaboratorRepository collaboratorRepository;
     private final ProjectRepository projectRepository;
 
-    public boolean canUpdate(String email, Long projectId) {
+    public boolean canUpdateOrDelete(String email, Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
         Participation participation = assignmentRepository.findByProjectAndCollaborator(project, collaborator);
