@@ -23,9 +23,9 @@ public class AuthorizationService {
     public boolean canUpdateOrDelete(String email, Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow();
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
-        Participation participation = assignmentRepository.findByProjectAndCollaborator(project, collaborator);
+        Participation participation = assignmentRepository.findFirstByProjectAndCollaborator(project, collaborator);
         Set<Role> roles = participation.getRoles();
-        return roles.contains(Role.PRODUCT_OWNER) || roles.contains(Role.PROJECT_MANAGER);
+        return isAdmin(email) || roles.contains(Role.PRODUCT_OWNER) || roles.contains(Role.PROJECT_MANAGER);
     }
 
     public boolean isAdmin(String email) {

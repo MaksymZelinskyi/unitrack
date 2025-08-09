@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AssignmentRepository extends JpaRepository<Participation, Long> {
 
-    Participation findByProjectAndCollaborator(Project project, Collaborator collaborator);
+    Participation findFirstByProjectAndCollaborator(Project project, Collaborator collaborator);
 }

@@ -47,11 +47,14 @@
 
         <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-10 mt-5" th:text="${project.title}"></h1>
 
-        <section class="w-9 flex-grow bg-gray-50 py-12 border-r-4 mb-7">
+        <section class="w-full flex-grow bg-gray-50 py-12 border-r-4 mb-7">
 
-            <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
+            <div class="w-5/6 flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition place-content-center">
                 <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
-                <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
+                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                    <span class="font-medium">Description:</span>
+                    <span th:text="${project.description}"></span>
+                </div>
                 <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
                     <span class="font-medium">Start date:</span>
                     <span th:text="${project.start}"></span>
@@ -65,7 +68,7 @@
                     <span th:text="${project.client}"></span>
                 </div>
             </div>
-            <div class="flex flex-row justify-center gap-8 overflow-x-auto px-4">
+            <div class="flex flex-row justify-center gap-8 overflow-x-auto px-4 mt-8">
 
                 <a th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition min-w-[18rem]">
                     <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add task" class="w-16 h-16 mb-4" />
@@ -194,17 +197,32 @@
             </div>
         </section>
 
-        <form th:if="${canDelete}" th:action="@{/projects/{id}(id=${project.id})}" method="post" class="content-center">
-            <input type="hidden" name="_method" value="delete">
-            <button type="submit" class="bg-red-500 flex items-center gap-2 px-2 py-1 text-white rounded">
-                <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" class="w-5 h-5"/><h1>Delete project</h1>
-            </button>
-        </form>
+        <div class="flex justify-end gap-4 mt-8 border-t border-gray-300 pt-4">
+            <form th:if="${canDelete}"
+                  th:action="@{/projects/{id}(id=${project.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit"
+                        class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-md transition duration-200">
+                    <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"
+                         alt="Delete"
+                         class="w-5 h-5"/>
+                    <span class="font-medium">Delete Project</span>
+                </button>
+            </form>
 
-        <form th:if="${canUpdate}" th:action="@{/projects/update/{id}(id=${project.id})}" method="get" class="content-center">
-            <button type="submit" class="bg-blue-500 flex items-center gap-2 px-2 py-1 text-white rounded">
-                <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" class="w-5 h-5"/><h1>Modify</h1>
-            </button>
-        </form>
+            <form th:if="${canUpdate}"
+                  th:action="@{/projects/update/{id}(id=${project.id})}"
+                  method="get">
+                <button type="submit"
+                        class="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-200">
+                    <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg"
+                         alt="Modify"
+                         class="w-5 h-5"/>
+                    <span class="font-medium">Modify</span>
+                </button>
+            </form>
+        </div>
+
     </body>
 </html>
