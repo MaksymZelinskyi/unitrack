@@ -55,6 +55,12 @@
         <label>Last Name</label>
         <input th:field="*{lastName}" type="text" placeholder="Doe" class="p-2 border rounded"/>
 
+        <label>Email</label>
+        <input th:field="*{email}" type="text" placeholder="johndoe@email.com" class="p-2 border rounded"/>
+
+        <label>Password</label>
+        <input th:field="*{password}" type="password" placeholder="password" class="p-2 border rounded"/>
+
         <label>Projects</label>
         <div th:each="project, iterStat : ${projects}" class="flex items-center gap-2">
             <input type="checkbox" th:name="selectedProjects[__${iterStat.index}__].projectId" th:value="${project.id}" />

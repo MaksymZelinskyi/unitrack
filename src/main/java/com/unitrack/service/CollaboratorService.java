@@ -23,10 +23,12 @@ public class CollaboratorService {
     private final SkillRepository skillRepository;
     private final ParticipationRepository participationRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     public void add(CollaboratorDto dto) {
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
         collaboratorRepository.save(collaborator);
+        mailService.sendCredentials(dto.getEmail(), dto.getPassword());
     }
 
     public List<Collaborator> getAll() {
