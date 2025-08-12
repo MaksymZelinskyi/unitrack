@@ -1,6 +1,7 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.request.CollaboratorDto;
+import com.unitrack.dto.request.UpdateProfileDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
@@ -9,6 +10,7 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +22,10 @@ public class CollaboratorService {
     private final CollaboratorRepository collaboratorRepository;
     private final SkillRepository skillRepository;
     private final ParticipationRepository participationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void add(CollaboratorDto dto) {
-        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword());
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
         collaboratorRepository.save(collaborator);
     }
 
@@ -34,12 +37,13 @@ public class CollaboratorService {
         return collaboratorRepository.findById(id).orElse(null);
     }
 
-    public Collaborator update(Long id, CollaboratorDto dto) {
-        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+    public Collaborator update(String email, UpdateProfileDto dto) {
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
         collaborator.setEmail(dto.getEmail());
         collaborator.setFirstName(dto.getFirstName());
         collaborator.setLastName(dto.getLastName());
-        collaborator.setPassword(dto.getPassword());
+        collaborator.setPassword(passwordEncoder.encode(dto.getPassword()));
+        collaborator.setAvatarUrl(dto.getAvatarUrl());
 
         return collaboratorRepository.save(collaborator);
     }

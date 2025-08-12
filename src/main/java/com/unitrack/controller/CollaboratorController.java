@@ -38,11 +38,6 @@ public class CollaboratorController extends AuthenticatedController {
         collaboratorService.add(collaborator);
     }
 
-    @PutMapping("/{id}")
-    public Collaborator modifyCollaborator(@PathVariable Long id, CollaboratorDto collaborator) {
-        return collaboratorService.update(id, collaborator);
-    }
-
     @DeleteMapping("/{id}")
     public String deleteCollaborator(@PathVariable Long id) {
         collaboratorService.delete(id);
