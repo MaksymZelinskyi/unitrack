@@ -1,6 +1,5 @@
 package com.unitrack.service;
 
-import com.unitrack.entity.Collaborator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
