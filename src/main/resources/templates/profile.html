@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></title>
+        <link
+                href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+                rel="stylesheet"
+        />
+    </head>
+    <body>
+        <header class="sticky top-0 z-50 bg-gray-100 shadow-md py-2 px-4">
+            <div class="max-w-screen-xl mx-auto flex items-center justify-between flex-wrap gap-4">
+
+
+                <div class="flex items-center space-x-2">
+                    <h1 class="text-3xl font-bold text-blue-500">Uni-Track</h1>
+                </div>
+
+
+                <h2 class="hidden md:block text-base text-gray-600 italic">
+                    The most complete team-management tool
+                </h2>
+
+
+                <div class="flex space-x-2">
+                    <button><img alt="EN"
+                                 class="w-10 h-10 rounded-full border-2 border-blue-500" src="https://wiki2.railml.org/images/b/b8/UK_flag.png"/></button>
+                    <button><img
+                            alt="FR"
+                            class="w-10 h-10 rounded-full border-2 border-blue-500" src="https://tse2.mm.bing.net/th/id/OIP.mO2EfRE-TxiZgZ20kE6aOwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3"/></button>
+                </div>
+
+                <a class="flex items-center gap-4 w-72 max-w-sm px-4 py-3 bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-300"
+                   th:href="@{/profile}">
+
+                    <img alt="Profile Picture"
+                         class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
+                         th:src="${currentUser.avatarUrl}"/>
+
+                    <div class="flex flex-col">
+                        <h3 class="text-lg font-semibold text-gray-800" th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></h3>
+                        <p class="text-sm text-gray-500" th:text="${currentUser.status}"></p>
+                    </div>
+                </a>
+            </div>
+        </header>
+        <div>
+            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">Update profile</h1>
+
+            <img alt="Profile Picture"
+                 class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover"
+                 th:src="${currentUser.avatarUrl}"/>
+
+            <form th:action="@{/profile}"
+                  th:object="${profile}"
+                  method="post"
+                  class="flex flex-col gap-4 p-4 max-w-xl">
+
+                <input type="hidden" name="_method" value="put"/>
+
+                <label for="avatarUrl">Avatar URL</label>
+                <input th:field="*{avatarUrl}" id="avatarUrl" type="text" class="p-2 border rounded"/>
+
+                <label for="firstName">First name</label>
+                <input th:field="*{firstName}" id="firstName" type="text" class="p-2 border rounded"/>
+
+                <label for="lastName">Last name</label>
+                <input th:field="*{lastName}" id="lastName" type="text" class="p-2 border rounded"/>
+
+                <label for="email">Email</label>
+                <input th:field="*{email}" id="email" type="text" class="p-2 border rounded"/>
+
+                <label for="password">Password</label>
+                <input th:field="*{password}" id="password" type="password" class="p-2 border rounded"/>
+
+                <button type="submit" class="mt-4 bg-blue-600 text-white p-2 rounded">Submit</button>
+            </form>
+
+        </div>
+
+    </body>
+</html>

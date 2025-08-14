@@ -21,13 +21,13 @@ public class ProfileController extends AuthenticatedController {
 
     private final CollaboratorService collaboratorService;
 
-    @GetMapping("/update")
-    public String updateProfile(Principal principal, Model model) {
+    @GetMapping("/")
+    public String getProfile(Principal principal, Model model) {
         Collaborator collaborator = collaboratorService.getByEmail(principal.getName());
         UpdateProfileDto profile = new UpdateProfileDto(collaborator.getFirstName(), collaborator.getLastName(), collaborator.getAvatarUrl(), collaborator.getEmail(), collaborator.getPassword());
         model.addAttribute("profile", profile);
 
-        return "update-profile";
+        return "profile";
     }
 
     @PutMapping
