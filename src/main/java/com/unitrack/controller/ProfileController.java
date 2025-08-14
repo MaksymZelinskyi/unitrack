@@ -21,7 +21,7 @@ public class ProfileController extends AuthenticatedController {
 
     private final CollaboratorService collaboratorService;
 
-    @GetMapping("/")
+    @GetMapping
     public String getProfile(Principal principal, Model model) {
         Collaborator collaborator = collaboratorService.getByEmail(principal.getName());
         UpdateProfileDto profile = new UpdateProfileDto(collaborator.getFirstName(), collaborator.getLastName(), collaborator.getAvatarUrl(), collaborator.getEmail(), collaborator.getPassword());
