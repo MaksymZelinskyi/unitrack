@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class CollaboratorController extends AuthenticatedController {
         return "redirect:/home";
     }
 
+    //todo: Add skill management
     @PostMapping("/{collaboratorId}/skills")
     public void addSkillToCollaborator(@PathVariable Long collaboratorId, Skill skill) {
         skillService.addCollaboratorSkill(collaboratorId, skill);
@@ -65,7 +67,7 @@ public class CollaboratorController extends AuthenticatedController {
     }
 
     @PostMapping("/new")
-    public String newCollaborator(CollaboratorDto dto) {
+    public String newCollaborator(@Validated CollaboratorDto dto) {
         collaboratorService.add(dto);
         return "redirect:/home";
     }

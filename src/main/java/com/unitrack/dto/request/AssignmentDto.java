@@ -1,4 +1,7 @@
 package com.unitrack.dto.request;
 
-public record AssignmentDto(Long collaboratorId, Long projectId, String role){
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
+public record AssignmentDto(@Positive Long collaboratorId, @Positive Long projectId, @NotBlank String role){
 }

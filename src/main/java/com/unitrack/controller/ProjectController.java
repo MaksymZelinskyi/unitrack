@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -88,7 +89,7 @@ public class ProjectController extends AuthenticatedController{
     }
 
     @PostMapping("/new")
-    public String newProject(ProjectDto dto) {
+    public String newProject(@Validated ProjectDto dto) {
         dto.getAssignees().forEach(System.out::println);
         projectService.add(dto);
         return "redirect:/home";
@@ -123,7 +124,7 @@ public class ProjectController extends AuthenticatedController{
 
     @PutMapping("/{id}")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
-    public String updateProject(@PathVariable Long id, UpdateProjectDto project) {
+    public String updateProject(@PathVariable Long id, @Validated UpdateProjectDto project) {
         projectService.update(id, project);
         return "redirect:" + id;
     }

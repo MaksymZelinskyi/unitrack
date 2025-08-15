@@ -7,6 +7,7 @@ import com.unitrack.service.CollaboratorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,7 +32,7 @@ public class ProfileController extends AuthenticatedController {
     }
 
     @PutMapping
-    public String updateProfile(UpdateProfileDto dto, Principal principal,
+    public String updateProfile(@Validated UpdateProfileDto dto, Principal principal,
                                 @ModelAttribute("currentUser") CurrentUser currentUser) {
         collaboratorService.update(principal.getName(), dto);
         currentUser.setFirstName(dto.getFirstName());
