@@ -25,6 +25,7 @@ public class Task {
     private String title;
     private String description;
     private LocalDateTime deadline;
+    private LocalDate completedOn;
     @Enumerated
     private Status status;
 
@@ -33,6 +34,7 @@ public class Task {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Project project;
+
 
     public Task(String title, String description, LocalDateTime deadline, Project project) {
         this.title = title;

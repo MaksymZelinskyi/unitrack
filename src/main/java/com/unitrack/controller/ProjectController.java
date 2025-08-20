@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/projects")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @SessionAttributes({"collaborators", "assignees"})
 @Slf4j

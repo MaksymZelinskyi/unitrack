@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "projects")
+@EqualsAndHashCode(exclude = "users")
 public class Collaborator {
 
     @Id
@@ -29,6 +29,9 @@ public class Collaborator {
     private Set<Skill> skills = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Participation> projects = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Task> tasks = new HashSet<>();
 
     private LocalDate joinDate;
     private boolean isAdmin;
