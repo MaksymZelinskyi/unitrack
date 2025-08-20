@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/statistics")
 @RequiredArgsConstructor
-public class StatisticsController {
+public class StatisticsController extends AuthenticatedController{
 
     private final StatisticsService statisticsService;
     private final CollaboratorRepository collaboratorRepository;

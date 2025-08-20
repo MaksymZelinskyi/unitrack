@@ -3,29 +3,28 @@ package com.unitrack.service;
 import com.unitrack.dto.*;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
-import com.unitrack.entity.Task;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
-import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class StatisticsService {
 
     private final ProjectRepository projectRepository;
-    private final TaskRepository taskRepository;
     private final CollaboratorRepository collaboratorRepository;
 
     public StatisticsDto getStats() {
         StatisticsDto dto = new StatisticsDto();
         ProjectStatistics projectStats = new ProjectStatistics();
         TaskStatistics taskStats = new TaskStatistics();
+
+        dto.setProjects(projectStats);
+        dto.setTasks(taskStats);
 
         projectStats.setDeadlines(projectRepository.countByEndBetween(LocalDate.now(), LocalDate.now().plusMonths(1)));
         projectStats.setTotal((int)projectRepository.count());
@@ -51,7 +50,7 @@ public class StatisticsService {
 
     /**
      *
-     * @return Data for the chart of tasks completed last month per project
+     * @return Data for the chart of tasks completed last month per collaborator
      */
     public UserStatsChart getUserChart() {
         UserStatsChart chart = new UserStatsChart();

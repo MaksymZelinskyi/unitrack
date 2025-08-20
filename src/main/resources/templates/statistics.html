@@ -9,81 +9,80 @@
     />
 </head>
 <body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div th:insert="fragments :: header"></div>
 
 <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-10 mt-5">Statistics</h1>
 
 <section class="w-full flex-grow bg-gray-50 py-12 border-r-4 mb-7">
+    <div class="flex flex-col md:flex-row gap-6">
+        <div class="w-1/2 flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition place-content-center">
 
-    <div class="w-5/6 flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition place-content-center">
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Total projects:</span>
+                <span th:text="${stats.projects.total}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Active projects:</span>
+                <span th:text="${stats.projects.active}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Completed projects:</span>
+                <span th:text="${stats.projects.completed}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Project deadlines(next month):</span>
+                <span th:text="${stats.projects.deadlines}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Total tasks:</span>
+                <span th:text="${stats.tasks.total}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Completed tasks:</span>
+                <span th:text="${stats.tasks.completed}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Tasks completed in-time:</span>
+                <span th:text="${stats.tasks.inTime}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Overdue tasks:</span>
+                <span th:text="${stats.tasks.overdue}"></span>
+            </div>
+            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                <span class="font-medium">Task deadlines(next month):</span>
+                <span th:text="${stats.tasks.deadlines}"></span>
+            </div>
 
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Total projects:</span>
-            <span th:text="${stats.projects.total}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Active projects:</span>
-            <span th:text="${stats.projects.active}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Completed projects:</span>
-            <span th:text="${stats.projects.completed}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Project deadlines(next month):</span>
-            <span th:text="${stats.projects.deadlines}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Total tasks:</span>
-            <span th:text="${stats.tasks.total}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Completed tasks:</span>
-            <span th:text="${stats.tasks.completed}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Tasks completed in-time:</span>
-            <span th:text="${stats.tasks.inTime}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Overdue tasks:</span>
-            <span th:text="${stats.tasks.overdue}"></span>
-        </div>
-        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-            <span class="font-medium">Task deadlines(next month):</span>
-            <span th:text="${stats.tasks.deadlines}"></span>
         </div>
 
+        <div class="w-full md:w-1/2 flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition place-content-center">            <!-- Activity per user -->
+            <div class="bg-white shadow rounded p-4">
+                <h2 class="text-lg font-semibold mb-2">Activity per User</h2>
+                <canvas id="userActivityChart" class="w-full h-64"></canvas>
+            </div>
+
+            <!-- Activity per project -->
+            <div class="bg-white shadow rounded p-4">
+                <h2 class="text-lg font-semibold mb-2">Activity per Project</h2>
+                <canvas id="projectActivityChart" class="w-full h-64"></canvas>
+            </div>
+        </div>
     </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <!-- Activity per user -->
-        <div class="bg-white shadow rounded p-4">
-            <h2 class="text-lg font-semibold mb-2">Activity per User</h2>
-            <canvas id="userActivityChart"></canvas>
-        </div>
-
-        <!-- Activity per project -->
-        <div class="bg-white shadow rounded p-4">
-            <h2 class="text-lg font-semibold mb-2">Activity per Project</h2>
-            <canvas id="projectActivityChart"></canvas>
-        </div>
-    </div>
-
 </section>
 <script th:inline="javascript">
-    /*<![CDATA[*/
-    let tasksPerUser = /*[[${userChart.users}]]*/ [];
-    let usernames = /*[[${userChart.tasksPerUser}]]*/ [];
-    let tasksPerUser = /*[[${projectChart.users}]]*/ [];
-    let usernames = /*[[${projectChart.tasksPerProject}]]*/ [];
-    /*]]>*/
+    let usernames = /*[[${userChart.users}]]*/ [];
+    let tasksPerUser = /*[[${userChart.tasksPerUser}]]*/ [];
+    let projects = /*[[${projectChart.projects}]]*/ [];
+    let tasksPerProject = /*[[${projectChart.tasksPerProject}]]*/ [];
 </script>
+
 
 <script>
     // Example data for users
-    const userActivityCtx = document.getElementById('userActivityChart').getContext('2d');
-    new Chart(userActivityCtx, {
+    const userActivityChart = document.getElementById('userActivityChart').getContext('2d');
+    new Chart(userActivityChart, {
         type: 'bar',
         data: {
             labels: usernames,
@@ -107,8 +106,8 @@
     });
 
     // Example data for projects
-    const projectActivityCtx = document.getElementById('projectActivityChart').getContext('2d');
-    new Chart(projectActivityCtx, {
+    const projectActivityChart = document.getElementById('projectActivityChart').getContext('2d');
+    new Chart(projectActivityChart, {
         type: 'doughnut',
         data: {
             labels: projects,
