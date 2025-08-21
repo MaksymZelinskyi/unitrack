@@ -28,11 +28,11 @@ public class StatisticsService {
         dto.setProjects(projectStats);
         dto.setTasks(taskStats);
 
-        projectStats.setDeadlines(projectRepository.countByEndBetween(LocalDate.now(), LocalDate.now().plusMonths(1)));
+        projectStats.setDeadlines(projectRepository.countByEndBetween(LocalDate.now().minusMonths(1), LocalDate.now()));
         projectStats.setTotal((int)projectRepository.count());
 
         taskStats.setTotal((int)taskRepository.count());
-        taskStats.setDeadlines(taskRepository.findAllByCompletedOnAfter(LocalDate.now().minusMonths(1)).size());
+        taskStats.setDeadlines(taskRepository.countByCompletedOnAfter(LocalDate.now().minusMonths(1)));
         //todo: add status management
         return dto;
     }

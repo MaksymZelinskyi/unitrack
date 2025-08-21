@@ -18,4 +18,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Set<Task> findAllByProject(Project project);
 
     Set<Task> findAllByCompletedOnAfter(LocalDate date);
+
+    int countByCompletedOnAfter(LocalDate date);
 }
