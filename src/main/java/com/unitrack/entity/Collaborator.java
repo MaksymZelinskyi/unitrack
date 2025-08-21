@@ -12,7 +12,7 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "users")
+@EqualsAndHashCode(exclude = "projects")
 public class Collaborator {
 
     @Id

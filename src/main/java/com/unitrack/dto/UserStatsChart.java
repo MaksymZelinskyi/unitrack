@@ -18,8 +18,8 @@ public class UserStatsChart {
         tasksPerUser = new ArrayList<>();
     }
 
-    public void addUser(String projectName, int tasks) {
-        users.add(projectName);
+    public void addUser(String username, int tasks) {
+        users.add(username);
         tasksPerUser.add(tasks);
     }
 }

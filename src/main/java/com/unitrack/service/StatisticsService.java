@@ -5,6 +5,7 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
+import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class StatisticsService {
 
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
+    private final TaskRepository taskRepository;
 
     public StatisticsDto getStats() {
         StatisticsDto dto = new StatisticsDto();
@@ -29,9 +31,9 @@ public class StatisticsService {
         projectStats.setDeadlines(projectRepository.countByEndBetween(LocalDate.now(), LocalDate.now().plusMonths(1)));
         projectStats.setTotal((int)projectRepository.count());
 
-        projectStats.setDeadlines(projectRepository.countByEndBetween(LocalDate.now(), LocalDate.now().plusMonths(1)));
-        projectStats.setTotal((int)projectRepository.count());
-
+        taskStats.setTotal((int)taskRepository.count());
+        taskStats.setDeadlines(taskRepository.findAllByCompletedOnAfter(LocalDate.now().minusMonths(1)).size());
+        //todo: add status management
         return dto;
     }
 

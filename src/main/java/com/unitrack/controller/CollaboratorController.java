@@ -62,7 +62,7 @@ public class CollaboratorController extends AuthenticatedController {
         List<ProjectInListDto> projects = projectService.getAll().stream().map(x-> new ProjectInListDto(x.getId(), x.getTitle())).toList();
         model.addAttribute("collaboratorForm", new CollaboratorDto());
         model.addAttribute("skills", skills);
-        model.addAttribute("users", projects);
+        model.addAttribute("projects", projects);
         return "new-collaborator";
     }
 

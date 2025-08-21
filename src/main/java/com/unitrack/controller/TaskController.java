@@ -33,7 +33,7 @@ public class TaskController extends AuthenticatedController {
                            Principal principal) throws IllegalAccessException {
         task.setProjectId(projectId);
         taskService.add(task, projectId);
-        return "redirect:/users/" + projectId;
+        return "redirect:/projects/" + projectId;
     }
 
     @GetMapping("/tasks/new")

@@ -24,9 +24,9 @@ public class SecurityConfig {
         JwtUsernamePasswordAuthFilter authFilter = new JwtUsernamePasswordAuthFilter(authenticationManager(authConfig), jwtService);
         return http.authorizeHttpRequests(x -> x
                         .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/users/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/users/new").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/projects/new").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
                         .requestMatchers("/login").permitAll()
                         .anyRequest().authenticated())

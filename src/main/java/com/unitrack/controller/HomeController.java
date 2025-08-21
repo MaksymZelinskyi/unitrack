@@ -41,7 +41,7 @@ public class HomeController extends AuthenticatedController {
     public String getUserHome(Principal principal, Model model) {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
         model.addAttribute(
-                "users",
+                "projects",
                 collaborator.getProjects()
                         .stream()
                         .map(x -> new ProjectParticipationDto(x.getProject().getId(), x.getProject().getTitle(), x.getProject().getDescription(), x.getRoles()
@@ -62,7 +62,7 @@ public class HomeController extends AuthenticatedController {
         List<Project> projects = projectRepository.findAll();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
         model.addAttribute(
-                "users",
+                "projects",
                 projects
                         .stream()
                         .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient()!=null ? x.getClient().getName() : "None", x.getStart(), x.getEnd()))
