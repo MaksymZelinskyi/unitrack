@@ -26,12 +26,7 @@ services:
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-      SPRING_FLYWAY_USER: unitrack-admin
-      SPRING_FLYWAY_PASSWORD: ColaMartinys
-      SPRING_FLYWAY_SCHEMAS: public
-      SPRING_FLYWAY_URL: jdbc:postgresql://db:5432/unitrack-db
-      SPRING_FLYWAY_BASELINE_ON_UPDATE: true
-      SPRING_FLYWAY_BASELINE_VERSION: 3
+      SPRING_PROFILES_ACTIVE: docker
     ports:
       - "2017:2017"
     restart: unless-stopped
