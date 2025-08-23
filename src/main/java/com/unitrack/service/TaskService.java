@@ -56,4 +56,10 @@ public class TaskService {
     public Set<Task> getByProject(Project project) {
         return taskRepository.findAllByProject(project);
     }
+
+    public void setTaskStatus(Long id, String status) {
+        Task task = taskRepository.findById(id).orElseThrow();
+        task.setStatus(Task.Status.valueOf(status));
+        taskRepository.save(task);
+    }
 }

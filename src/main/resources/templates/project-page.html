@@ -42,11 +42,11 @@
                 </a>
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">To Do</h1>
-                    <ul>
+                    <ul id="TODO"  class="sortable">
                         <li th:if="${todo == null || #lists.isEmpty(todo)}">Nothing yet</li>
-                        <li th:each="task : ${todo}" class="min-w-[18rem]">
+                        <li th:each="task : ${todo}" th:data-id="${task.id}" class="min-w-[18rem]">
 
-                            <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div  th:if="${canUpdate}" class="absolute w-5 h-5 top-2 left-2">
                                     <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
                                         <img src="https://icon-library.com/images/pencil-png-icon/pencil-png-icon-1.jpg" />
@@ -83,9 +83,9 @@
 
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">In Progress</h1>
-                    <ul>
+                    <ul id="IN_PROGRESS" class="sortable">
                         <li th:if="${in_progress == null || #lists.isEmpty(in_progress)}">Nothing yet</li>
-                        <li th:each="task : ${in_progress}" class="min-w-[18rem]">
+                        <li th:each="task : ${in_progress}"  th:data-id="${task.id}" class="min-w-[18rem]">
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div  th:if="${canDelete}" class="absolute w-5 h-5 top-2 left-2">
                                     <form th:action="@{/tasks/{id}(id=${task.id})}" method="post">
@@ -123,9 +123,9 @@
 
                 <div class="min-w-[18rem]">
                     <h1 class="text-2xl font-bold text-green-600 text-center mb-6">Done</h1>
-                    <ul>
+                    <ul id="DONE" class="sortable">
                         <li th:if="${done == null || #lists.isEmpty(done)}">Nothing yet</li>
-                        <li th:each="task : ${done}" class="min-w-[18rem]">
+                        <li th:each="task : ${done}" th:data-id="${task.id}" class="min-w-[18rem]">
                             <a th:href="@{tasks/{id}(id=${task.id})}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500">
                                 <div th:if="${canUpdate}" class="absolute w-5 h-5 top-2 left-2">
                                     <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
@@ -189,6 +189,28 @@
                 </button>
             </form>
         </div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        const sections = document.querySelectorAll(".sortable");
 
+        sections.forEach(section => {
+          new Sortable(section, {
+            group: "shared", // allows moving between lists
+            animation: 150,
+            onAdd: async function (evt) {
+              let taskId = evt.item.dataset.id;
+              let newSection = evt.to.id;
+
+              // Send PUT request
+              await fetch(`/tasks/${taskId}/status`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ newStatus: newSection })
+              });
+              window.location.reload();
+            }
+          });
+        });
+    </script>
     </body>
 </html>
