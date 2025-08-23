@@ -29,6 +29,11 @@ public class HomeController extends AuthenticatedController {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
 
+    @GetMapping
+    public String home() {
+        return "redirect:/home";
+    }
+
     @GetMapping("/home")
     public String getHome(Principal principal, Model model) {
         if(authorizationService.isAdmin(principal.getName())) {
