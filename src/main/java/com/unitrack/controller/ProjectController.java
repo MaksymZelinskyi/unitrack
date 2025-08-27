@@ -66,7 +66,7 @@ public class ProjectController extends AuthenticatedController{
         model.addAttribute("project",
                 new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(),
                         project.getClient()!=null ? project.getClient().getName() : "None", project.getStart(),
-                        project.getEnd()));
+                        project.getEnd(), project.getStatus().name()));
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
@@ -133,6 +133,11 @@ public class ProjectController extends AuthenticatedController{
     public String deleteProject(@PathVariable Long id) {
         projectService.delete(id);
         return "redirect:/home";
+    }
+
+    @PostMapping("/complete/{id}")
+    public void completeProject(@PathVariable Long id){
+        projectService.markAsCompleted(id);
     }
 
 }

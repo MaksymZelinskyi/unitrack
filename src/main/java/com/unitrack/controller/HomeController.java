@@ -36,7 +36,7 @@ public class HomeController extends AuthenticatedController {
 
     @GetMapping("/home")
     public String getHome(Principal principal, Model model) {
-        if(authorizationService.isAdmin(principal.getName())) {
+        if (authorizationService.isAdmin(principal.getName())) {
             return getAdminHome(principal, model);
         } else {
             return getUserHome(principal, model);
@@ -49,10 +49,13 @@ public class HomeController extends AuthenticatedController {
                 "projects",
                 collaborator.getProjects()
                         .stream()
-                        .map(x -> new ProjectParticipationDto(x.getProject().getId(), x.getProject().getTitle(), x.getProject().getDescription(), x.getRoles()
-                                .stream()
-                                .map(Role::toString)
-                                .collect(Collectors.toSet())))
+                        .map(x -> {
+                            Project project = x.getProject();
+                            return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(), x.getRoles()
+                                    .stream()
+                                    .map(Role::toString)
+                                    .collect(Collectors.toSet()), project.getStatus().name());
+                        })
                         .collect(Collectors.toSet())
         );
         model.addAttribute("tasks", taskRepository.findAllByAssigneesContains(collaborator)
@@ -70,7 +73,7 @@ public class HomeController extends AuthenticatedController {
                 "projects",
                 projects
                         .stream()
-                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient()!=null ? x.getClient().getName() : "None", x.getStart(), x.getEnd()))
+                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient() != null ? x.getClient().getName() : "None", x.getStart(), x.getEnd(), x.getStatus().name()))
                         .collect(Collectors.toSet())
         );
         model.addAttribute("collaborators", collaborators

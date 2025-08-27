@@ -10,6 +10,7 @@ import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class ProjectService {
         Set<Participation> assignees = dto.getAssignees().stream().filter(x->x.getId()!=null).map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole()))).collect(Collectors.toSet());
         project.addAssignees(assignees);
         project.setClient(clientRepository.findByName(dto.getClient()).orElse(new Client(dto.getClient())));
+        if(dto.getStart().isAfter(LocalDate.now())) project.setStatus(Project.Status.ACTIVE);
         projectRepository.save(project);
     }
 
@@ -70,5 +72,10 @@ public class ProjectService {
 
     public List<Participation> getProjectAssignees(Project project) {
         return participationRepository.findAllByProject(project);
+    }
+
+    public void markAsCompleted(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow();
+        project.setStatus(Project.Status.DONE);
     }
 }
