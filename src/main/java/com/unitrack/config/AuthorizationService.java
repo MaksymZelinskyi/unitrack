@@ -24,6 +24,8 @@ public class AuthorizationService {
         Project project = projectRepository.findById(projectId).orElseThrow();
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
         Participation participation = assignmentRepository.findFirstByProjectAndCollaborator(project, collaborator);
+
+        if(participation == null) return isAdmin(email);
         Set<Role> roles = participation.getRoles();
         return isAdmin(email) || roles.contains(Role.PRODUCT_OWNER) || roles.contains(Role.PROJECT_MANAGER);
     }

@@ -42,6 +42,7 @@ public class ProjectService {
         project.addAssignees(assignees);
         project.setClient(clientRepository.findByName(dto.getClient()).orElse(new Client(dto.getClient())));
         if(dto.getStart().isAfter(LocalDate.now())) project.setStatus(Project.Status.ACTIVE);
+        else project.setStatus(Project.Status.PLANNED);
         projectRepository.save(project);
     }
 
