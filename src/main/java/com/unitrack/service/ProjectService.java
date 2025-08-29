@@ -8,13 +8,17 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -75,8 +79,14 @@ public class ProjectService {
         return participationRepository.findAllByProject(project);
     }
 
-    public void markAsCompleted(Long id) {
+    public void markAsCompleted(Long id, boolean completed) {
+        log.debug("Project {} is being marked as completed = {}", completed);
         Project project = projectRepository.findById(id).orElseThrow();
-        project.setStatus(Project.Status.DONE);
+        var status = Project.Status.DONE;
+        if(!completed) {
+            status = project.getStart().isAfter(LocalDate.now()) ? Project.Status.PLANNED : Project.Status.ACTIVE;
+        }
+        project.setStatus(status);
+        projectRepository.save(project);
     }
 }

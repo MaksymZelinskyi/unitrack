@@ -30,6 +30,9 @@
                     <ul>
                         <li th:if="${projects == null || #lists.isEmpty(projects)}">No projects yet</li>
                         <li th:each="project : ${projects}" class="relative flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
+                            <div th:if="${project.status == 'DONE'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-green-500"></div>
+                            <div th:if="${project.status == 'PLANNED'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-gray-500"></div>
+
                             <a th:href="@{projects/{id}(id=${project.id})}">
                                 <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
                                 <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>

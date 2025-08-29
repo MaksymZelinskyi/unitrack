@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class TaskController extends AuthenticatedController {
     private final CollaboratorService collaboratorService;
     private final ProjectService projectService;
 
-    @PostMapping("/")
+    @PostMapping
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
     public String createTask(TaskDto task, @RequestParam Long projectId,
                            Principal principal) {

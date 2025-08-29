@@ -198,11 +198,34 @@
     <form method="post"
           th:action="@{/projects/complete/{id}(id=${project.id})}"
           th:if="${canUpdate}">
-        <label for="completed">Mark project as completed</label>
-        <input id="completed" name="completed" type="checkbox" class="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-200"/>
+        <div class="flex items-center space-x-4">
+            <label for="completed" class="flex items-center cursor-pointer">
+                <span class="font-medium">Mark as completed</span>
+                <div class="relative">
+                    <input
+                            id="completed"
+                            name="completed"
+                            type="checkbox"
+                            class="sr-only"
+                            th:checked="${project.status == 'DONE'}"
+                            onclick="this.form.submit()"
+                            aria-label="Mark as completed"
+                    >
+                    <div class="block bg-gray-300 w-14 h-8 rounded-full transition-all duration-300"></div>
+                    <!-- Toggle Ball -->
+                    <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform duration-300 transform"
+                         th:classappend="${project.status == 'DONE'} ? 'translate-x-6 bg-green-500' : ''">
+                    </div>
+                </div>
+            </label>
+        </div>
     </form>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script th:inline="javascript">
+    let project = [[${project}]];
+</script>
 <script>
     const sections = document.querySelectorAll(".sortable");
 

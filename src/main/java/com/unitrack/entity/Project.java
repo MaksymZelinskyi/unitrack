@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class Project {
 
     private LocalDate start;
     private LocalDate end;
+
     private Status status;
 
     @ManyToOne(cascade = CascadeType.PERSIST)

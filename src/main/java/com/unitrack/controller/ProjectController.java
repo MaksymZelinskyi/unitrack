@@ -13,6 +13,7 @@ import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @SessionAttributes({"collaborators", "assignees"})
 @Slf4j
-public class ProjectController extends AuthenticatedController{
+public class ProjectController extends AuthenticatedController {
 
     private final ProjectService projectService;
     private final TaskService taskService;
@@ -43,16 +44,16 @@ public class ProjectController extends AuthenticatedController{
         Project project = projectService.getById(id);
         List<ProjectTaskDto> tasks = taskService.getByProject(project)
                 .stream()
-                .map(x->new ProjectTaskDto(x.getId(), x.getTitle(), x.getDescription(),
-                        x.getAssignees().stream().map(y->y.getFirstName() + " " + y.getLastName()).toList(),
+                .map(x -> new ProjectTaskDto(x.getId(), x.getTitle(), x.getDescription(),
+                        x.getAssignees().stream().map(y -> y.getFirstName() + " " + y.getLastName()).toList(),
                         x.getDeadline(), x.getStatus().name()))
                 .toList();
         List<ProjectTaskDto> todo = new ArrayList<>();
         List<ProjectTaskDto> inProgress = new ArrayList<>();
         List<ProjectTaskDto> done = new ArrayList<>();
 
-        for(ProjectTaskDto task : tasks) {
-            switch(task.getStatus()) {
+        for (ProjectTaskDto task : tasks) {
+            switch (task.getStatus()) {
                 case "TODO":
                     todo.add(task);
                     break;
@@ -65,7 +66,7 @@ public class ProjectController extends AuthenticatedController{
         }
         model.addAttribute("project",
                 new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(),
-                        project.getClient()!=null ? project.getClient().getName() : "None", project.getStart(),
+                        project.getClient() != null ? project.getClient().getName() : "None", project.getStart(),
                         project.getEnd(), project.getStatus().name()));
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
@@ -81,7 +82,7 @@ public class ProjectController extends AuthenticatedController{
         ProjectDto projectForm = new ProjectDto();
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
                 .stream()
-                .map(x-> new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl())).toList();
+                .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl())).toList();
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
@@ -102,12 +103,12 @@ public class ProjectController extends AuthenticatedController{
 
         List<UpdateAssigneeDto> assignees = collaboratorService.getAll()
                 .stream()
-                .map(c-> {
+                .map(c -> {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);
-                    var role = participation!=null ? participation.getRoles().stream().findFirst().orElse(null) : null;
+                    var role = participation != null ? participation.getRoles().stream().findFirst().orElse(null) : null;
                     return new UpdateAssigneeDto(
-                            c.getId(), c.getFirstName()+" "+c.getLastName(), role!=null ? role.name() : null
-                            );
+                            c.getId(), c.getFirstName() + " " + c.getLastName(), role != null ? role.name() : null
+                    );
                 }).toList();
         List<Participation> participations = projectService.getProjectAssignees(project);
         model.addAttribute("project",
@@ -116,7 +117,7 @@ public class ProjectController extends AuthenticatedController{
                         participations.stream().map(x -> {
                             Collaborator collaborator = x.getCollaborator();
                             var role = x.getRoles().stream().findFirst().orElseThrow();
-                            return new UpdateAssigneeDto(collaborator.getId(), collaborator.getFirstName()+" "+collaborator.getLastName(), role.name());
+                            return new UpdateAssigneeDto(collaborator.getId(), collaborator.getFirstName() + " " + collaborator.getLastName(), role.name());
                         }).toList()));
         model.addAttribute("assignees", assignees);
         return "update-project";
@@ -124,20 +125,24 @@ public class ProjectController extends AuthenticatedController{
 
     @PutMapping("/{id}")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
-    public String updateProject(@PathVariable Long id, @Validated UpdateProjectDto project) {
+    public String updateProject(@PathVariable Long id, @Validated UpdateProjectDto project, Principal principal) {
         projectService.update(id, project);
         return "redirect:" + id;
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
     public String deleteProject(@PathVariable Long id) {
         projectService.delete(id);
         return "redirect:/home";
     }
 
     @PostMapping("/complete/{id}")
-    public void completeProject(@PathVariable Long id){
-        projectService.markAsCompleted(id);
+    @PreAuthorize("@authService.isAdmin(#principal.getName())")
+    public String markAsCompleted(@PathVariable Long id, @RequestParam(required = false) boolean completed, Principal principal, HttpServletRequest req) {
+        log.debug("mark as completed invoked");
+        projectService.markAsCompleted(id, completed);
+        return "redirect:" + req.getHeader("Referer");
     }
 
 }
