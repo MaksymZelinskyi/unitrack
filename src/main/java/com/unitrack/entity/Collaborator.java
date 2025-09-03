@@ -56,4 +56,12 @@ public class Collaborator {
         skills.remove(skill);
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getFirstNameAndFirstLetter() {
+        if(lastName == null) return firstName;
+        return firstName + " " + lastName.substring(0, 1);
+    }
 }

@@ -1,5 +1,6 @@
 package com.unitrack.dto.request;
 
+import com.unitrack.dto.CollaboratorInListDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,6 @@ public class TaskDto {
     private String description;
     private Long projectId;
     private LocalDateTime deadline;
-    private List<Long> assignees = new ArrayList<>();
+    private List<CollaboratorInListDto> assignees = new ArrayList<>();
 
 }

@@ -57,8 +57,8 @@
                 </a>
 
 
-                <ul class="space-y-6">
-                    <li th:each="collaborator : ${collaborators}" class="relative rounded-xl bg-white shadow-lg border border-gray-200 p-6">
+                <ul class="space-y-6 overflow-y-scroll no-scrollbar h-64">
+                    <li th:each="collaborator : ${collaborators}" class="flex items-center gap-4 w-72 max-w-sm px-4 py-3 bg-cyan rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-300">
                         <div th:if="${collaborator.id!=currentUser.id}" class="absolute w-5 h-5 top-2 right-2">
                             <form th:action="@{/collaborators/{id}(id=${collaborator.id})}" method="post">
                                 <input type="hidden" name="_method" value="delete">
@@ -68,29 +68,33 @@
                             </form>
                         </div>
                         <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
-                            <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${collaborator.name}"></h4>
-
-                            <div class="mb-4">
-                                <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Projects</h5>
-                                <p class="text-md text-gray-700 mt-1">🛠️
-                                <ul class="list-none flex space-x-1">
-                                    <li th:each="project : ${collaborator.projects}">
-                                        <p th:text="${project}"></p>
-                                    </li>
-                                </ul>
-                                </p>
+                            <div class="flex">
+                                <img alt="Profile Picture"
+                                     class="w-10 h-10 rounded-full border-2 border-blue-500 object-cover"
+                                     th:src="${collaborator.avatarUrl}"/>
+                                <span> </span>
+                                <h4 class="text-2xl font-bold text-gray-800 mb-4 ml-4" th:text="${collaborator.name}"></h4>
                             </div>
 
-                            <div>
-                                <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Skills</h5>
-                                <p class="text-md text-gray-700 mt-1">
-                                <ul class="list-none flex space-x-1">
-                                    <li th:each="skill : ${collaborator.skills}">
-                                        <p th:text="${skill}"></p>
-                                    </li>
-                                </ul>
-                                </p>
+                            <div class="flex flex-row">
+                                <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mr-4">Skills: </h5>
+
+                                <!-- If none -->
+                                <p th:if="${done == null || #lists.isEmpty(done)}">None</p>
+
+                                <!-- If there are skills -->
+                                <div th:unless="${done == null || #lists.isEmpty(done)}" class="text-md text-gray-700 mt-1">
+                                    <!-- Preview (first 15 chars of joined list) -->
+                                    <span th:text="${#strings.substring(#strings.listJoin(collaborator.skills, ', '), 0, 15)}"></span>...
+
+                                    <!-- Expandable full skills -->
+                                    <details class="inline">
+                                        <summary class="text-blue-600 cursor-pointer">more</summary>
+                                        <span th:text="${#strings.listJoin(collaborator.skills, ', ')}"></span>
+                                    </details>
+                                </div>
                             </div>
+
                         </a>
                     </li>
                 </ul>

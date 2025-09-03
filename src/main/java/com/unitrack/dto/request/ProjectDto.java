@@ -40,5 +40,6 @@ public class ProjectDto {
     private LocalDate deadline;
 
     private List<AssigneeDto> assignees = new ArrayList<>();
+    private Integer newAssigneeId;
 
 }

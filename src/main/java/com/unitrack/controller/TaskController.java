@@ -51,9 +51,16 @@ public class TaskController extends AuthenticatedController {
         return "new-task";
     }
 
-    //todo
     @GetMapping("/{id}")
-    public String getTaskById(@PathVariable Long id) {
+    public String getTaskById(@PathVariable Long id, Model model) {
+        Task task = taskService.getById(id);
+
+        model.addAttribute("task",
+                new TaskDto(task.getTitle(), task.getDescription(), task.getProject().getId(), task.getDeadline(),
+                        task.getAssignees().stream().map(x ->
+                                new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl())
+                        ).toList())
+        );
         return "task";
     }
 

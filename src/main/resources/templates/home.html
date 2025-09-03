@@ -48,10 +48,12 @@
             <ul class="space-y-6">
 
                 <li th:if="${tasks == null || #lists.isEmpty(tasks)}">No tasks yet</li>
-                <li th:each="task : tasks" class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
-                    <a th:href="@{tasks/{id}}(id=${task.id})}">
-                        <h4 class="text-2xl font-bold text-gray-800 mb-4" th:text="${task.title}"></h4>
 
+                <li th:each="task : ${tasks}"
+                    class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
+                    <a th:href="@{/tasks/{id}(id=${task.id})}">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4"
+                            th:text="${task.title}"></h4>
                         <div class="mb-4">
                             <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Project</h5>
                             <p class="text-md text-gray-700 mt-1" th:text="${task.project}"></p>
@@ -64,7 +66,7 @@
 
                         <div>
                             <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">deadline</h5>
-                            <span class="text-md text-gray-700 mt-1" th:text="${#dates.format(myDate, 'dd/MM/yyyy')}"></span>
+                            <span class="text-md text-gray-700 mt-1" th:text="${#dates.format(task.deadline, 'dd/MM/yyyy')}"></span>
                         </div>
                     </a>
                 </li>

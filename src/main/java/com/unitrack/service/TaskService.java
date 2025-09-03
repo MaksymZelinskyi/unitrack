@@ -26,7 +26,7 @@ public class TaskService {
         Task task = new Task(dto.getTitle(), dto.getDescription(), dto.getDeadline(), project);
         List<Collaborator> assignees = dto.getAssignees()
                 .stream()
-                .map(x -> collaboratorRepository.findById(x).orElseThrow())
+                .map(x -> collaboratorRepository.findById(x.getId()).orElseThrow())
                 .toList();
         task.addAssignees(assignees);
         task.setStatus(Task.Status.TODO);
