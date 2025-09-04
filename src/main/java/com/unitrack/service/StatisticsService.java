@@ -45,7 +45,7 @@ public class StatisticsService {
         ProjectStatsChart chart = new ProjectStatsChart();
         List<Project> projects = projectRepository.findAll();
         for (Project project : projects) {
-            chart.addProject(project.getTitle(), (int)project.getTasks().stream().filter(x -> x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1))).count());
+            chart.addProject(project.getTitle(), (int) project.getTasks().stream().filter(x -> x.getCompletedOn() == null || x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1))).count());
         }
         return chart;
     }
