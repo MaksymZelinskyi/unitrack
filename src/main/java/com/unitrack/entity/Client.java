@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * An entity representing the customers
+ * Not to confound with collaborators - the employees(equally users)
+ */
 @Data
 @Entity
 @NoArgsConstructor

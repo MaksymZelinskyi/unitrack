@@ -19,9 +19,15 @@ public class MailService {
         this.sender = sender;
     }
 
+    /**
+     * sends credentials to newly registered users
+     * @param email user's email
+     * @param password user's password
+     */
     public void sendCredentials(String email, String password) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
+            //compose the message
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(new InternetAddress(sender));
             helper.setSubject("UniTrack credentials");
@@ -33,8 +39,8 @@ public class MailService {
                             email, password)
             );
 
-            helper.setTo(email);
-            javaMailSender.send(message);
+            helper.setTo(email); //set recipient
+            javaMailSender.send(message); //send
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

@@ -41,13 +41,28 @@ public class ProjectService {
     }
 
     public void add(ProjectDto dto) {
+        //create project entity with dto data
         Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline());
-        Set<Participation> assignees = dto.getAssignees().stream().filter(x->x.getId()!=null).map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole()))).collect(Collectors.toSet());
+
+        //set project assignees
+        Set<Participation> assignees = dto.getAssignees()
+                .stream()
+                .filter(x -> x.getId() != null)
+                .map(x -> new Participation(
+                        collaboratorRepository.findById(x.getId()).orElseThrow(),
+                        project,
+                        Role.valueOf(x.getRole())
+                ))
+                .collect(Collectors.toSet());
         project.addAssignees(assignees);
         project.setClient(clientRepository.findByName(dto.getClient()).orElse(new Client(dto.getClient())));
-        if(dto.getStart().isAfter(LocalDate.now())) project.setStatus(Project.Status.ACTIVE);
-        else project.setStatus(Project.Status.PLANNED);
-        projectRepository.save(project);
+        //set default status
+        if (dto.getStart().isAfter(LocalDate.now()))
+            project.setStatus(Project.Status.ACTIVE); //started
+        else
+            project.setStatus(Project.Status.PLANNED); //planned
+
+        projectRepository.save(project); //save
     }
 
     public void delete(Long id) {
@@ -55,17 +70,21 @@ public class ProjectService {
     }
 
     public Project update(Long id, UpdateProjectDto dto) {
+        //extract existing
         Project project = projectRepository.findById(id).orElseThrow();
+        //set DTO data
         project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
         project.setStart(dto.getStart());
         project.setEnd(dto.getDeadline());
+
         Set<Participation> assignees = dto.getAssignees()
                 .stream()
-                .filter(x -> x.getId()!=null)
+                .filter(x -> x.getId() != null)
                 .map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole())))
                 .collect(Collectors.toSet());
         project.setAssignees(assignees);
+        //persist changes
         projectRepository.save(project);
         return project;
     }
@@ -83,7 +102,7 @@ public class ProjectService {
         log.debug("Project {} is being marked as completed = {}", completed);
         Project project = projectRepository.findById(id).orElseThrow();
         var status = Project.Status.DONE;
-        if(!completed) {
+        if (!completed) {
             status = project.getStart().isAfter(LocalDate.now()) ? Project.Status.PLANNED : Project.Status.ACTIVE;
         }
         project.setStatus(status);

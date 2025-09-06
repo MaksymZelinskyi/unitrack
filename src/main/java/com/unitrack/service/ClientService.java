@@ -26,11 +26,12 @@ public class ClientService {
     }
 
     public Client updateById(Long id, ClientDto dto) {
-        Client client = clientRepository.findById(id).orElseThrow();
+        Client client = clientRepository.findById(id).orElseThrow(); //retrieve the client from the database
+        //write dto data
         client.setName(dto.name());
         client.setEmail(dto.email());
         client.setPhoneNumber(dto.phoneNumber());
-        clientRepository.save(client);
+        clientRepository.save(client); //persist
         return client;
     }
 }

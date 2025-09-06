@@ -38,7 +38,7 @@ public class StatisticsService {
     }
 
     /**
-     *
+     * getProjectChart
      * @return Data for the chart of tasks completed last month per project
      */
     public ProjectStatsChart getProjectChart() {
@@ -51,7 +51,7 @@ public class StatisticsService {
     }
 
     /**
-     *
+     * getUserChart
      * @return Data for the chart of tasks completed last month per collaborator
      */
     public UserStatsChart getUserChart() {

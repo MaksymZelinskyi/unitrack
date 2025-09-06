@@ -19,7 +19,6 @@ import java.security.Principal;
 public class AssignmentController extends AuthenticatedController {
 
     private final AssignmentService assignmentService;
-    private final AuthorizationService authService;
 
     @PostMapping("/")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")

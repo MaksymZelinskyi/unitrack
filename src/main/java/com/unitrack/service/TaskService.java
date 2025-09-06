@@ -22,14 +22,20 @@ public class TaskService {
     private final CollaboratorRepository collaboratorRepository;
 
     public void add(TaskDto dto, Long projectId) {
+        //retrieve project
         Project project = projectRepository.findById(projectId).orElseThrow();
+
+        //create task entity
         Task task = new Task(dto.getTitle(), dto.getDescription(), dto.getDeadline(), project);
         List<Collaborator> assignees = dto.getAssignees()
                 .stream()
                 .map(x -> collaboratorRepository.findById(x.getId()).orElseThrow())
                 .toList();
         task.addAssignees(assignees);
+        //set default status
         task.setStatus(Task.Status.TODO);
+
+        //persist
         taskRepository.save(task);
     }
 

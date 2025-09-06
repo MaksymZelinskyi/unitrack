@@ -20,11 +20,18 @@ public class AssignmentService {
     private final ProjectRepository projectRepository;
     private final AssignmentRepository assignmentRepository;
 
+    /**
+     * Adds a project-collaborator relation based on the parameter and persists it
+     * @param dto - project id, collaborator id and the role of the collaborator
+     */
     public void add(AssignmentDto dto) {
+        //extract assignee
         Collaborator collaborator = collaboratorRepository.findById(dto.collaboratorId()).orElseThrow();
+        //extract project
         Project project = projectRepository.findById(dto.projectId()).orElseThrow();
+        //add project into the list of collaborator's projects
         collaborator.addProject(project, Role.valueOf(dto.role()));
-
+        //save changes(cascade)
         collaboratorRepository.save(collaborator);
     }
 

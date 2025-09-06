@@ -28,11 +28,6 @@ public class CollaboratorController extends AuthenticatedController {
     private final SkillService skillService;
     private final ProjectService projectService;
 
-    @ModelAttribute("selectedProjects")
-    public List<ParticipationDto> selectedProjects() {
-        return new ArrayList<>();
-    }
-
     @PostMapping("/")
     public void addCollaborator(CollaboratorDto collaborator) {
         collaboratorService.add(collaborator);
@@ -59,6 +54,7 @@ public class CollaboratorController extends AuthenticatedController {
     public String newCollaborator(Model model) {
         List<Skill> skills = skillService.getAll();
         List<ProjectInListDto> projects = projectService.getAll().stream().map(x-> new ProjectInListDto(x.getId(), x.getTitle())).toList();
+        model.addAttribute("selectedProjects", new ArrayList<>());
         model.addAttribute("collaboratorForm", new CollaboratorDto());
         model.addAttribute("skills", skills);
         model.addAttribute("projects", projects);

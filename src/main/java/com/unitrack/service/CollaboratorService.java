@@ -40,13 +40,17 @@ public class CollaboratorService {
     }
 
     public Collaborator update(String email, UpdateProfileDto dto) {
+        //retrieve the collaborator found by email(which should be unique)
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+
+        //set data from the DTO
         collaborator.setEmail(dto.getEmail());
         collaborator.setFirstName(dto.getFirstName());
         collaborator.setLastName(dto.getLastName());
         collaborator.setPassword(passwordEncoder.encode(dto.getPassword()));
         collaborator.setAvatarUrl(dto.getAvatarUrl());
 
+        //persist
         return collaboratorRepository.save(collaborator);
     }
 
@@ -59,11 +63,13 @@ public class CollaboratorService {
         return collaboratorRepository.findAllBySkillsContains(skill);
     }
 
+    //find by id
     public List<Project> getProjects(Long id) {
         Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
     }
 
+    //find by email
     public List<Project> getProjects(String email) {
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
@@ -73,6 +79,7 @@ public class CollaboratorService {
         return collaboratorRepository.findByEmail(email).orElseThrow();
     }
 
+    //find project assignees
     public List<Collaborator> getCollaboratorsByProject(Project project) {
         List<Participation> participations = participationRepository.findAllByProject(project);
         return participations.stream().map(Participation::getCollaborator).toList();

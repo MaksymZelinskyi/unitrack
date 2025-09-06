@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Not used yet
+ */
 @Service
 @RequiredArgsConstructor
 public class SkillService {

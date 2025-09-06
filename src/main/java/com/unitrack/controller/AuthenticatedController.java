@@ -10,6 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+/**
+ * Authentication Controller is a super-class inherited by all the controllers that provide
+ * endpoints for authenticated users.
+ * It defines the currentUser attribute that is further used in the header elsewhere within the page rendered
+ */
 @Controller
 @SessionAttributes({"currentUser"})
 public abstract class AuthenticatedController {
@@ -21,7 +26,7 @@ public abstract class AuthenticatedController {
     public CurrentUser currentUser() {
         CurrentUser currentUser = new CurrentUser();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(auth!=null && auth.isAuthenticated()) {
+        if (auth != null && auth.isAuthenticated()) {
             Collaborator collaborator = collaboratorRepository.findByEmail(auth.getName()).orElseThrow();
             currentUser.setId(collaborator.getId());
             currentUser.setFirstName(collaborator.getFirstName());
