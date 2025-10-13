@@ -7,11 +7,13 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StatisticsService {
@@ -33,7 +35,7 @@ public class StatisticsService {
 
         taskStats.setTotal((int)taskRepository.count());
         taskStats.setDeadlines(taskRepository.countByCompletedOnAfter(LocalDate.now().minusMonths(1)));
-        //todo: add status management
+        log.info("Project/task statistics generated");
         return dto;
     }
 
@@ -47,6 +49,7 @@ public class StatisticsService {
         for (Project project : projects) {
             chart.addProject(project.getTitle(), (int) project.getTasks().stream().filter(x -> x.getCompletedOn() == null || x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1))).count());
         }
+        log.info("Project statistics chart generated");
         return chart;
     }
 
@@ -60,6 +63,7 @@ public class StatisticsService {
         for (Collaborator collaborator : collaborators) {
             chart.addUser(collaborator.getFirstName() + " " +collaborator.getLastName().charAt(0), (int)collaborator.getTasks().stream().filter(x -> x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1))).count());
         }
+        log.info("Collaborator statistics chart generated");
         return chart;
     }
 }

@@ -58,15 +58,7 @@
 
 
                 <ul class="space-y-6 overflow-y-scroll no-scrollbar h-64">
-                    <li th:each="collaborator : ${collaborators}" class="flex items-center gap-4 w-72 max-w-sm px-4 py-3 bg-cyan rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-300">
-                        <div th:if="${collaborator.id!=currentUser.id}" class="absolute w-5 h-5 top-2 right-2">
-                            <form th:action="@{/collaborators/{id}(id=${collaborator.id})}" method="post">
-                                <input type="hidden" name="_method" value="delete">
-                                <button type="submit">
-                                    <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" />
-                                </button>
-                            </form>
-                        </div>
+                    <li th:each="collaborator : ${collaborators}" class="relative flex items-center gap-4 w-72 max-w-sm px-4 py-3 bg-cyan rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-300">
                         <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
                             <div class="flex">
                                 <img alt="Profile Picture"
@@ -94,8 +86,18 @@
                                     </details>
                                 </div>
                             </div>
-
                         </a>
+                        <div th:if="${collaborator.id!=currentUser.id}" class="absolute w-5 h-5 top-2 right-2">
+                            <form th:action="@{/collaborators/{id}(id=${collaborator.id})}" method="post">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit" class="hover:opacity-80 transition">
+                                    <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"
+                                         alt="Delete"
+                                         class="w-5 h-5"/>
+                                </button>
+
+                            </form>
+                        </div>
                     </li>
                 </ul>
             </aside>

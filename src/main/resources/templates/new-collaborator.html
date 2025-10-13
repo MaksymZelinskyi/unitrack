@@ -3,48 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <title>New Collaborator</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 </head>
-    <body>
-        <div th:insert="fragments :: header"></div>
-        <div>
-            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New collaborator</h1>
 
-            <form th:action="@{/collaborators/new}" th:object="${collaboratorForm}" method="post" class="flex flex-col gap-4 p-4 max-w-xl">
-                <label>First Name</label>
-                <input th:field="*{firstName}" type="text" placeholder="John" class="p-2 border rounded"/>
+<body class="bg-gray-50 min-h-screen">
+<div th:insert="fragments :: header"></div>
 
-                <label>Last Name</label>
-                <input th:field="*{lastName}" type="text" placeholder="Doe" class="p-2 border rounded"/>
+<div class="flex flex-col md:flex-row gap-8 p-6 max-w-7xl mx-auto">
+    <!-- LEFT SIDE -->
+    <div class="flex-1">
+        <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New Collaborator</h1>
 
-                <label>Email</label>
-                <input th:field="*{email}" type="text" placeholder="johndoe@email.com" class="p-2 border rounded"/>
+        <form th:action="@{/collaborators/new}" th:object="${collaboratorForm}" method="post" class="flex flex-col gap-4 p-6 bg-white shadow-lg rounded-xl">
+            <div>
+                <label class="block font-medium mb-1">First Name</label>
+                <input th:field="*{firstName}" type="text" placeholder="John" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+            </div>
 
-                <label>Password</label>
-                <input th:field="*{password}" type="password" placeholder="password" class="p-2 border rounded"/>
+            <div>
+                <label class="block font-medium mb-1">Last Name</label>
+                <input th:field="*{lastName}" type="text" placeholder="Doe" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+            </div>
 
-                <label>Projects</label>
-                <div th:each="project, iterStat : ${projects}" class="flex items-center gap-2">
-                    <input type="checkbox" th:name="selectedProjects[__${iterStat.index}__].projectId" th:value="${project.id}" />
-                    <span th:text="${project.title}"></span>
-                    <select th:name="selectedProjects[__${iterStat.index}__].role" class="ml-2 border rounded p-1" disabled>
-                        <option value="BACKEND_DEV" selected>BACKEND DEV</option>
-                        <option value="FRONTEND_DEV">FRONTEND DEV</option>
-                        <option value="FULLSTACK_DEV">FULLSTACK DEV</option>
-                        <option value="TESTER">TESTER</option>
-                        <option value="DEVOPS">DEVOPS</option>
-                        <option value="DESIGNER">DESIGNER</option>
-                        <option value="PRODUCT_OWNER">PRODUCT OWNER</option>
-                        <option value="INTERN">INTERN</option>
-                    </select>
-                </div>
+            <div>
+                <label class="block font-medium mb-1">Email</label>
+                <input th:field="*{email}" type="email" placeholder="johndoe@email.com" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+            </div>
 
-                <button type="submit" class="mt-4 bg-blue-600 text-white p-2 rounded">Submit</button>
-            </form>
+            <div>
+                <label class="block font-medium mb-1">Password</label>
+                <input th:field="*{password}" type="password" placeholder="••••••••" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+            </div>
+
+            <div>
+                <label class="block font-semibold mb-2">Assign Projects</label>
+                <select id="projectPicker" class="w-full border rounded p-2 focus:ring-2 focus:ring-green-400">
+                    <option value="" disabled selected>Select a project</option>
+                    <option th:each="project : ${projects}" th:value="${project.id}" th:text="${project.title}"></option>
+                </select>
+            </div>
+
+            <button type="submit" class="mt-6 bg-green-600 hover:bg-green-700 text-white font-semibold p-3 rounded transition duration-200">
+                Create Collaborator
+            </button>
+        </form>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="flex-1 p-6 bg-white rounded-xl shadow-md">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Selected Projects</h2>
+
+        <div id="selected-list" class="space-y-2">
+            <p id="no-projects" class="text-gray-500 italic">No projects selected yet.</p>
         </div>
+    </div>
+</div>
 
-    </body>
+<!-- SCRIPT -->
+<script>
+    (function () {
+      const picker = document.getElementById('projectPicker');
+      const list   = document.getElementById('selected-list');
+      const placeholder = document.getElementById('no-projects');
+
+      picker.addEventListener('change', function () {
+        const id   = this.value;
+        if (!id) return;
+        const name = this.options[this.selectedIndex].text;
+
+        // Remove placeholder if exists
+        placeholder?.remove();
+
+        // Prevent duplicates
+        if (list.querySelector(`[data-id="${CSS.escape(id)}"]`)) {
+          this.value = '';
+          return;
+        }
+
+        // Build row
+        const row = document.createElement('div');
+        row.className = 'project flex items-center gap-3 p-3 border rounded-lg bg-gray-50 shadow-sm';
+        row.dataset.id = id;
+        row.innerHTML = `
+          <button type="button" class="remove-btn p-1 rounded-full hover:bg-red-100" title="Remove">
+            <span class="text-red-500 font-bold">×</span>
+          </button>
+          <span class="font-medium text-gray-800">${name}</span>
+          <input type="hidden" name="selected[0].id" value="${id}">
+          <select name="selected[0].role" class="ml-auto border rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-green-400">
+            <option value="BACKEND_DEV" selected>Backend Dev</option>
+            <option value="FRONTEND_DEV">Frontend Dev</option>
+            <option value="FULLSTACK_DEV">Fullstack Dev</option>
+            <option value="TESTER">Tester</option>
+            <option value="DEVOPS">DevOps</option>
+            <option value="DESIGNER">Designer</option>
+            <option value="PRODUCT_OWNER">Product Owner</option>
+            <option value="INTERN">Intern</option>
+          </select>
+        `;
+        list.appendChild(row);
+        reindex();
+        this.value = '';
+      });
+
+      list.addEventListener('click', function (e) {
+        if (e.target.closest('.remove-btn')) {
+          const row = e.target.closest('.project');
+          row?.remove();
+          reindex();
+          if (!list.children.length) {
+            list.innerHTML = '<p id="no-projects" class="text-gray-500 italic">No projects selected yet.</p>';
+          }
+        }
+      });
+
+      function reindex() {
+        list.querySelectorAll('.project').forEach((row, i) => {
+          const idInput = row.querySelector('input[type="hidden"]');
+          const roleSel = row.querySelector('select');
+          if (idInput) idInput.name = `selected[${i}].id`;
+          if (roleSel) roleSel.name = `selected[${i}].role`;
+        });
+      }
+    })();
+</script>
+</body>
 </html>

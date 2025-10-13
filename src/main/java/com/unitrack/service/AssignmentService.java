@@ -2,6 +2,7 @@ package com.unitrack.service;
 
 import com.unitrack.dto.request.AssignmentDto;
 import com.unitrack.entity.Collaborator;
+import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;
 import com.unitrack.repository.AssignmentRepository;
@@ -10,8 +11,11 @@ import com.unitrack.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AssignmentService {
@@ -30,8 +34,10 @@ public class AssignmentService {
         //extract project
         Project project = projectRepository.findById(dto.projectId()).orElseThrow();
         //add project into the list of collaborator's projects
-        collaborator.addProject(project, Role.valueOf(dto.role()));
+        Participation participation = new Participation(collaborator, project, Role.valueOf(dto.role()));
+        collaborator.addProject(participation);
         //save changes(cascade)
+        project.addAssignee(participation);
         collaboratorRepository.save(collaborator);
     }
 

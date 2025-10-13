@@ -8,11 +8,15 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -36,15 +40,20 @@ public class TaskService {
         task.setStatus(Task.Status.TODO);
 
         //persist
-        taskRepository.save(task);
+        task = taskRepository.save(task);
+        log.info("Task with id {} saved: {}", task.getId(), task.getTitle());
     }
 
     public Task getByTitle(String title) {
-        return taskRepository.findByTitle(title).orElse(null);
+        Task task = taskRepository.findByTitle(title).orElse(null);
+        if(task == null) log.debug("Task with title {} not found", title);
+        else log.debug("Task with title {} extracted. Id: {}", title, task.getId());
+        return task;
     }
 
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
+        log.info("Task with id {} deleted", id);
     }
 
     public Task update(Long id, TaskDto dto) {
@@ -52,20 +61,26 @@ public class TaskService {
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
         taskRepository.save(task);
+        log.info("Task with id {} updated: {}", id, task.getTitle());
         return task;
     }
 
     public Task getById(Long id) {
-        return taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id).orElseThrow();
+        log.debug("Task with id {} extracted: {}", id, task.getTitle());
+        return task;
     }
 
     public Set<Task> getByProject(Project project) {
-        return taskRepository.findAllByProject(project);
+        Set<Task> tasks = taskRepository.findAllByProject(project);
+        log.debug("Tasks of project with id {} extracted. {} tasks found", project.getId(), tasks.size());
+        return tasks;
     }
 
     public void setTaskStatus(Long id, String status) {
         Task task = taskRepository.findById(id).orElseThrow();
         task.setStatus(Task.Status.valueOf(status));
         taskRepository.save(task);
+        log.info("The status of task {}: \"{}\" changed to {}", id, task.getTitle(), task.getStatus());
     }
 }

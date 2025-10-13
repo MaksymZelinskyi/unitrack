@@ -27,7 +27,7 @@ public class Collaborator {
 
     @ManyToMany
     private Set<Skill> skills = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "collaborator", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Participation> projects = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -45,6 +45,10 @@ public class Collaborator {
 
     public void addProject(Project project, Role role) {
         Participation participation = new Participation(this, project, role);
+        addProject(participation);
+    }
+
+    public void addProject(Participation participation) {
         projects.add(participation);
     }
 

@@ -10,11 +10,13 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CollaboratorService {
@@ -27,7 +29,8 @@ public class CollaboratorService {
 
     public void add(CollaboratorDto dto) {
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
-        collaboratorRepository.save(collaborator);
+        collaborator = collaboratorRepository.save(collaborator);
+        log.info("Collaborator with email {} has been added. Their id is {}", collaborator.getEmail(), collaborator.getId());
         mailService.sendCredentials(dto.getEmail(), dto.getPassword());
     }
 
@@ -50,14 +53,22 @@ public class CollaboratorService {
         collaborator.setPassword(passwordEncoder.encode(dto.getPassword()));
         collaborator.setAvatarUrl(dto.getAvatarUrl());
 
+        log.info("Collaborator with id {} is being updated", collaborator.getId());
         //persist
         return collaboratorRepository.save(collaborator);
     }
 
     public void delete(Long id) {
-        collaboratorRepository.deleteById(id);
+        log.info("Collaborator with id {} is being deleted", id);
+        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+        for(Participation p : collaborator.getProjects()) {
+            p.getProject().removeAssignee(p);
+        }
+        collaborator.getProjects().clear();
+        collaboratorRepository.delete(collaborator);
     }
 
+    //not used
     public List<Collaborator> searchBySkill(String skillName) {
         Skill skill = skillRepository.findByName(skillName).orElseThrow();
         return collaboratorRepository.findAllBySkillsContains(skill);
@@ -66,12 +77,14 @@ public class CollaboratorService {
     //find by id
     public List<Project> getProjects(Long id) {
         Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+        log.debug("Collaborator with id {} fetched", id);
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
     }
 
     //find by email
     public List<Project> getProjects(String email) {
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        log.debug("Collaborator with email {} fetched", email);
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
     }
 
@@ -82,6 +95,8 @@ public class CollaboratorService {
     //find project assignees
     public List<Collaborator> getCollaboratorsByProject(Project project) {
         List<Participation> participations = participationRepository.findAllByProject(project);
+        log.debug("Collaborators engaged in project {} fetched", project.getId());
+        log.debug("Number of collaborators fetched: {}", participations != null ? participations.size() : 0);
         return participations.stream().map(Participation::getCollaborator).toList();
     }
 }

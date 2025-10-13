@@ -2,7 +2,6 @@ package com.unitrack.controller;
 
 import com.unitrack.dto.ProjectInListDto;
 import com.unitrack.dto.request.CollaboratorDto;
-import com.unitrack.dto.request.ParticipationDto;
 import com.unitrack.entity.Skill;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
@@ -54,7 +53,7 @@ public class CollaboratorController extends AuthenticatedController {
     public String newCollaborator(Model model) {
         List<Skill> skills = skillService.getAll();
         List<ProjectInListDto> projects = projectService.getAll().stream().map(x-> new ProjectInListDto(x.getId(), x.getTitle())).toList();
-        model.addAttribute("selectedProjects", new ArrayList<>());
+        model.addAttribute("selected", new ArrayList<>());
         model.addAttribute("collaboratorForm", new CollaboratorDto());
         model.addAttribute("skills", skills);
         model.addAttribute("projects", projects);

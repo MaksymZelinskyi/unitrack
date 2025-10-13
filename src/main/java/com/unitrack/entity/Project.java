@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class Project {
     private String title;
     private String description;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<Participation> assignees = new HashSet<>();
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks = new HashSet<>();
@@ -43,8 +44,16 @@ public class Project {
         this.end = end;
     }
 
-    public void addAssignees(Set<Participation> assignees) {
+    public void addAssignees(Collection<Participation> assignees) {
         this.assignees.addAll(assignees);
+    }
+
+    public void addAssignee(Participation participation) {
+        addAssignees(Set.of(participation));
+    }
+
+    public void removeAssignee(Participation participation) {
+        this.assignees.remove(participation);
     }
 
     public enum Status {

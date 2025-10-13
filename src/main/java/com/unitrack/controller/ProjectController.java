@@ -91,7 +91,6 @@ public class ProjectController extends AuthenticatedController {
 
     @PostMapping("/new")
     public String newProject(@Validated ProjectDto dto) {
-        dto.getAssignees().forEach(System.out::println);
         projectService.add(dto);
         return "redirect:/home";
     }
@@ -132,7 +131,7 @@ public class ProjectController extends AuthenticatedController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
-    public String deleteProject(@PathVariable Long id) {
+    public String deleteProject(@PathVariable Long id, Principal principal) {
         projectService.delete(id);
         return "redirect:/home";
     }
