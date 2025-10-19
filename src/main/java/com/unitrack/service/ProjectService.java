@@ -1,5 +1,6 @@
 package com.unitrack.service;
 
+import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.*;
@@ -81,12 +82,15 @@ public class ProjectService {
         project.setStart(dto.getStart());
         project.setEnd(dto.getDeadline());
 
+        log.debug("Assignees set for project: {}", dto.getAssignees().size());
+        log.debug("Assignee id + role: {}", dto.getAssignees().stream().map(x -> "Id: " + x.getId() + "; role: " + x.getRole()).toList());
         Set<Participation> assignees = dto.getAssignees()
                 .stream()
                 .filter(x -> x.getId() != null)
-                .map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole())))
+                .map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole().split(",")[0])))
                 .collect(Collectors.toSet());
-        project.setAssignees(assignees);
+        project.getAssignees().clear();
+        project.addAssignees(assignees);
         log.debug("Number of project assignees added: {}", assignees.size());
         //persist changes
         projectRepository.save(project);
@@ -102,7 +106,9 @@ public class ProjectService {
     }
 
     public List<Participation> getProjectAssignees(Project project) {
-        return participationRepository.findAllByProject(project);
+        List<Participation> participations = participationRepository.findAllByProject(project);
+        log.debug("Participations fetched for project with id {}: {}", project.getId(), participations);
+        return participations;
     }
 
     public void markAsCompleted(Long id, boolean completed) {

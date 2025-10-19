@@ -37,4 +37,11 @@ public class Participation {
         roles.add(role);
     }
 
+    @Override
+    public String toString() {
+        return "Participation: {\n" +
+                "id: " + id +",\n" +
+                "Collaborator: " + collaborator.getFirstNameAndFirstLetter() +",\n" +
+                "Project: " + project.getTitle();
+    }
 }

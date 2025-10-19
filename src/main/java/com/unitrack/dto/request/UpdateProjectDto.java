@@ -40,5 +40,5 @@ public class UpdateProjectDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadline;
 
-    private List<UpdateAssigneeDto> assignees = new ArrayList<>();
+    private List<AssigneeDto> assignees = new ArrayList<>();
 }

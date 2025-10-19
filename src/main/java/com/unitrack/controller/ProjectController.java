@@ -3,10 +3,9 @@ package com.unitrack.controller;
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
+import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
-import com.unitrack.dto.request.UpdateAssigneeDto;
 import com.unitrack.dto.request.UpdateProjectDto;
-import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.service.CollaboratorService;
@@ -90,7 +89,8 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @PostMapping("/new")
-    public String newProject(@Validated ProjectDto dto) {
+    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto) {
+        log.debug("The assignees of project being created: {}", dto.getAssignees());
         projectService.add(dto);
         return "redirect:/home";
     }
@@ -100,31 +100,33 @@ public class ProjectController extends AuthenticatedController {
     public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
 
-        List<UpdateAssigneeDto> assignees = collaboratorService.getAll()
+        List<AssigneeDto> collaborators = collaboratorService.getAll()
                 .stream()
                 .map(c -> {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);
                     var role = participation != null ? participation.getRoles().stream().findFirst().orElse(null) : null;
-                    return new UpdateAssigneeDto(
-                            c.getId(), c.getFirstName() + " " + c.getLastName(), role != null ? role.name() : null
+                    return new AssigneeDto(
+                            c.getId(), role != null ? role.name() : null, c.getFullName()
                     );
                 }).toList();
-        List<Participation> participations = projectService.getProjectAssignees(project);
+        List<AssigneeDto> assignees = projectService.getProjectAssignees(project)
+                .stream()
+                .map(x -> new AssigneeDto(
+                        x.getCollaborator().getId(), x.getRoles().isEmpty() ? "" : x.getRoles().stream().findFirst().orElseThrow().name(),
+                        x.getCollaborator().getFullName())
+                ).toList();
         model.addAttribute("project",
                 new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),
                         project.getStart(), project.getEnd(),
-                        participations.stream().map(x -> {
-                            Collaborator collaborator = x.getCollaborator();
-                            var role = x.getRoles().stream().findFirst().orElseThrow();
-                            return new UpdateAssigneeDto(collaborator.getId(), collaborator.getFirstName() + " " + collaborator.getLastName(), role.name());
-                        }).toList()));
+                        assignees));
+        model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", assignees);
         return "update-project";
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
-    public String updateProject(@PathVariable Long id, @Validated UpdateProjectDto project, Principal principal) {
+    public String updateProject(@PathVariable Long id, @ModelAttribute("projectForm") @Validated UpdateProjectDto project, Principal principal) {
         projectService.update(id, project);
         return "redirect:" + id;
     }

@@ -11,5 +11,6 @@ public class AssigneeDto {
 
     private Long id;
     private String role;
+    private String name;
 
 }
