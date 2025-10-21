@@ -4,6 +4,10 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.ProjectNotFoundException;
+import com.unitrack.exception.SecurityException;
 import com.unitrack.repository.AssignmentRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
@@ -21,8 +25,8 @@ public class AuthorizationService {
     private final ProjectRepository projectRepository;
 
     public boolean canUpdateOrDelete(String email, Long projectId) {
-        Project project = projectRepository.findById(projectId).orElseThrow();
-        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("id", projectId));
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new AuthenticationException("Collaborator with email " + email + " not found."));
         Participation participation = assignmentRepository.findFirstByProjectAndCollaborator(project, collaborator);
 
         if(participation == null) return isAdmin(email);
@@ -31,7 +35,9 @@ public class AuthorizationService {
     }
 
     public boolean isAdmin(String email) {
-        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        Collaborator collaborator = collaboratorRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new AuthenticationException("Collaborator with email " + email + " not found."));
         return collaborator.isAdmin();
     }
 

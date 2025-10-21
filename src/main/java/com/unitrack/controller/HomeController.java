@@ -6,6 +6,7 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;
 import com.unitrack.entity.Skill;
+import com.unitrack.exception.AuthenticationException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
@@ -44,7 +45,9 @@ public class HomeController extends AuthenticatedController {
     }
 
     public String getUserHome(Principal principal, Model model) {
-        Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
+        Collaborator collaborator = collaboratorRepository
+                .findByEmail(principal.getName())
+                .orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
         model.addAttribute(
                 "projects",
                 collaborator.getProjects()
@@ -66,7 +69,7 @@ public class HomeController extends AuthenticatedController {
     }
 
     public String getAdminHome(Principal principal, Model model) {
-        Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
         List<Project> projects = projectRepository.findAll();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
         model.addAttribute(

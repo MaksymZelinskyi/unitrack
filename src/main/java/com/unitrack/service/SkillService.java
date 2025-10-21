@@ -2,6 +2,9 @@ package com.unitrack.service;
 
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Skill;
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.EntityNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +35,14 @@ public class SkillService {
     }
 
     public void addCollaboratorSkill(Long id, Skill skill) {
-        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow(() -> new CollaboratorNotFoundException("id", id));
         if(!skillRepository.existsById(skill.getId())) throw new IllegalArgumentException();
         collaborator.addSkill(skill);
         collaboratorRepository.save(collaborator);
     }
 
     public void deleteCollaboratorSkill(Long id, Skill skill) {
-        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow(() -> new CollaboratorNotFoundException("id", id));
         if(!skillRepository.existsById(skill.getId())) throw new IllegalArgumentException();
         collaborator.deleteSkill(skill);
 

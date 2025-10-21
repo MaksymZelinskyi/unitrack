@@ -1,6 +1,9 @@
 package com.unitrack.config;
 
 import com.unitrack.entity.Collaborator;
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.SecurityException;
 import com.unitrack.repository.CollaboratorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +21,9 @@ public class InDbUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Collaborator collaborator = collaboratorRepository.findByEmail(username).orElseThrow();
+        Collaborator collaborator = collaboratorRepository
+                .findByEmail(username)
+                .orElseThrow(() -> new AuthenticationException("Collaborator with email " + username + " not found."));
         return new CustomUserDetails(collaborator.getId(), collaboratorRepository);
     }
 }

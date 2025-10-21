@@ -4,6 +4,9 @@ import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.*;
+import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.ProjectNotFoundException;
 import com.unitrack.repository.ClientRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
@@ -50,7 +53,7 @@ public class ProjectService {
                 .stream()
                 .filter(x -> x.getId() != null)
                 .map(x -> new Participation(
-                        collaboratorRepository.findById(x.getId()).orElseThrow(),
+                        collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId())),
                         project,
                         Role.valueOf(x.getRole())
                 ))
@@ -74,7 +77,7 @@ public class ProjectService {
 
     public Project update(Long id, UpdateProjectDto dto) {
         //extract existing
-        Project project = projectRepository.findById(id).orElseThrow();
+        Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("id", id));
         log.debug("Project with id {} fetched", id);
         //set DTO data
         project.setTitle(dto.getTitle());
@@ -87,7 +90,12 @@ public class ProjectService {
         Set<Participation> assignees = dto.getAssignees()
                 .stream()
                 .filter(x -> x.getId() != null)
-                .map(x -> new Participation(collaboratorRepository.findById(x.getId()).orElseThrow(), project, Role.valueOf(x.getRole().split(",")[0])))
+                .map(x -> new Participation(
+                        collaboratorRepository.findById(x.getId())
+                                .orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId())),
+                        project,
+                        Role.valueOf(x.getRole().split(",")[0]))
+                )
                 .collect(Collectors.toSet());
         project.getAssignees().clear();
         project.addAssignees(assignees);
@@ -98,7 +106,7 @@ public class ProjectService {
     }
 
     public List<Collaborator> getMembers(Long id) {
-        Project project = projectRepository.findById(id).orElseThrow();
+        Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("id", id));
         var members = project.getAssignees().stream().map(Participation::getCollaborator).toList();
         log.info("Assignees fetched for project {}", id);
         log.debug("Number of project assignees: {}", members.size());
@@ -112,7 +120,7 @@ public class ProjectService {
     }
 
     public void markAsCompleted(Long id, boolean completed) {
-        Project project = projectRepository.findById(id).orElseThrow();
+        Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("id", id));
         log.debug("Project {} fetched", id);
         var status = Project.Status.DONE;
         if (!completed) {

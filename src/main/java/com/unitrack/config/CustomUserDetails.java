@@ -1,5 +1,8 @@
 package com.unitrack.config;
 
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.SecurityException;
 import com.unitrack.repository.CollaboratorRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,17 +23,17 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String authority = collaboratorRepository.findById(id).orElseThrow().isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
+        String authority = collaboratorRepository.findById(id).orElseThrow(() -> new AuthenticationException("Collaborator with id " + id + " not found.")).isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
         return List.of(new SimpleGrantedAuthority(authority));
     }
 
     @Override
     public String getPassword() {
-        return collaboratorRepository.findById(id).orElseThrow().getPassword();
+        return collaboratorRepository.findById(id).orElseThrow(() -> new AuthenticationException("Collaborator with id " + id + " not found.")).getPassword();
     }
 
     @Override
     public String getUsername() {
-        return collaboratorRepository.findById(id).orElseThrow().getEmail();
+        return collaboratorRepository.findById(id).orElseThrow(() -> new AuthenticationException("Collaborator with id " + id + " not found.")).getEmail();
     }
 }

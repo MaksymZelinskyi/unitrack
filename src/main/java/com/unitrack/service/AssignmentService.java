@@ -5,6 +5,10 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Role;
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.ProjectNotFoundException;
 import com.unitrack.repository.AssignmentRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
@@ -30,9 +34,9 @@ public class AssignmentService {
      */
     public void add(AssignmentDto dto) {
         //extract assignee
-        Collaborator collaborator = collaboratorRepository.findById(dto.collaboratorId()).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findById(dto.collaboratorId()).orElseThrow(() -> new CollaboratorNotFoundException("id", dto.collaboratorId()));
         //extract project
-        Project project = projectRepository.findById(dto.projectId()).orElseThrow();
+        Project project = projectRepository.findById(dto.projectId()).orElseThrow(() -> new ProjectNotFoundException("id", dto.projectId()));
         //add project into the list of collaborator's projects
         Participation participation = new Participation(collaborator, project, Role.valueOf(dto.role()));
         collaborator.addProject(participation);

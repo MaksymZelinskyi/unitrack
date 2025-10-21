@@ -4,13 +4,14 @@ import com.unitrack.dto.request.TaskDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Task;
+import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.ProjectNotFoundException;
+import com.unitrack.exception.TaskNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,13 +28,13 @@ public class TaskService {
 
     public void add(TaskDto dto, Long projectId) {
         //retrieve project
-        Project project = projectRepository.findById(projectId).orElseThrow();
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("id", projectId));
 
         //create task entity
         Task task = new Task(dto.getTitle(), dto.getDescription(), dto.getDeadline(), project);
         List<Collaborator> assignees = dto.getAssignees()
                 .stream()
-                .map(x -> collaboratorRepository.findById(x.getId()).orElseThrow())
+                .map(x -> collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId())))
                 .toList();
         task.addAssignees(assignees);
         //set default status
@@ -57,7 +58,7 @@ public class TaskService {
     }
 
     public Task update(Long id, TaskDto dto) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
         taskRepository.save(task);
@@ -66,7 +67,7 @@ public class TaskService {
     }
 
     public Task getById(Long id) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
         log.debug("Task with id {} extracted: {}", id, task.getTitle());
         return task;
     }
@@ -78,7 +79,7 @@ public class TaskService {
     }
 
     public void setTaskStatus(Long id, String status) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
         task.setStatus(Task.Status.valueOf(status));
         taskRepository.save(task);
         log.info("The status of task {}: \"{}\" changed to {}", id, task.getTitle(), task.getStatus());

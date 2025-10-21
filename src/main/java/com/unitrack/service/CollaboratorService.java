@@ -6,6 +6,8 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Skill;
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
@@ -44,7 +46,7 @@ public class CollaboratorService {
 
     public Collaborator update(String email, UpdateProfileDto dto) {
         //retrieve the collaborator found by email(which should be unique)
-        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new CollaboratorNotFoundException("email", email));
 
         //set data from the DTO
         collaborator.setEmail(dto.getEmail());
@@ -60,7 +62,7 @@ public class CollaboratorService {
 
     public void delete(Long id) {
         log.info("Collaborator with id {} is being deleted", id);
-        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow(() -> new CollaboratorNotFoundException("id", id));
         for(Participation p : collaborator.getProjects()) {
             p.getProject().removeAssignee(p);
         }
@@ -76,20 +78,20 @@ public class CollaboratorService {
 
     //find by id
     public List<Project> getProjects(Long id) {
-        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow(() -> new CollaboratorNotFoundException("id", id));
         log.debug("Collaborator with id {} fetched", id);
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
     }
 
     //find by email
     public List<Project> getProjects(String email) {
-        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow();
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new CollaboratorNotFoundException("email", email));
         log.debug("Collaborator with email {} fetched", email);
         return collaborator.getProjects().stream().map(Participation::getProject).toList();
     }
 
     public Collaborator getByEmail(String email) {
-        return collaboratorRepository.findByEmail(email).orElseThrow();
+        return collaboratorRepository.findByEmail(email).orElseThrow(() -> new CollaboratorNotFoundException("email", email));
     }
 
     //find project assignees
@@ -97,6 +99,7 @@ public class CollaboratorService {
         List<Participation> participations = participationRepository.findAllByProject(project);
         log.debug("Collaborators engaged in project {} fetched", project.getId());
         log.debug("Number of collaborators fetched: {}", participations != null ? participations.size() : 0);
+        assert participations != null;
         return participations.stream().map(Participation::getCollaborator).toList();
     }
 }

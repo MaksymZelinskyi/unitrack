@@ -2,6 +2,8 @@ package com.unitrack.controller;
 
 import com.unitrack.dto.CurrentUser;
 import com.unitrack.entity.Collaborator;
+import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.EntityNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,7 +29,7 @@ public abstract class AuthenticatedController {
         CurrentUser currentUser = new CurrentUser();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
-            Collaborator collaborator = collaboratorRepository.findByEmail(auth.getName()).orElseThrow();
+            Collaborator collaborator = collaboratorRepository.findByEmail(auth.getName()).orElseThrow(() -> new AuthenticationException("Collaborator with email " + auth.getName() + " not found."));
             currentUser.setId(collaborator.getId());
             currentUser.setFirstName(collaborator.getFirstName());
             currentUser.setLastName(collaborator.getLastName());
