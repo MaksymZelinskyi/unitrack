@@ -14,25 +14,26 @@
     <div class="flex-1">
         <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5">New Collaborator</h1>
 
-        <form th:action="@{/collaborators/new}" th:object="${collaboratorForm}" method="post" class="flex flex-col gap-4 p-6 bg-white shadow-lg rounded-xl">
+        <form th:action="@{/collaborators/new}" th:object="${collaboratorForm}" id="collaboratorForm" method="post" class="flex flex-col gap-4 p-6 bg-white shadow-lg rounded-xl">
             <div>
                 <label class="block font-medium mb-1">First Name</label>
-                <input th:field="*{firstName}" type="text" placeholder="John" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+                <input th:field="*{firstName}" id="firstName" type="text" placeholder="John" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400" required/>
             </div>
 
             <div>
                 <label class="block font-medium mb-1">Last Name</label>
-                <input th:field="*{lastName}" type="text" placeholder="Doe" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+                <input th:field="*{lastName}" id="lastName" type="text" placeholder="Doe" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400" reuired/>
             </div>
 
             <div>
                 <label class="block font-medium mb-1">Email</label>
-                <input th:field="*{email}" type="email" placeholder="johndoe@email.com" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+                <input th:field="*{email}"id="email" type="email" placeholder="johndoe@email.com" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400" required/>
+                <span id="error" style="color: red; display: none;">Invalid email address</span>
             </div>
 
             <div>
                 <label class="block font-medium mb-1">Password</label>
-                <input th:field="*{password}" type="password" placeholder="••••••••" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400"/>
+                <input th:field="*{password}" id="password" type="password" placeholder="••••••••" class="p-2 w-full border rounded focus:ring-2 focus:ring-green-400" minlength="8"/>
             </div>
 
             <div>
@@ -126,6 +127,21 @@
         });
       }
     })();
+</script>
+<script>
+    const form = document.getElementById('collaboratorForm');
+    const emailInput = document.getElementById('email');
+    const errorSpan = document.getElementById('error');
+
+    form.addEventListener('submit', (event) => {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+      if (!emailPattern.test(emailInput.value)) {
+        event.preventDefault(); // Prevent form submission
+        errorSpan.style.display = 'inline';
+      } else {
+        errorSpan.style.display = 'none';
+      }
+    });
 </script>
 </body>
 </html>

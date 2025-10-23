@@ -1,9 +1,12 @@
 package com.unitrack.dto.request;
 
 import com.unitrack.dto.CollaboratorInListDto;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +17,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskDto {
 
+    @NotBlank
+    @Length(max = 255)
     private String title;
+    @Length(max = 255)
     private String description;
     private Long projectId;
     private LocalDateTime deadline;

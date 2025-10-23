@@ -22,19 +22,19 @@
                 </h1>
 
                 <label>Project title</label>
-                <input class="p-2 border rounded" placeholder="Title" th:field="*{title}" type="text"/>
+                <input class="p-2 border rounded" placeholder="Title" th:field="*{title}" type="text" required maxlength="255"/>
 
                 <label>Project description</label>
-                <input class="p-2 border rounded" placeholder="Description" th:field="*{description}" type="text"/>
+                <input class="p-2 border rounded" placeholder="Description" th:field="*{description}" type="text" maxlength="255"/>
 
                 <label>Client name</label>
-                <input class="p-2 border rounded" placeholder="Client" th:field="*{client}" type="text"/>
+                <input class="p-2 border rounded" placeholder="Client" th:field="*{client}" type="text" maxlength="255"/>
 
                 <label>Start Date</label>
-                <input class="p-2 border rounded" th:field="*{start}" type="date"/>
+                <input class="p-2 border rounded" th:field="*{start}" type="date" required/>
 
                 <label>Deadline</label>
-                <input class="p-2 border rounded" th:field="*{deadline}" type="date"/>
+                <input class="p-2 border rounded" th:field="*{deadline}" type="date" required/>
 
                 <!-- Assignee selection -->
                 <!-- Dropdown to pick a collaborator -->

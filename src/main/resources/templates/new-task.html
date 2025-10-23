@@ -15,10 +15,10 @@
 
             <form th:action="@{/tasks?projectId={projectId}(projectId=${projectId})}" th:object="${taskForm}" method="post" class="flex flex-col gap-4 p-4 max-w-xl">
                 <label>Task title</label>
-                <input th:field="*{title}" type="text" placeholder="Title" class="p-2 border rounded"/>
+                <input th:field="*{title}" type="text" placeholder="Title" class="p-2 border rounded" required maxlength="255"/>
 
                 <label>Task description</label>
-                <input th:field="*{description}" type="text" placeholder="Description" class="p-2 border rounded"/>
+                <input th:field="*{description}" type="text" placeholder="Description" class="p-2 border rounded" maxlength="255"/>
 
                 <label>Deadline</label>
                 <input th:field="*{deadline}" type="datetime-local" class="p-2 border rounded"/>
