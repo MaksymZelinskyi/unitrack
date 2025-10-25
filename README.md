@@ -2,7 +2,7 @@
 
 **UniTrack** is a lightweight web application designed to help small tech teams track their collaborators, manage their projects, and follow tasks with clarity and structure.
 
-🛠️ Built with love in Java/Spring Boot by Maksym Zelinskyi — a 17-year-old developer looking to prove what a self-taught mind can deliver.
+🛠️ Built with love in Java/Spring Boot by Maksym Zelinskyi — an 18-year-old developer looking to prove what a self-taught mind can deliver.
 
 ---
 
