@@ -1,42 +1,30 @@
 package com.unitrack.dto.request;
 
+import com.unitrack.dto.CollaboratorInListDto;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDto {
+@AllArgsConstructor
+public class UpdateTaskDto {
 
+    private Long id;
     @NotBlank
     @Length(max = 255)
     private String title;
-
     @Length(max = 255)
     private String description;
-
-    @Length(max = 255)
-    private String client;
-
-    @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate start;
-
-    @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate deadline;
-
-    private List<AssigneeDto> assignees = new ArrayList<>();
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime deadline;
+    private List<CollaboratorInListDto> assignees = new ArrayList<>();
 
 }

@@ -1,6 +1,8 @@
 package com.unitrack.service;
 
+import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.request.TaskDto;
+import com.unitrack.dto.request.UpdateTaskDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Task;
@@ -57,10 +59,17 @@ public class TaskService {
         log.info("Task with id {} deleted", id);
     }
 
-    public Task update(Long id, TaskDto dto) {
+    public Task update(Long id, UpdateTaskDto dto) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
+        task.getAssignees().clear();
+        for (CollaboratorInListDto c : dto.getAssignees()) {
+            task.getAssignees().add(collaboratorRepository
+                    .findById(c.getId())
+                    .orElseThrow(() -> new CollaboratorNotFoundException("id", c.getId()))
+            );
+        }
         taskRepository.save(task);
         log.info("Task with id {} updated: {}", id, task.getTitle());
         return task;

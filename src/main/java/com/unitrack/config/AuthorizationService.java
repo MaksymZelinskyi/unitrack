@@ -1,16 +1,12 @@
 package com.unitrack.config;
 
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Participation;
-import com.unitrack.entity.Project;
-import com.unitrack.entity.Role;
-import com.unitrack.exception.AuthenticationException;
-import com.unitrack.exception.EntityNotFoundException;
-import com.unitrack.exception.ProjectNotFoundException;
+import com.unitrack.entity.*;
+import com.unitrack.exception.*;
 import com.unitrack.exception.SecurityException;
 import com.unitrack.repository.AssignmentRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
+import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +19,7 @@ public class AuthorizationService {
     private final AssignmentRepository assignmentRepository;
     private final CollaboratorRepository collaboratorRepository;
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 
     public boolean canUpdateOrDelete(String email, Long projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("id", projectId));
@@ -34,6 +31,10 @@ public class AuthorizationService {
         return isAdmin(email) || roles.contains(Role.PRODUCT_OWNER) || roles.contains(Role.PROJECT_MANAGER);
     }
 
+    public boolean canUpdateOrDeleteTask(String email, Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("id", taskId));
+        return canUpdateOrDelete(email, task.getProject().getId());
+    }
     public boolean isAdmin(String email) {
         Collaborator collaborator = collaboratorRepository
                 .findByEmail(email)

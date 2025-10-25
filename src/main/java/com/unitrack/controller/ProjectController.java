@@ -71,8 +71,9 @@ public class ProjectController extends AuthenticatedController {
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
 
-        model.addAttribute("canUpdate", authService.canUpdateOrDelete(principal.getName(), id));
-        model.addAttribute("canDelete", authService.canUpdateOrDelete(principal.getName(), id));
+        boolean canUpdateDelete = authService.canUpdateOrDelete(principal.getName(), id);
+        model.addAttribute("canUpdate", canUpdateDelete);
+        model.addAttribute("canDelete", canUpdateDelete);
         return "project-page";
     }
 

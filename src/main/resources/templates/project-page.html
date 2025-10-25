@@ -48,39 +48,45 @@
                 <ul class="sortable" id="TODO">
                     <li th:if="${todo == null || #lists.isEmpty(todo)}">Nothing yet</li>
                     <li class="min-w-[18rem]" th:data-id="${task.id}" th:each="task : ${todo}">
+                        <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-400">
 
-                        <a class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500"
-                           th:href="@{/tasks/{id}(id=${task.id})}">
-                            <div class="absolute w-5 h-5 top-2 left-2" th:if="${canUpdate}">
-                                <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
-                                    <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
-                                </button>
-                            </div>
+                            <!-- 🖋 Update button -->
+                            <a th:if="${canUpdate}"
+                               th:href="@{/tasks/update/{id}(id=${task.id})}"
+                               class="absolute w-5 h-5 top-2 left-2 hover:scale-110 transition-transform">
+                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png" class="w-5 h-5"/>
+                            </a>
+
+                            <!-- 🗑 Delete button -->
                             <div class="absolute w-5 h-5 top-2 right-2" th:if="${canDelete}">
                                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
                                     <input name="_method" type="hidden" value="delete">
-                                    <button type="submit">
+                                    <button type="submit" class="hover:scale-110 transition-transform">
                                         <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
                                     </button>
                                 </form>
                             </div>
-                            <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
-                            <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
-                            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Assignees: </span>
-                                <div class="ml-2">
-                                    <ul class="list-none flex space-x-1">
+
+                            <!-- 🧾 Main clickable content -->
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="block mt-6">
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
+
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Assignees:</span>
+                                    <ul class="list-none flex space-x-1 ml-2">
                                         <li th:each="assignee : ${task.assignees}">
                                             <p th:text="${assignee}"></p>
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
-                            <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Deadline:</span>
-                                <span th:text="${task.deadline}"></span>
-                            </div>
-                        </a>
+
+                                <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${task.deadline}">August 10</span>
+                                </div>
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -90,39 +96,45 @@
                 <ul class="sortable" id="IN_PROGRESS">
                     <li th:if="${in_progress == null || #lists.isEmpty(in_progress)}">Nothing yet</li>
                     <li class="min-w-[18rem]" th:data-id="${task.id}" th:each="task : ${in_progress}">
-                        <a class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500"
-                           th:href="@{/tasks/{id}(id=${task.id})}">
-                            <div class="absolute w-5 h-5 top-2 left-2" th:if="${canUpdate}">
-                                <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
-                                    <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
-                                </button>
-                            </div>
+                        <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-yellow-400">
+
+                            <!-- 🖋 Update button -->
+                            <a th:if="${canUpdate}"
+                               th:href="@{/tasks/update/{id}(id=${task.id})}"
+                               class="absolute w-5 h-5 top-2 left-2 hover:scale-110 transition-transform">
+                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png" class="w-5 h-5"/>
+                            </a>
+
+                            <!-- 🗑 Delete button -->
                             <div class="absolute w-5 h-5 top-2 right-2" th:if="${canDelete}">
                                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
                                     <input name="_method" type="hidden" value="delete">
-                                    <button type="submit">
+                                    <button type="submit" class="hover:scale-110 transition-transform">
                                         <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
                                     </button>
                                 </form>
                             </div>
 
-                            <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
-                            <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
-                            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Assignees: </span>
-                                <span class="ml-2">
-                                        <ul class="list-none flex space-x-1">
-                                            <li th:each="assignee : ${task.assignees}">
-                                                <p th:text="${assignee}"></p>
-                                            </li>
-                                        </ul>
-                                    </span>
-                            </div>
-                            <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Deadline:</span>
-                                <span th:text="${task.deadline}">August 10</span>
-                            </div>
-                        </a>
+                            <!-- 🧾 Main clickable content -->
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="block mt-6">
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
+
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Assignees:</span>
+                                    <ul class="list-none flex space-x-1 ml-2">
+                                        <li th:each="assignee : ${task.assignees}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${task.deadline}">August 10</span>
+                                </div>
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -132,38 +144,45 @@
                 <ul class="sortable" id="DONE">
                     <li th:if="${done == null || #lists.isEmpty(done)}">Nothing yet</li>
                     <li class="min-w-[18rem]" th:data-id="${task.id}" th:each="task : ${done}">
-                        <a class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-red-500"
-                           th:href="@{/tasks/{id}(id=${task.id})}">
-                            <div class="absolute w-5 h-5 top-2 left-2" th:if="${canUpdate}">
-                                <button th:onclick="location.href='@{/tasks/update/{id}(id=${task.id})}'">
-                                    <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
-                                </button>
-                            </div>
+                        <div class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition relative border-t-4 border-green-400">
+
+                            <!-- 🖋 Update button -->
+                            <a th:if="${canUpdate}"
+                               th:href="@{/tasks/update/{id}(id=${task.id})}"
+                               class="absolute w-5 h-5 top-2 left-2 hover:scale-110 transition-transform">
+                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png" class="w-5 h-5"/>
+                            </a>
+
+                            <!-- 🗑 Delete button -->
                             <div class="absolute w-5 h-5 top-2 right-2" th:if="${canDelete}">
                                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
                                     <input name="_method" type="hidden" value="delete">
-                                    <button type="submit">
+                                    <button type="submit" class="hover:scale-110 transition-transform">
                                         <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
                                     </button>
                                 </form>
                             </div>
-                            <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
-                            <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
-                            <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Assignees: </span>
-                                <span class="ml-2">
-                                        <ul class="list-none flex space-x-1">
-                                            <li th:each="assignee : ${task.assignees}">
-                                                <p th:text="${assignee}"></p>
-                                            </li>
-                                        </ul>
-                                    </span>
-                            </div>
-                            <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
-                                <span class="font-medium">Deadline:</span>
-                                <span th:text="${task.deadline}">August 10</span>
-                            </div>
-                        </a>
+
+                            <!-- 🧾 Main clickable content -->
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="block mt-6">
+                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${task.title}"></h4>
+                                <p class="mt-2 text-lg text-gray-600" th:text="${task.description}"></p>
+
+                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Assignees:</span>
+                                    <ul class="list-none flex space-x-1 ml-2">
+                                        <li th:each="assignee : ${task.assignees}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="pt-4 border-t flex justify-between text-sm text-gray-600">
+                                    <span class="font-medium">Deadline:</span>
+                                    <span th:text="${task.deadline}">August 10</span>
+                                </div>
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
