@@ -93,4 +93,12 @@ public class TaskService {
         taskRepository.save(task);
         log.info("The status of task {}: \"{}\" changed to {}", id, task.getTitle(), task.getStatus());
     }
+
+    public void markTaskCompleted(Long id, boolean completed) {
+        if (completed) {
+            setTaskStatus(id, "DONE");
+        } else {
+            setTaskStatus(id, "TODO");
+        }
+    }
 }

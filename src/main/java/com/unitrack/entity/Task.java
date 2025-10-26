@@ -32,7 +32,7 @@ public class Task {
     @ManyToMany
     private Set<Collaborator> assignees = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Project project;
 
 
