@@ -1,8 +1,6 @@
 package com.unitrack.dto.request;
 
 import com.unitrack.dto.AssigneeDto;
-import com.unitrack.dto.CollaboratorInListDto;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
