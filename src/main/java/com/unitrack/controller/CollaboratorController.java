@@ -1,8 +1,14 @@
 package com.unitrack.controller;
 
+import com.unitrack.dto.CollaboratorProjectDto;
+import com.unitrack.dto.DisplayCollaboratorDto;
 import com.unitrack.dto.ProjectInListDto;
+import com.unitrack.dto.TaskInListDto;
 import com.unitrack.dto.request.CollaboratorDto;
+import com.unitrack.entity.Collaborator;
+import com.unitrack.entity.Participation;
 import com.unitrack.entity.Skill;
+import com.unitrack.entity.Task;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.SkillService;
@@ -64,5 +70,32 @@ public class CollaboratorController extends AuthenticatedController {
     public String newCollaborator(@Validated CollaboratorDto dto) {
         collaboratorService.add(dto);
         return "redirect:/home";
+    }
+
+    @GetMapping("/{id}")
+    public String getCollaborator(@PathVariable Long id, Model model) {
+        Collaborator collaborator = collaboratorService.getById(id);
+
+        DisplayCollaboratorDto dto = new DisplayCollaboratorDto();
+        dto.setFullName(collaborator.getFullName());
+        dto.setEmail(collaborator.getEmail());
+        dto.setAvatarUrl(collaborator.getAvatarUrl());
+        List<CollaboratorProjectDto> projects = new ArrayList<>();
+        for (Participation p : collaborator.getProjects()) {
+            CollaboratorProjectDto projectDto = new CollaboratorProjectDto();
+            projectDto.setProjectId(p.getProject().getId());
+            projectDto.setTitle(p.getProject().getTitle());
+            projectDto.setRole(String.valueOf(p.getRoles().stream().findFirst().orElse(null)));
+            projectDto.setTasks(p.getProject().getTasks()
+                    .stream()
+                    .map(x -> new TaskInListDto(x.getId(), x.getTitle(), x.getDescription(),
+                            x.getDeadline(), x.getStatus()== Task.Status.DONE))
+                    .toList()
+            );
+            projects.add(projectDto);
+        }
+        model.addAttribute("projects", projects);
+        model.addAttribute("collaborator", dto);
+        return "collaborator";
     }
 }
