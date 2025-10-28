@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -31,6 +29,8 @@ public class Task {
 
     @ManyToMany
     private Set<Collaborator> assignees = new HashSet<>();
+    @ManyToOne
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     private Project project;
