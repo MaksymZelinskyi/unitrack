@@ -29,7 +29,7 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
-    private final ClientRepository clientRepository;
+    private final ClientService clientService;
     private final ParticipationRepository participationRepository;
 
     public Project getByTitle(String title) {
@@ -59,7 +59,7 @@ public class ProjectService {
                 ))
                 .collect(Collectors.toSet());
         project.addAssignees(assignees);
-        project.setClient(clientRepository.findByName(dto.getClient()).orElse(new Client(dto.getClient())));
+        project.setClient(clientService.getByNameOrCreate(dto.getClient()));
         //set default status
         if (dto.getStart().isAfter(LocalDate.now()))
             project.setStatus(Project.Status.ACTIVE); //started
@@ -84,6 +84,7 @@ public class ProjectService {
         project.setDescription(dto.getDescription());
         project.setStart(dto.getStart());
         project.setEnd(dto.getDeadline());
+        project.setClient(clientService.getByNameOrCreate(dto.getClient()));
 
         log.debug("Assignees set for project: {}", dto.getAssignees().size());
         log.debug("Assignee id + role: {}", dto.getAssignees().stream().map(x -> "Id: " + x.getId() + "; role: " + x.getRole()).toList());

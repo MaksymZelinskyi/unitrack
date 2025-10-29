@@ -25,11 +25,9 @@ public class UpdateProjectDto {
     @Length(max = 255)
     private String title;
 
-    @NotBlank
     @Length(max = 255)
     private String description;
 
-    @NotBlank
     @Length(max = 255)
     private String client;
 
