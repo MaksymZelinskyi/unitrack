@@ -54,10 +54,11 @@ public class HomeController extends AuthenticatedController {
                         .stream()
                         .map(x -> {
                             Project project = x.getProject();
-                            return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(), x.getRoles()
-                                    .stream()
-                                    .map(Role::toString)
-                                    .collect(Collectors.toSet()), project.getStatus().name());
+                            return new ProjectParticipationDto(
+                                    project.getId(), project.getTitle(), project.getDescription(),
+                                    x.getRoles().stream().map(Role::name).findFirst().orElse("None"),
+                                    project.getStatus().name()
+                            );
                         })
                         .collect(Collectors.toSet())
         );
