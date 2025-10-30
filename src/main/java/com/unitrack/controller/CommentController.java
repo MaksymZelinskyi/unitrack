@@ -1,6 +1,6 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.request.CreateTaskDto;
+import com.unitrack.dto.request.CommentDto;
 import com.unitrack.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +14,10 @@ import java.security.Principal;
 @RequestMapping("/tasks/comments")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService commentService;
 
-    @PostMapping("/")
-    public String addComment(@RequestParam Long taskId, CreateTaskDto dto, Principal principal, HttpServletRequest request) {
+    @PostMapping("")
+    public String addComment(@RequestParam Long taskId, CommentDto dto, Principal principal, HttpServletRequest request) {
         commentService.addComment(taskId, dto, principal);
 
         String referer = request.getHeader("Referer");
@@ -25,8 +25,8 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public String updateComment(@PathVariable Long id, @RequestParam Long taskId, CreateTaskDto dto, HttpServletRequest request) {
-        commentService.updateComment(id, taskId, dto);
+    public String updateComment(@PathVariable Long id, CommentDto dto, HttpServletRequest request) {
+        commentService.updateComment(id, dto);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");

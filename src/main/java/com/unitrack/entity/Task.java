@@ -29,7 +29,7 @@ public class Task {
 
     @ManyToMany
     private Set<Collaborator> assignees = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
