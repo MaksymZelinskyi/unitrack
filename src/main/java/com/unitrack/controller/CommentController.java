@@ -1,9 +1,11 @@
 package com.unitrack.controller;
 
+import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.request.CommentDto;
 import com.unitrack.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.security.Principal;
 public class CommentController {
 
     private final CommentService commentService;
+    private final AuthorizationService authService;
 
     @PostMapping("")
     public String addComment(@RequestParam Long taskId, CommentDto dto, Principal principal, HttpServletRequest request) {
@@ -25,7 +28,8 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public String updateComment(@PathVariable Long id, CommentDto dto, HttpServletRequest request) {
+    @PreAuthorize("@authService.canUpdateComment(#principal.getName(), #id)")
+    public String updateComment(@PathVariable Long id, CommentDto dto, HttpServletRequest request, Principal principal) {
         commentService.updateComment(id, dto);
 
         String referer = request.getHeader("Referer");
@@ -33,7 +37,8 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteComment(@PathVariable Long id, HttpServletRequest request) {
+    @PreAuthorize("@authService.canDeleteComment(#principal.getName(), #id)")
+    public String deleteComment(@PathVariable Long id, HttpServletRequest request, Principal principal) {
         commentService.deleteComment(id);
 
         String referer = request.getHeader("Referer");

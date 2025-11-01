@@ -163,7 +163,7 @@
                     <!-- Edit Button -->
                     <button type="button"
                             class="edit-btn text-blue-600 hover:text-blue-800 font-medium text-sm"
-                            th:if="${canUpdate}">
+                            th:if="${comment.author.id == currentUser.id}">
                         ✏️ Edit
                     </button>
                 </div>
@@ -175,7 +175,7 @@
                 </p>
 
                 <!-- ✏️ Edit Form (hidden by default) -->
-                <form method="post"
+                <form method="post" th:if="${comment.author.id == currentUser.id}"
                       th:action="@{/tasks/comments/{id}(id=${comment.id})}"
                       class="hidden comment-edit-form mt-4 flex flex-col gap-3">
                     <input type="hidden" name="_method" value="put"/>
@@ -199,7 +199,7 @@
                 <!-- 🗑️ Delete Button -->
                 <form method="post"
                       th:action="@{/tasks/comments/{id}(id=${comment.id})}"
-                      th:if="${canDelete}"
+                      th:if="${comment.author.id == currentUser.id || currentUser.status == 'Admin'}"
                       class="flex justify-end mt-4">
                     <input name="_method" type="hidden" value="delete">
                     <button type="submit"
