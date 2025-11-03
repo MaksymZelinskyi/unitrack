@@ -39,7 +39,7 @@
                 <!-- Deadline -->
                 <div class="flex justify-between items-center border-b py-4">
                     <span class="text-gray-600 font-semibold">Deadline:</span>
-                    <span class="text-gray-800 font-medium" th:text="${task.deadline}"></span>
+                    <span class="text-gray-800 font-medium" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
                 </div>
 
                 <!-- Assignees -->
@@ -150,52 +150,97 @@
             </li>
 
             <!-- Each Comment -->
-            <li th:each="comment : ${comments}"
-                class="bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 p-6">
+            <li th:each="comment : ${comments}">
+                 <div th:id="'comment' + ${comment.id}" class="bg-white rounded-2xl shadow-sm border border-gray-200 hover:shadow-md transition-all duration-300 p-6">
+                    <!-- 🧑‍💻 Author Header -->
+                    <div class="flex justify-between items-start">
+                        <a th:href="@{/collaborators/{id}(id=${comment.author.id})}"
+                           class="flex items-center gap-4 group">
+                            <img alt="Profile Picture"
+                                 class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover shadow-sm group-hover:scale-105 transition-transform duration-300"
+                                 th:src="${comment.author.avatarUrl}"/>
 
-                <!-- 🧑‍💻 Author Header -->
-                <div class="flex justify-between items-start">
-                    <a th:href="@{/collaborators/{id}(id=${comment.author.id})}"
-                       class="flex items-center gap-4 group">
-                        <img alt="Profile Picture"
-                             class="w-12 h-12 rounded-full border-2 border-blue-500 object-cover shadow-sm group-hover:scale-105 transition-transform duration-300"
-                             th:src="${comment.author.avatarUrl}"/>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors"
+                                    th:text="${comment.author.name}">
+                                    Author Name
+                                </h3>
+                                <p class="text-sm text-gray-500 italic"
+                                   th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">
+                                    Date
+                                </p>
+                            </div>
+                        </a>
 
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors"
-                                th:text="${comment.author.name}">
-                                Author Name
-                            </h3>
-                            <p class="text-sm text-gray-500 italic"
-                               th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}">
-                                Date
-                            </p>
+                        <a th:if="${comment.replyTo != null}" th:href="'#comment'+${comment.replyTo}"
+                           class="text-sm font-medium text-blue-500 hover:text-blue-700 hover:underline transition"
+                           th:text="'Replied to ' + ${comment.replyToAuthor}" >
+                        </a>
+                        <!-- Edit Button -->
+                        <button type="button"
+                                class="edit-btn text-blue-600 hover:text-blue-800 font-medium text-sm"
+                                th:if="${comment.author.id == currentUser.id}">
+                            ✏️ Edit
+                        </button>
+                    </div>
+
+                    <!-- 🗨️ Comment Text -->
+                    <p class="mt-4 text-gray-700 leading-relaxed border-l-4 border-blue-100 pl-4 comment-text"
+                       th:text="${comment.text}">
+                        Comment content here...
+                    </p>
+
+                    <!-- ✏️ Edit Form (hidden by default) -->
+                    <form method="post" th:if="${comment.author.id == currentUser.id}"
+                          th:action="@{/tasks/comments/{id}(id=${comment.id})}"
+                          class="hidden comment-edit-form mt-4 flex flex-col gap-3">
+                        <input type="hidden" name="_method" value="put"/>
+
+                        <textarea name="text"
+                                  class="w-full p-3 border border-gray-300 rounded-xl focus:ring focus:ring-blue-300 resize-none"
+                                  th:text="${comment.text}"></textarea>
+
+                        <div class="flex gap-2 justify-end">
+                            <button type="submit"
+                                    class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow-sm transition">
+                                💾 Save
+                            </button>
+                            <button type="button"
+                                    class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg cancel-btn transition">
+                                ✖ Cancel
+                            </button>
                         </div>
-                    </a>
+                    </form>
 
-                    <!-- Edit Button -->
-                    <button type="button"
-                            class="edit-btn text-blue-600 hover:text-blue-800 font-medium text-sm"
-                            th:if="${comment.author.id == currentUser.id}">
-                        ✏️ Edit
-                    </button>
+                    <!-- 🗑️ Delete Button -->
+                    <form method="post"
+                          th:action="@{/tasks/comments/{id}(id=${comment.id})}"
+                          th:if="${comment.author.id == currentUser.id || currentUser.status == 'Admin'}"
+                          class="flex justify-end mt-4">
+                        <input name="_method" type="hidden" value="delete">
+                        <button type="submit"
+                                class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
+                            <img alt="Delete" class="w-5 h-5"
+                                 src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                            <span class="font-medium">Delete</span>
+                        </button>
+                    </form>
+                     <button type="button"
+                                   class="reply-btn text-blue-600 hover:text-blue-800 font-medium text-sm">
+                     ️ 🗨️ Reply
+                     </button>
                 </div>
 
-                <!-- 🗨️ Comment Text -->
-                <p class="mt-4 text-gray-700 leading-relaxed border-l-4 border-blue-100 pl-4 comment-text"
-                   th:text="${comment.text}">
-                    Comment content here...
-                </p>
+                <!-- ✏️ Comment reply Form (hidden by default) -->
+                <form method="post"
+                      th:action="@{/tasks/comments?taskId={taskId}(taskId=${task.id})}"
+                      class="hidden comment-reply-form mt-4 flex flex-col gap-3">
 
-                <!-- ✏️ Edit Form (hidden by default) -->
-                <form method="post" th:if="${comment.author.id == currentUser.id}"
-                      th:action="@{/tasks/comments/{id}(id=${comment.id})}"
-                      class="hidden comment-edit-form mt-4 flex flex-col gap-3">
-                    <input type="hidden" name="_method" value="put"/>
+                    <input type="hidden" name="replyTo" th:value="${comment.id}"/>
 
-                    <textarea name="text"
+                    <input type="text" name="text"
                               class="w-full p-3 border border-gray-300 rounded-xl focus:ring focus:ring-blue-300 resize-none"
-                              th:text="${comment.text}"></textarea>
+                    />
 
                     <div class="flex gap-2 justify-end">
                         <button type="submit"
@@ -207,20 +252,6 @@
                             ✖ Cancel
                         </button>
                     </div>
-                </form>
-
-                <!-- 🗑️ Delete Button -->
-                <form method="post"
-                      th:action="@{/tasks/comments/{id}(id=${comment.id})}"
-                      th:if="${comment.author.id == currentUser.id || currentUser.status == 'Admin'}"
-                      class="flex justify-end mt-4">
-                    <input name="_method" type="hidden" value="delete">
-                    <button type="submit"
-                            class="flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200">
-                        <img alt="Delete" class="w-5 h-5"
-                             src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
-                        <span class="font-medium">Delete</span>
-                    </button>
                 </form>
             </li>
         </ul>
@@ -271,6 +302,14 @@
             }
         });
     </script>
-
+    <script>
+        document.addEventListener('click', (e) => {
+            const replyBtn = e.target.closest('.reply-btn');
+            if (replyBtn) {
+                const comment = replyBtn.closest('li');
+                comment.querySelector('.comment-reply-form').classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

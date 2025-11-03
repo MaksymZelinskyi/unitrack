@@ -14,6 +14,8 @@ public class CommentDto {
     private Long id;
     private String text;
     private Long replyTo;
+    private String replyToAuthor;
     private CollaboratorInListDto author;
     private LocalDateTime createdAt;
+
 }

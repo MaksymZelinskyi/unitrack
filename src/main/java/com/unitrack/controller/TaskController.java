@@ -138,12 +138,15 @@ public class TaskController extends AuthenticatedController {
     private List<CommentDto> getTaskCommentsDto(Task task) {
         List<CommentDto> comments = task.getComments()
                 .stream()
-                .map(x ->
-                        new CommentDto(x.getId(), x.getText(), x.getReplyTo() != null ? x.getReplyTo().getId() : -1,
-                                new CollaboratorInListDto(
-                                        x.getAuthor().getId(), x.getAuthor().getFullName(), x.getAuthor().getAvatarUrl()
-                                ), x.getCreatedAt()
-                        )
+                .map(x ->{
+                    Comment replyTo = x.getReplyTo();
+                    String replyToAuthor = replyTo != null ? replyTo.getAuthor().getFirstName() : null;
+                    return new CommentDto(x.getId(), x.getText(), replyTo != null ? replyTo.getId() : null, replyToAuthor,
+                            new CollaboratorInListDto(
+                                    x.getAuthor().getId(), x.getAuthor().getFullName(), x.getAuthor().getAvatarUrl()
+                            ), x.getCreatedAt()
+                    );
+                }
                 ).toList();
         log.debug("Fetched {} comments for task {}", comments.size(), task.getId());
         return comments;
