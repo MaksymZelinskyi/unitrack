@@ -3,77 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link href="/main.css" rel="stylesheet"/>
 </head>
 
 <body>
 
-    <div th:insert="fragments :: header"></div>
+<div th:insert="fragments :: header"></div>
 
-    <div class="flex min-h-screen min-h-screen">
+<div class="layout">
 
+    <!-- Main Section: Projects -->
+    <section class="main">
+        <h1 class="section-title">My Projects</h1>
 
-    <section class="w-full bg-gray-50 py-12 px-4 border-r-4">
-            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12">My Projects</h1>
+        <ul class="project-list">
+            <li th:if="${projects == null || #lists.isEmpty(projects)}" class="empty-text">No projects yet</li>
 
+            <li th:each="project : ${projects}" class="card">
+                <div th:if="${project.status == 'DONE'}" class="project-status done"></div>
+                <div th:if="${project.status == 'PLANNED'}" class="project-status planned"></div>
 
-            <ul class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-                <li th:if="${projects == null || #lists.isEmpty(projects)}">No projects yet</li>
-                <li th:each="project : ${projects}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
-                    <div th:if="${project.status == 'DONE'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-green-500"></div>
-                    <div th:if="${project.status == 'PLANNED'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-gray-500"></div>
+                <a th:href="@{/projects/{id}(id=${project.id})}">
+                    <h4 class="project-title" th:text="${project.title}">Project Name</h4>
+                    <p class="project-desc" th:text="${project.description}">Project description</p>
+                    <div class="project-meta">
+                        <span class="meta-label">Role:</span>
+                        <span th:text="${project.role}">Role name</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </section>
 
-                    <a th:href="@{/projects/{id}(id=${project.id})}">
-                        <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
-                        <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
-                        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Role:</span>
-                            <span th:text="${project.role}"></span>
-                        </div>
-                    </a>
+    <!-- Sidebar: Tasks -->
+    <aside class="sidebar">
+        <h1 class="section-title">Current Tasks</h1>
 
-                </li>
+        <ul class="collab-list">
+            <li th:if="${tasks == null || #lists.isEmpty(tasks)}" class="empty-text">No tasks yet</li>
 
-            </ul>
-        </section>
+            <li th:each="task : ${tasks}" class="collab-card">
+                <a th:href="@{/tasks/{id}(id=${task.id})}">
+                    <h4 class="collab-name" th:text="${task.title}">Task Title</h4>
 
+                    <div class="task-detail">
+                        <h5 class="skills-label">Project</h5>
+                        <p class="task-text" th:text="${task.project}">Project Name</p>
+                    </div>
 
-        <aside class="w-full lg:w-1/4 bg-gray-50 py-12 px-4">
-            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-8">Current Tasks</h1>
+                    <div class="task-detail">
+                        <h5 class="skills-label">Description</h5>
+                        <p class="task-text" th:text="${task.description}">Task description</p>
+                    </div>
 
+                    <div class="task-detail">
+                        <h5 class="skills-label">Deadline</h5>
+                        <span class="task-text" th:text="${#dates.format(task.deadline, 'dd/MM/yyyy')}">01/01/2025</span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </aside>
 
-            <ul class="space-y-6">
-
-                <li th:if="${tasks == null || #lists.isEmpty(tasks)}">No tasks yet</li>
-
-                <li th:each="task : ${tasks}"
-                    class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
-                    <a th:href="@{/tasks/{id}(id=${task.id})}">
-                        <h4 class="text-2xl font-bold text-gray-800 mb-4"
-                            th:text="${task.title}"></h4>
-                        <div class="mb-4">
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Project</h5>
-                            <p class="text-md text-gray-700 mt-1" th:text="${task.project}"></p>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h5>
-                            <p class="text-md text-gray-700 mt-1" th:text="${task.description}"></p>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">deadline</h5>
-                            <span class="text-md text-gray-700 mt-1" th:text="${#dates.format(task.deadline, 'dd/MM/yyyy')}"></span>
-                        </div>
-                    </a>
-                </li>
-
-            </ul>
-        </aside>
-
-    </div>
+</div>
 </body>
 </html>

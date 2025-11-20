@@ -1,92 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="/styles/main.css" type="text/css"/>
 </head>
 <body>
-<header class="sticky top-0 z-50 bg-gray-100 shadow-md py-4 px-6">
-    <div class="max-w-screen-xl mx-auto flex items-center justify-between">
-        <div class="flex items-center space-x-2">
-            <h1 class="text-4xl font-bold text-blue-500">Uni-Track</h1>
+
+<header>
+    <div class="header-container">
+        <div>
+            <h1>Uni-Track</h1>
         </div>
 
-        <h2 class="hidden md:block text-lg text-gray-600 italic">
-            The most complete team-management tool
-        </h2>
+        <h2>The most complete team-management tool</h2>
 
-        <div class="flex space-x-2">
-            <button>
-                <img src="https://wiki2.railml.org/images/b/b8/UK_flag.png" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="EN" />
-            </button>
-            <button>
-                <img src="https://tse2.mm.bing.net/th/id/OIP.mO2EfRE-TxiZgZ20kE6aOwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" class="w-10 h-10 rounded-full border-2 border-blue-500" alt="FR" />
-            </button>
+        <div class="flag-buttons">
+            <button><img src="https://wiki2.railml.org/images/b/b8/UK_flag.png" alt="EN"></button>
+            <button><img src="https://tse2.mm.bing.net/th/id/OIP.mO2EfRE-TxiZgZ20kE6aOwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="FR"></button>
         </div>
-
     </div>
 </header>
-<div class="font-sans">
-        <div class="relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100 ">
-            <div th:if="${param.logout}" class="-mt-9 mb-9">
-                <h3 class="text-red-600">You were logged out. Log in again to keep using the app</h3>
-            </div>
-            <div class="relative sm:max-w-sm w-full">
 
-                <div class="card bg-yellow-400 shadow-lg  w-full h-full rounded-3xl absolute  transform -rotate-6"></div>
-                <div class="card bg-blue-400 shadow-lg  w-full h-full rounded-3xl absolute  transform rotate-6"></div>
-                <div class="relative w-full rounded-3xl  px-6 py-4 bg-gray-100 shadow-md">
-                    <label class="block mt-3 text-sm text-gray-700 text-center font-semibold">
-                        Login
-                    </label>
+<div class="page">
 
-                    <form method="post" th:action="@{/process-login}" class="mt-10">
-
-                        <div>
-                            <input name="username" type="email" placeholder=" Email" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"/>
-                        </div>
-
-                        <div class="mt-7">
-                            <input name="password" type="password" placeholder=" Password" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"/>
-                        </div>
-
-                        <div class="mt-7 flex">
-
-                            <div class="w-full text-right">
-                                <a th:href="@{/forgot-password}" class="underline text-sm text-gray-600 hover:text-gray-900">
-                                    Forgot your password?
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="mt-7">
-                            <button type="submit" class="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
-                                Login
-                            </button>
-                        </div>
-
-                        <div class="mt-7">
-                            <div class="flex justify-center items-center">
-                                <label class="mr-2" >No account?</label>
-                                <h5 class="text-gray-500">
-                                    Ask your employer for credentials
-                                </h5>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div th:if="${param.error}" class="mt-9">
-                <h3 class="text-red-600">Wrong credentials</h3>
-            </div>
-
-        </div>
-
+    <div th:if="${param.logout}" class="logout-text">
+        You were logged out. Log in again to keep using the app
     </div>
+
+    <div class="login-wrapper">
+        <div class="card-bg yellow-card"></div>
+        <div class="card-bg blue-card"></div>
+
+        <div class="login-card">
+            <label>Login</label>
+
+            <form method="post" th:action="@{/process-login}">
+                <input name="username" type="email" placeholder="Email" class="input">
+                <input name="password" type="password" placeholder="Password" class="input">
+
+                <div class="forgot">
+                    <a th:href="@{/forgot-password}">Forgot your password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+
+                <div class="no-account">
+                    <span>No account?</span>
+                    <h5>Ask your employer for credentials</h5>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div th:if="${param.error}" class="error-text">
+        Wrong credentials
+    </div>
+
+</div>
 
 </body>
 </html>

@@ -1,117 +1,89 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Update Task</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+
 <div th:insert="fragments :: header"></div>
 
-<h1
-        class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12 mt-5"
->
-    Update Task
-</h1>
+<h1 class="task-title-heading">Update Task</h1>
 
-<form
-        class="flex flex-col md:flex-row gap-8 p-6"
-        th:action="@{/tasks/{id}(id=${task.id})}"
-        th:object="${task}"
-        method="post"
->
-    <div class="flex flex-col gap-4 p-4 max-w-xl">
-        <input type="hidden" name="_method" value="put" />
+<form class="form-layout"
+      th:action="@{/tasks/{id}(id=${task.id})}"
+      th:object="${task}"
+      method="post">
+
+    <div class="form-left-column">
+        <input type="hidden" name="_method" value="put"/>
 
         <label for="title">Task title</label>
-        <input
-                th:field="*{title}"
-                id="title"
-                type="text"
-                class="p-2 border rounded"
-                required maxlength="255"
-        />
+        <input th:field="*{title}"
+               id="title"
+               type="text"
+               class="input-field"
+               required maxlength="255"/>
 
         <label for="description">Task description</label>
-        <input
-                th:field="*{description}"
-                id="description"
-                type="text"
-                class="p-2 border rounded"
-                maxlength="255"
-        />
+        <input th:field="*{description}"
+               id="description"
+               type="text"
+               class="input-field"
+               maxlength="255"/>
 
         <label for="deadline">Deadline</label>
-        <input
-                th:field="*{deadline}"
-                id="deadline"
-                type="datetime-local"
-                class="p-2 border rounded"
-                required
-        />
+        <input th:field="*{deadline}"
+               id="deadline"
+               type="datetime-local"
+               class="input-field"
+               required/>
 
-        <label class="block font-semibold">Add Collaborator</label>
-        <select
-                id="collabPicker"
-                class="border rounded p-2"
-                onchange="addAssignee(this)"
-        >
+        <label class="label-strong">Add Collaborator</label>
+        <select id="collabPicker"
+                class="select-field"
+                onchange="addAssignee(this)">
             <option value="" disabled selected>Select a collaborator</option>
-            <option
-                    th:each="collaborator : ${collaborators}"
+            <option th:each="collaborator : ${collaborators}"
                     th:value="${collaborator.id}"
-                    th:text="${collaborator.name}"
-            ></option>
+                    th:text="${collaborator.name}">
+            </option>
         </select>
 
-        <button
-                type="submit"
-                class="mt-4 bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
+        <button type="submit" class="submit-button">
             Submit
         </button>
     </div>
 
-    <!-- RIGHT: Current Assignees -->
-    <div class="flex-1 p-4 bg-white rounded-xl shadow-md">
-        <label class="block text-lg font-semibold text-gray-700 mb-4">
+    <div class="assignees-panel">
+        <label class="current-assignees-label">
             Current Assignees
         </label>
 
-        <div id="assignees-list" class="space-y-2">
-            <!-- Pre-existing assignees rendered by Thymeleaf -->
-            <div class="assignee flex items-center gap-3 p-2 border rounded-lg bg-gray-50"
+        <div id="assignees-list" class="assignee-list">
+            <div class="assignee"
                  th:each="assignee, iterStat : ${assignees}"
                  th:attr="data-id=${assignee.id}">
 
-                <button
-                        type="button"
-                        class="p-1 rounded-full hover:bg-red-100 remove-btn"
-                >
-                    <img
-                            src="https://pngimg.com/uploads/minus/minus_PNG34.png"
-                            alt="Remove"
-                            class="w-4 h-4"
-                    />
+                <button type="button"
+                        class="remove-btn"
+                        aria-label="Remove">
+                    <img src="https://pngimg.com/uploads/minus/minus_PNG34.png"
+                         alt="Remove"
+                         class="remove-icon"/>
                 </button>
 
-                <span
-                        class="text-gray-800 font-medium"
-                        th:text="${assignee.name}"
-                ></span>
+                <span class="assignee-name"
+                      th:text="${assignee.name}"></span>
 
-                <input
-                        type="hidden"
-                        th:name="assignees[__${iterStat.index}__].id"
-                        th:value="${assignee.id}"
-                />
-
+                <input type="hidden"
+                       th:name="assignees[__${iterStat.index}__].id"
+                       th:value="${assignee.id}"/>
             </div>
         </div>
     </div>
+
 </form>
 
 <script>
@@ -120,37 +92,28 @@
         const id = selectEl.value;
         if (!id) return;
 
-        // Get collaborator name (the text of selected option)
         const name = selectEl.options[selectEl.selectedIndex].text;
 
-        // Prevent duplicates
         if (list.querySelector(`[data-id="${CSS.escape(id)}"]`)) {
             selectEl.value = '';
             return;
         }
 
-        // Create the assignee row
         const row = document.createElement('div');
-        row.className = 'assignee flex items-center gap-2 p-2 border rounded bg-gray-50';
+        row.className = 'assignee';
         row.dataset.id = id;
 
         row.innerHTML = `
-            <button type="button" class="remove-btn px-2 text-red-600" aria-label="Remove">✕</button>
-            <span class="font-medium">${name}</span>
+            <button type="button" class="remove-btn" aria-label="Remove">✕</button>
+            <span class="assignee-name">${name}</span>
             <input type="hidden" name="assignees[0].id" value="${id}">
         `;
 
-        // Append the new assignee to the list
         list.appendChild(row);
-
-        // Reindex all assignees to maintain proper names
         reindexAssignees();
-
-        // Reset dropdown
         selectEl.value = '';
     }
 
-    // Reindex all assignee inputs (so Spring can bind correctly)
     function reindexAssignees() {
         const list = document.getElementById('assignees-list');
         list.querySelectorAll('.assignee').forEach((row, i) => {
@@ -159,14 +122,13 @@
         });
     }
 
-    // Remove button behavior (event delegation)
     document.addEventListener('click', e => {
         if (e.target.closest('.remove-btn')) {
-            const row = e.target.closest('.assignee');
-            row.remove();
+            e.target.closest('.assignee').remove();
             reindexAssignees();
         }
     });
 </script>
+
 </body>
 </html>

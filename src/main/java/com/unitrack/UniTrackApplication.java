@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-@EnableWebMvc
+//@EnableWebMvc
 @EnableWebSecurity
 @EnableMethodSecurity
 @Slf4j

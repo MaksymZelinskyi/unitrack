@@ -1,0 +1,143 @@
+/* --- Form Container --- */
+.task-form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .task-form-container {
+    flex-direction: row;
+  }
+}
+
+.task-form-left,
+.task-form-right {
+  flex: 1;
+}
+
+/* --- Input Form Section --- */
+.task-form-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+}
+
+
+/* ---------- Task Cards ---------- */
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+    background: #f3f4f6;
+}
+
+.task-completed {
+    border-color: #86efac !important;
+}
+
+.task-info {
+    flex: 1;
+}
+
+.task-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2563eb;
+}
+
+.task-desc {
+    color: #4b5563;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.task-deadline {
+    text-align: right;
+    min-width: 130px;
+}
+
+
+/* Task wrapper inside sidebar */
+.task-detail {
+    margin-bottom: 0.75rem; /* spacing between details */
+}
+
+/* Text inside task-detail */
+.task-text {
+    color: #4b5563; /* gray-700 equivalent */
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+
+/* Colors */
+.todo-title { color: #d9534f; }
+.inprogress-title { color: #f0ad4e; }
+.done-title { color: #5cb85c; }
+
+/* Task card */
+.task-wrapper { min-width: 18rem; }
+
+/* Top borders for categories */
+.task-border-todo { border-top: 4px solid #f36c6c; }
+.task-border-inprogress { border-top: 4px solid #ffce54; }
+.task-border-done { border-top: 4px solid #5cb85c; }
+
+/* Buttons */
+.task-edit-btn,
+.task-delete-btn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 8px;
+}
+
+.task-edit-btn { left: 8px; }
+.task-delete-btn { right: 8px; }
+.task-edit-btn img,
+.task-delete-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Text */
+.task-link { display: block; margin-top: 24px; text-decoration: none; }
+.task-title { font-size: 1.4rem; font-weight: 600; color: #1d4ed8; }
+.task-desc { font-size: 1.1rem; margin-top: 8px; color: #555; }
+
+.task-info {
+    border-top: 1px solid #ddd;
+    padding-top: 12px;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-size: .9rem;
+}
+.task-info-label { font-weight: 600; }
+
+.task-title-heading {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2e7d32;
+    text-align: center;
+    margin: 30px 0;
+}

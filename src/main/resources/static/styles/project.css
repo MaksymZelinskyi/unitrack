@@ -1,0 +1,186 @@
+/* ----------------------------------------------------------
+   PROJECT GRID
+---------------------------------------------------------- */
+
+.project-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.project-list {
+    display: contents;
+}
+
+.card {
+    background: white;
+    padding: 1.8rem;
+    border-radius: 16px;
+    border: 1px solid #dedede;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+/* Add project card */
+
+.add-project {
+    text-align: center;
+    justify-content: center;
+    color: #555;
+}
+
+.add-project img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+.add-project p {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Project status strip */
+
+.project-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 6px;
+    width: 100%;
+    border-radius: 16px 16px 0 0;
+}
+
+.project-status.done {
+    background: #22c55e;
+}
+.project-status.planned {
+    background: #6b7280;
+}
+
+/* Project text */
+
+.project-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.project-desc {
+    margin-top: 0.6rem;
+    color: #666;
+    line-height: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.project-meta {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e4e4e4;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+}
+
+.meta-label {
+    font-weight: 600;
+}
+
+
+/* ---------- Projects Section ---------- */
+
+.projects-section {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.projects-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1d4ed8;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+/* ---------- Project Cards ---------- */
+.card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    border-top: 4px solid #3b82f6;
+    padding: 1.5rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    gap: 10px;
+}
+
+.project-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.project-meta {
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-style: italic;
+}
+
+
+/* Project rows */
+.project-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.project-row:hover {
+  background: #f3f4f6;
+}
+
+.project-name {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+/* Colors */
+.todo-title { color: #d9534f; }
+.inprogress-title { color: #f0ad4e; }
+.done-title { color: #5cb85c; }
+
+/* Task card */
+.project-wrapper { min-width: 18rem; }
