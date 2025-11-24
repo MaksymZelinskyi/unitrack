@@ -19,16 +19,15 @@
         </a>
 
         <h1 class="section-title">My Projects</h1>
-
-        <div class="project-grid">
-
-            <!-- Add Project card -->
+        <div class="project-grid-wrapper">
+            <!-- Left: Add Project button -->
             <a class="card add-project" th:href="@{/projects/new}">
                 <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Project"/>
                 <p>Add New Project</p>
             </a>
 
-            <ul class="project-list">
+            <!-- Right: Project list in two columns -->
+            <ul class="project-list two-columns">
                 <li th:if="${projects == null || #lists.isEmpty(projects)}" class="empty-text">
                     No projects yet
                 </li>
@@ -48,8 +47,9 @@
                     </a>
                 </li>
             </ul>
-
         </div>
+
+
     </section>
 
 

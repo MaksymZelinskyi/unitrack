@@ -54,10 +54,6 @@
     border-color: #86efac !important;
 }
 
-.task-info {
-    flex: 1;
-}
-
 .task-title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -73,6 +69,9 @@
 .task-deadline {
     text-align: right;
     min-width: 130px;
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
 }
 
 
@@ -140,4 +139,16 @@
     color: #2e7d32;
     text-align: center;
     margin: 30px 0;
+}
+
+.task-card {
+    position: relative;
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    color: #444;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: box-shadow .2s ease;
+    width: 450px;
+    height: 200px;
 }

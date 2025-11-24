@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${collaborator.fullName}"></title>
-    <link th:href="@{/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="/styles/main.css"/>
 </head>
 <body class="profile-body">
 
@@ -31,28 +31,30 @@
     <section class="projects-section">
         <h2 class="projects-title">Projects & Tasks</h2>
 
-        <ul class="project-list">
-            <li th:each="project : ${projects}" class="card">
+        <ul class="project-list two-columns">
+            <li th:each="project : ${projects}" class="project-card">
                 <div class="project-header">
                     <h3 class="project-name" th:text="${project.title}">Project Name</h3>
                     <span class="project-meta" th:text="'Role: ' + ${project.role}">Role</span>
                     <span class="project-meta" th:text="'Tasks: ' + ${#lists.size(project.tasks)}">Tasks count</span>
                 </div>
 
-                <ul class="task-list">
-                    <li th:each="task : ${project.tasks}"
-                        class="card"
-                        th:classappend="${task.completed ? 'task-completed' : ''}">
-                        <div class="task-info">
-                            <h4 class="task-title" th:text="${task.title}">Task Title</h4>
-                            <p class="task-desc" th:text="${task.description}">Task description</p>
-                        </div>
-                        <div class="task-deadline">
-                            <span class="time-label">Deadline:</span>
-                            <span class="date" th:text="${task.deadline}">2025-10-15</span>
-                        </div>
-                    </li>
-                </ul>
+                <aside class="sidebar">
+                    <ul class="task-list">
+                        <li th:each="task : ${project.tasks}"
+                            class="task-card"
+                            th:classappend="${task.completed ? 'task-completed' : ''}">
+                            <h4 class="task-title task-info-label" th:text="${task.title}">Task Title</h4>
+                            <div class="task-info">
+                                <p class="task-desc" th:text="${task.description}">Task description</p>
+                            </div>
+                            <div class="task-deadline">
+                                <span class="time-label">Deadline:</span>
+                                <span class="date" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">2025-10-15</span>
+                            </div>
+                        </li>
+                    </ul>
+                </aside>
             </li>
         </ul>
     </section>

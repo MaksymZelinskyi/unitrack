@@ -3,38 +3,27 @@
 <head>
     <meta charset="UTF-8" />
     <title>Error</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="/styles/error.css"/>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gray-100 relative overflow-hidden">
-<!-- BIG BACKGROUND ERROR CODE -->
-<div
-        class="absolute inset-0 flex items-center justify-center text-gray-200 font-extrabold text-[25rem] select-none pointer-events-none"
-        th:text="${errorCode}"
->
+<body class="page">
+
+<!-- Background giant code -->
+<div class="error-bg" th:text="${errorCode}">
     500
 </div>
 
-<!-- FOREGROUND CARD -->
-<div class="relative bg-white shadow-2xl rounded-2xl p-10 max-w-md text-center z-10">
-    <h1 class="text-4xl font-extrabold text-red-600 mb-4">Oops! Something went wrong</h1>
-    <h2 class="text-gray-700 text-lg mb-6" th:text="${message}">
-    </h2>
+<!-- Foreground content -->
+<div class="error-card">
+    <h1 class="error-title">Oops! Something went wrong</h1>
+    <h2 class="error-message" th:text="${message}"></h2>
 
     <img
             src="https://d2yoo3qu6vrk5d.cloudfront.net/pulzo-lite/images-resized/PP2698773A-h-o.webp"
             alt="Error illustration"
-            class="w-64 mx-auto rounded-lg shadow-md mb-6"
+            class="error-img"
     />
 
-    <a
-            href="/"
-            class="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 active:scale-95 transition-transform duration-200"
-    >
-        Go Back Home
-    </a>
+    <a href="/" class="home-btn">Go Back Home</a>
 </div>
 </body>
 </html>

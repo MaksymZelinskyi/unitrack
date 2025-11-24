@@ -3,53 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link href="/styles/main.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/styles/main.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div th:insert="fragments :: header"></div>
+<div th:insert=" fragments :: header"></div>
 
     <h1 class="page-title">Statistics</h1>
 
-    <section class="main-section">
+    <section class="stats-section">
 
         <!-- Stats card -->
-        <div class="card">
-            <h2 class="text-lg font-semibold mb-3">Overview</h2>
-            <dl class="space-y-2 text-sm">
-                <div class="desc">
+        <div class="stats-card">
+            <h2 class="label">Overview</h2>
+            <dl class="stats-lines">
+                <div class="stats-data">
                     <dt>Total projects:</dt>
                     <dd th:text="${stats.projects.total}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Active projects:</dt>
                     <dd th:text="${stats.projects.active}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Completed projects:</dt>
                     <dd th:text="${stats.projects.completed}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Project deadlines (next month):</dt>
                     <dd th:text="${stats.projects.deadlines}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Total tasks:</dt>
                     <dd th:text="${stats.tasks.total}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Completed tasks:</dt>
                     <dd th:text="${stats.tasks.completed}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Tasks in time:</dt>
                     <dd th:text="${stats.tasks.inTime}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Overdue tasks:</dt>
                     <dd th:text="${stats.tasks.overdue}"></dd>
                 </div>
-                <div class="desc">
+                <div class="stats-data">
                     <dt>Task deadlines (next month):</dt>
                     <dd th:text="${stats.tasks.deadlines}"></dd>
                 </div>

@@ -3,10 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></title>
-        <link
-                href="/styles/main.css"
-                rel="stylesheet"
-        />
+        <link rel="stylesheet" href="/styles/main.css"/>
     </head>
     <body>
         <div th:insert="fragments :: header"></div>
