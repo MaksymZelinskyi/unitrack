@@ -16,7 +16,7 @@
     <section class="main">
         <h1 class="section-title">My Projects</h1>
 
-        <ul class="project-list">
+        <ul class="project-list two-columns">
             <li th:if="${projects == null || #lists.isEmpty(projects)}" class="empty-text">No projects yet</li>
 
             <li th:each="project : ${projects}" class="card">
@@ -47,18 +47,18 @@
                     <h4 class="collab-name" th:text="${task.title}">Task Title</h4>
 
                     <div class="task-detail">
-                        <h5 class="skills-label">Project</h5>
+                        <h5 class="label">Project</h5>
                         <p class="task-text" th:text="${task.project}">Project Name</p>
                     </div>
 
                     <div class="task-detail">
-                        <h5 class="skills-label">Description</h5>
+                        <h5 class="label">Description</h5>
                         <p class="task-text" th:text="${task.description}">Task description</p>
                     </div>
 
                     <div class="task-detail">
-                        <h5 class="skills-label">Deadline</h5>
-                        <span class="task-text" th:text="${#dates.format(task.deadline, 'dd/MM/yyyy')}">01/01/2025</span>
+                        <h5 class="date-label">Deadline</h5>
+                        <span class="date" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">01/01/2025</span>
                     </div>
                 </a>
             </li>

@@ -12,6 +12,6 @@ public class ProjectParticipationDto {
     private Long id;
     private String title;
     private String description;
-    private Set<String> roles;
+    private String role;
     private String status;
 }

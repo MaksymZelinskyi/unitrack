@@ -185,3 +185,10 @@ h2 {
     font-style: italic;
     color: rgb(107,114,128);
 }
+
+.container {
+               display: flex;
+               justify-content: center; /* Centers horizontally */
+               align-items: center;    /* Centers vertically */
+               height: 100vh;          /* Full viewport height */
+               }

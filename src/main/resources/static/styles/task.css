@@ -35,21 +35,6 @@
     gap: 0.75rem;
 }
 
-.card {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1rem;
-    transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.card:hover {
-    background: #f3f4f6;
-}
-
 .task-completed {
     border-color: #86efac !important;
 }
@@ -73,7 +58,6 @@
     bottom: 12px;
     right: 12px;
 }
-
 
 /* Task wrapper inside sidebar */
 .task-detail {
@@ -142,13 +126,42 @@
 }
 
 .task-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px solid #e2e2e2;
+    padding: 2rem;
+    width: 90%;
+    height: 60%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.07);
     position: relative;
-    background: white;
-    padding: 32px;
-    border-radius: 16px;
-    color: #444;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: box-shadow .2s ease;
-    width: 450px;
-    height: 200px;
+}
+
+/* --- Comments badge --- */
+.counter {
+    position: absolute;
+    right: 24px;
+    top: 22px;
+    text-align: right;
+}
+
+.task-comment-link {
+    display: flex;
+    gap: .4rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.task-comment-link .label {
+    font-size: .95rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.goto {
+    font-size: .85rem;
+    color: #1e40af;
+    text-decoration: none;
 }

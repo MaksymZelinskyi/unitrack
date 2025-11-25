@@ -9,13 +9,13 @@
     <div th:insert="fragments :: header"></div>
     <div class="layout">
         <!-- Card -->
-        <div class="card">
+        <div class="task-card flex-col">
 
             <!-- Comments Counter (top-right) -->
-            <div class="absolute top-5 right-5 bg-blue-50 border border-blue-200 rounded-xl px-5 py-3 flex flex-col items-center gap-2 shadow-sm hover:shadow-md transition-all duration-300">
-                <div class="flex items-baseline gap-1 text-blue-700 font-semibold">
-                    <h6 th:text="${comments.size()}" class="text-3xl leading-none"></h6>
-                    <p th:text="${'comment' + (comments.size() == 1 ? '' : 's')}" class="text-gray-600 text-sm font-medium">comments</p>
+            <div class="counter">
+                <div class="task-comment-link">
+                    <h6 th:text="${comments.size()}" class="label"></h6>
+                    <p th:text="${'comment' + (comments.size() == 1 ? '' : 's')}" class="label">comments</p>
                 </div>
                 <a href="#comments"
                    class="goto">
@@ -33,89 +33,85 @@
             </div>
 
             <!-- Deadline -->
-            <div class="flex justify-between items-center border-b py-4">
+            <div>
                 <span class="date-label">Deadline:</span>
                 <span class="date" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
             </div>
+        </div>
 
-            <!-- Assignees -->
-            <div class="section">
-                <label class="section-title">Assignees</label>
+        <!-- Scrollable list -->
+        <aside class="sidebar">
+            <label class="section-title">Assignees</label>
+            <ul class="collab-list">
+                <li th:if="${task.assignees == null || #lists.isEmpty(task.assignees)}"
+                    class="desc">Nobody assigned</li>
 
-                <!-- Scrollable list -->
-                <aside class="sidebar">
-                    <ul class="collab-list">
-                        <li th:if="${task.assignees == null || #lists.isEmpty(task.assignees)}"
-                            class="desc">Nobody assigned</li>
+                <li th:each="assignee : ${task.assignees}">
+                    <img alt="Profile Picture"
+                         class="avatar"
+                         th:src="${assignee.avatarUrl}"/>
 
-                        <li th:each="assignee : ${task.assignees}">
-                            <img alt="Profile Picture"
-                                 class="avatar"
-                                 th:src="${assignee.avatarUrl}"/>
+                    <div class="flex-col">
+                        <span class="desc" th:text="${assignee.name}"></span>
+                        <span class="desc" th:text="${assignee.role}"></span>
+                    </div>
+                </li>
+            </ul>
+        </aside>
 
-                            <div class="flex-col">
-                                <span class="desc" th:text="${assignee.name}"></span>
-                                <span class="desc" th:text="${assignee.role}"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </aside>
-            </div>
+        <!-- Action Buttons -->
+        <div>
+            <!-- Delete -->
+            <form method="post"
+                  th:action="@{/tasks/{id}(id=${task.id})}"
+                  th:if="${canDelete}">
+                <input name="_method" type="hidden" value="delete">
+                <button
+                        class="remove-btn">
+                    <img alt="Delete" class="w-5 h-5"
+                         src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                    <span class="font-medium">Delete</span>
+                </button>
+            </form>
 
-            <!-- Action Buttons -->
-            <div>
-                <!-- Delete -->
-                <form method="post"
-                      th:action="@{/tasks/{id}(id=${task.id})}"
-                      th:if="${canDelete}">
-                    <input name="_method" type="hidden" value="delete">
-                    <button
-                            class="remove-btn">
-                        <img alt="Delete" class="w-5 h-5"
-                             src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
-                        <span class="font-medium">Delete</span>
-                    </button>
-                </form>
+            <!-- Modify -->
+            <form method="get"
+                  th:action="@{/tasks/update/{id}(id=${task.id})}"
+                  th:if="${canUpdate}">
+                <button
+                        class="task-edit-btn">
+                    <img alt="Modify" class="w-5 h-5"
+                         src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                    <span class="font-medium">Modify</span>
+                </button>
+            </form>
 
-                <!-- Modify -->
-                <form method="get"
-                      th:action="@{/tasks/update/{id}(id=${task.id})}"
-                      th:if="${canUpdate}">
-                    <button
-                            class="task-edit-btn">
-                        <img alt="Modify" class="w-5 h-5"
-                             src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
-                        <span class="font-medium">Modify</span>
-                    </button>
-                </form>
-
-                <!-- Complete Toggle -->
-                <form method="post"
-                      th:action="@{/tasks/complete/{id}(id=${task.id})}"
-                      th:if="${canUpdate}">
-                    <label class="toggle-label">
-                        <span>Mark as completed</span>
-                        <div class="toggle-wrapper">
-                            <input
-                                    aria-label="Mark as completed"
-                                    class="toggle-input"
-                                    id="completed"
-                                    name="completed"
-                                    onclick="this.form.submit()"
-                                    th:checked="${task.status == 'DONE'}"
-                                    type="checkbox">
-                            <div class="toggle-bg"></div>
-                            <div class="toggle-ball"
-                                 th:classappend="${task.status == 'DONE'} ? 'translate-x-6 bg-green-500' : ''"></div>
-                        </div>
-                    </label>
-                </form>
-            </div>
+            <!-- Complete Toggle -->
+            <form method="post"
+                  th:action="@{/tasks/complete/{id}(id=${task.id})}"
+                  th:if="${canUpdate}">
+                <label class="toggle-label">
+                    <span>Mark as completed</span>
+                    <div class="toggle-wrapper">
+                        <input
+                                aria-label="Mark as completed"
+                                class="toggle-input"
+                                id="completed"
+                                name="completed"
+                                onclick="this.form.submit()"
+                                th:checked="${task.status == 'DONE'}"
+                                type="checkbox">
+                        <div class="toggle-bg"></div>
+                        <div class="toggle-ball"
+                             th:classappend="${task.status == 'DONE'} ? 'translate-x-6 bg-green-500' : ''"></div>
+                    </div>
+                </label>
+            </form>
         </div>
     </div>
     <!-- 💬 Comments Section -->
-    <div>
-
+    <div class="container">
+    <div style="width: 90%;">
         <!-- 📝 Add Comment Form -->
         <form th:action="@{/tasks/comments?taskId={taskId}(taskId=${task.id})}" method="post" th:object="${commentForm}"
               class="comment-form">
@@ -144,7 +140,7 @@
             </li>
 
             <!-- Each Comment -->
-            <li th:each="comment : ${comments}">
+            <li th:each="comment : ${comments}" class="container">
                  <div th:id="'comment' + ${comment.id}" class="comment-card">
                     <!-- 🧑‍💻 Author Header -->
                     <div>
@@ -246,6 +242,7 @@
                 </form>
             </li>
         </ul>
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>

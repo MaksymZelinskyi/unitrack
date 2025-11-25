@@ -11,6 +11,9 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
@@ -48,23 +53,25 @@ public class HomeController extends AuthenticatedController {
         Collaborator collaborator = collaboratorRepository
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
+        Set<ProjectParticipationDto> projects = collaborator.getProjects()
+                .stream()
+                .map(x -> {
+                    Project project = x.getProject();
+                    return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(), x.getRoles()
+                            .stream()
+                            .map(Role::toString)
+                            .findFirst().orElse(""), project.getStatus().name());
+                })
+                .collect(Collectors.toSet());
+        log.debug("{} projects extracted for collaborator {}", projects.size(), collaborator.getFirstName());
         model.addAttribute(
-                "projects",
-                collaborator.getProjects()
-                        .stream()
-                        .map(x -> {
-                            Project project = x.getProject();
-                            return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(), x.getRoles()
-                                    .stream()
-                                    .map(Role::toString)
-                                    .collect(Collectors.toSet()), project.getStatus().name());
-                        })
-                        .collect(Collectors.toSet())
-        );
-        model.addAttribute("tasks", taskRepository.findAllByAssigneesContains(collaborator)
+                "projects", projects);
+        Set<CollaboratorTaskDto> tasks = taskRepository.findAllByAssigneesContains(collaborator)
                 .stream()
                 .map(x -> new CollaboratorTaskDto(x.getId(), x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet());
+        log.debug("{} tasks extracted for collaborator {}", tasks.size(), collaborator.getFirstName());
+        model.addAttribute("tasks", tasks);
         return "home";
     }
 
