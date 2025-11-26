@@ -2,69 +2,91 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px 12px;         /* smaller padding */
+    padding: 6px 14px;
     background: #ffffff;
     border-bottom: 1px solid #ddd;
-    height: 96px;              /* force a compact height */
+    height: 100px;
     box-sizing: border-box;
 }
 
-.header-container img {
-    height: 28px;              /* shrink logo/icon if needed */
-}
-
-/* Left Section */
-.header-left {
-    display: flex;
-    align-items: center;
-}
-
+/* Title */
 .header-title {
-    font-size: 28px;
-    font-weight: bold;
-    color: #2a6ec6;
+    font-size: 22px;       /* smaller */
+    font-weight: 700;
     margin: 0;
-}
-
-.header-title a {
-    color: inherit;
-    text-decoration: none;
 }
 
 /* Subtitle */
 .header-subtitle {
-    font-size: 15px;
-    font-style: italic;
-    color: #777;
+    font-size: 13px;       /* noticeably smaller */
+    color: #666;
     margin: 0;
+    opacity: 0.9;
+}
+
+/* Profile container */
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 14px;
+    text-decoration: none;
+    color: inherit;
+    transform: scale(0.92); /* slightly smaller */
+}
+
+.avatar-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #2a6ec6;   /* blue circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Text beside avatar */
+.profile-text h3 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.profile-text p {
+    font-size: 11px;
+    color: #888;
+    margin: 0;
+    line-height: 1.2;
 }
 
 /* Logout button */
-.logout-wrapper {
-    margin-right: 20px;
-}
-
 .logout-button {
     background: #3399FF;
     border: none;
-    padding: 10px 18px;
-    border-radius: 14px;
+    padding: 7px 12px;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    transition: transform 0.2s ease;
-}
-
-.logout-button:hover {
-    transform: scale(1.02);
-}
-
-.logout-button:active {
-    transform: scale(0.97);
 }
 
 .logout-icon {
-    width: 20px;
-    height: 20px;
+    width: 17px;
+    height: 17px;
     color: white;
+}
+
+/* Sticky behavior */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
 }
