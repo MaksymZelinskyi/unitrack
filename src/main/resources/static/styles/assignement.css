@@ -1,0 +1,71 @@
+.assignee-label {
+  display: block;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.assignees-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* --- Individual Assignee --- */
+.assignee {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.assignee:hover {
+  background: #f3f4f6;
+}
+
+.assignees-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* ASSIGNEE ROW */
+.assignee-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #f7f7f7;
+    border-radius: 8px;
+}
+
+.assignee-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.current-assignees-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.assignee-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.selected-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

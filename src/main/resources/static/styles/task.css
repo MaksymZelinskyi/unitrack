@@ -165,3 +165,14 @@
     color: #1e40af;
     text-decoration: none;
 }
+
+.add-task-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+}
+
+.add-task-text {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
