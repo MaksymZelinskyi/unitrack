@@ -32,17 +32,17 @@
         <h2 class="projects-title">Projects & Tasks</h2>
 
         <ul class="project-list two-columns">
-            <li th:each="project : ${projects}" class="project-card">
+            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
                 <div class="project-header">
                     <h3 class="project-name" th:text="${project.title}">Project Name</h3>
                     <span class="project-meta" th:text="'Role: ' + ${project.role}">Role</span>
                     <span class="project-meta" th:text="'Tasks: ' + ${#lists.size(project.tasks)}">Tasks count</span>
                 </div>
 
-                <aside class="sidebar">
+                <aside class="sidebar" style="height: 90%; width: 90%;">
                     <ul class="task-list">
                         <li th:each="task : ${project.tasks}"
-                            class="task-card"
+                            class="task-card flex-col" style="width: 90%;"
                             th:classappend="${task.completed ? 'task-completed' : ''}">
                             <h4 class="task-title task-info-label" th:text="${task.title}">Task Title</h4>
                             <div class="task-info">

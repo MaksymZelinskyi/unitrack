@@ -209,7 +209,7 @@ h2 {
 
 .sidebar {
     width: 300px;             /* fixed width */
-    height: 70%;            /* fixed height */
+    height: 85vh;            /* fixed height */
     padding: 1rem;
     background: #f9f9f9;
     border-radius: 14px;
@@ -220,7 +220,6 @@ h2 {
     flex-direction: column;
     gap: 1rem;
 }
-
 
 /* Main layout */
 .page {
