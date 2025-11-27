@@ -14,7 +14,7 @@
     <!-- MAIN SECTION -->
     <section class="main">
 
-        <a class="stats-button" th:href="@{/statistics}">
+        <a class="stats-btn" th:href="@{/statistics}">
             View Stats
         </a>
 
@@ -32,7 +32,7 @@
                     No projects yet
                 </li>
 
-                <li class="card" th:each="project : ${projects}">
+                <li th:each="project : ${projects}" class="project-card">
                     <div class="project-status done" th:if="${project.status == 'DONE'}"></div>
                     <div class="project-status planned" th:if="${project.status == 'PLANNED'}"></div>
 
