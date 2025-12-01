@@ -2,7 +2,7 @@
    SIDEBAR — TEAM MEMBERS
 ---------------------------------------------------------- */
 
-.collab-list {
+.vertical-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;

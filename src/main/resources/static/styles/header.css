@@ -9,16 +9,8 @@
     box-sizing: border-box;
 }
 
-/* Title */
-.header-title {
-    font-size: 22px;       /* smaller */
-    font-weight: 700;
-    margin: 0;
-}
-
 /* Subtitle */
-.header-subtitle {
-    font-size: 13px;       /* noticeably smaller */
+.header-subtitle {      /* noticeably smaller */
     color: #666;
     margin: 0;
     opacity: 0.9;
@@ -76,11 +68,13 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    width: 40px;
+    height: 40px;
 }
 
 .logout-icon {
-    width: 17px;
-    height: 17px;
+    width: 27px;
+    height: 27px;
     color: white;
 }
 

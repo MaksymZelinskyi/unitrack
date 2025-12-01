@@ -18,8 +18,8 @@
 
 body {
     margin: 0;
-    font-family: sans-serif;
     background: #f3f3f3;
+    font-family: "IBM Plex Sans", "Inter", sans-serif;
 }
 
 .placeholder {
@@ -140,7 +140,7 @@ body {
 }
 
 .toggle-input:checked ~ .toggle-bg {
-    background-color: #22c55e;
+    background-color: #bdbdbd;
 }
 
 h1 {
@@ -299,7 +299,7 @@ ul {
     justify-content: center;
 }
 
-/* Main content (projects) */
+/* Main content */
 .main {
     flex: 1;
     padding: 2rem 3rem;
@@ -529,6 +529,7 @@ ul {
 }
 
 .two-columns {grid-template-columns: 1fr 1fr;}
+.three-columns {grid-template-columns: 1fr 1fr 1fr;}
 
 .flex-row {
     display: flex;
@@ -538,3 +539,14 @@ ul {
     display: flex;
     flex-direction: column;
 }
+
+html {
+    font-size: 16px;
+}
+
+h1 { font-size: 2.2rem; font-weight: 700;}
+h2 { font-size: 1.8rem; font-weight: 600;}
+h3 { font-size: 1.5rem; font-weight: 600;}
+h4 { font-size: 1.25rem; font-weight: 500;}
+p  { font-size: 1rem;   font-weight: 400;}
+small { font-size: .85rem; color: #666;}

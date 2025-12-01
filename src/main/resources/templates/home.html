@@ -15,55 +15,69 @@
     <!-- Main Section: Projects -->
     <section class="main">
         <h1 class="section-title">My Projects</h1>
+        <div class="project-grid-wrapper">
+            <ul class="project-list three-columns">
+                <li th:each="project : ${projects}" class="project-card">
 
-        <ul class="project-list two-columns">
-            <li th:if="${projects == null || #lists.isEmpty(projects)}" class="empty-text">No projects yet</li>
+                    <div class="project-status"
+                         th:classappend="|${project.status.toLowerCase()}|"></div>
 
-            <li th:each="project : ${projects}" class="card">
-                <div th:if="${project.status == 'DONE'}" class="project-status done"></div>
-                <div th:if="${project.status == 'PLANNED'}" class="project-status planned"></div>
+                    <a th:href="@{/projects/{id}(id=${project.id})}" class="project-content">
+                        <div class="project-header">
+                            <h4 class="project-title" th:text="${project.title}">Project Name</h4>
+                            <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
+                        </div>
 
-                <a th:href="@{/projects/{id}(id=${project.id})}">
-                    <h4 class="project-title" th:text="${project.title}">Project Name</h4>
-                    <p class="project-desc" th:text="${project.description}">Project description</p>
-                    <div class="project-meta">
-                        <span class="meta-label">Role:</span>
-                        <span th:text="${project.role}">Role name</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
+                        <p class="project-desc" th:text="${project.description}">Project description</p>
+
+                        <div class="project-meta">
+                            <span class="meta-label">Role:</span>
+                            <span class="meta-value" th:text="${project.role}">Developer</span>
+                        </div>
+                    </a>
+
+                </li>
+            </ul>
+        </div>
     </section>
 
     <!-- Sidebar: Tasks -->
-    <aside class="sidebar">
-        <h1 class="section-title">Current Tasks</h1>
+    <aside class="task-sidebar">
+        <h1 class="task-section-title">Current Tasks</h1>
 
-        <ul class="collab-list">
-            <li th:if="${tasks == null || #lists.isEmpty(tasks)}" class="empty-text">No tasks yet</li>
+        <ul class="task-list-vertical">
 
-            <li th:each="task : ${tasks}" class="collab-card">
+            <li th:if="${tasks == null || #lists.isEmpty(tasks)}" class="task-empty-text">
+                No tasks yet
+            </li>
+
+            <li th:each="task : ${tasks}" class="task-card-mini">
                 <a th:href="@{/tasks/{id}(id=${task.id})}">
-                    <h4 class="collab-name" th:text="${task.title}">Task Title</h4>
+                    <h4 class="task-name" th:text="${task.title}">Task Title</h4>
 
-                    <div class="task-detail">
-                        <h5 class="label">Project</h5>
-                        <p class="task-text" th:text="${task.project}">Project Name</p>
+                    <div class="task-info-block">
+                        <h5 class="task-info-label">Project</h5>
+                        <p class="task-info-text" th:text="${task.project}">Project Name</p>
                     </div>
 
-                    <div class="task-detail">
-                        <h5 class="label">Description</h5>
-                        <p class="task-text" th:text="${task.description}">Task description</p>
+                    <div class="task-info-block">
+                        <h5 class="task-info-label">Description</h5>
+                        <p class="task-info-text" th:text="${task.description}">Task description</p>
                     </div>
 
-                    <div class="task-detail">
-                        <h5 class="date-label">Deadline</h5>
-                        <span class="date" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">01/01/2025</span>
+                    <div class="task-info-block">
+                        <h5 class="task-info-label">Deadline</h5>
+                        <span class="task-info-date"
+                              th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">
+                          01/01/2025
+                    </span>
                     </div>
                 </a>
             </li>
+
         </ul>
     </aside>
+
 
 </div>
 </body>
