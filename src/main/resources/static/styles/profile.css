@@ -1,0 +1,97 @@
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fff;
+    border-radius: 7px;
+    padding: 0.4rem 1rem;
+    border: 1px solid #ccc;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+.profile-link img {
+    width: 70px;           /* Make it bigger if needed */
+    height: 70px;          /* Must match width */
+    border-radius: 50%;    /* Perfect circle */
+    object-fit: cover;     /* Fill the square without distortion */
+}
+
+.avatar-wrapper {
+    width: 80px;        /* square dimensions */
+    height: 80px;
+    border-radius: 50%; /* full circle */
+    overflow: hidden;   /* crop the image */
+    flex-shrink: 0;     /* don’t allow shrinking */
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* keeps the circle shape */
+}
+
+.profile-text h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.profile-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+
+.profile-body {
+    background: linear-gradient(to bottom, #eff6ff, #f3f4f6);
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    color: #1f2937;
+}
+
+.profile-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 1rem;
+    gap: 3rem;
+}
+
+.profile-card {
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    border-top: 4px solid #3b82f6;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 0.5rem;
+}
+
+.profile-email {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+}
+
+.profile-badge-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.profile-badge {
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}

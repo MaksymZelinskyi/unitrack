@@ -3,73 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${collaborator.fullName}"></title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="/styles/main.css"/>
 </head>
-<body class="bg-gradient-to-b from-blue-50 to-gray-100 min-h-screen font-sans text-gray-800">
+<body class="profile-body">
 
-<!-- Header -->
 <div th:insert="fragments :: header"></div>
 
-<main class="flex flex-col items-center py-10 px-4 space-y-10">
+<main class="profile-main">
 
     <!-- Profile Card -->
-    <section class="bg-white shadow-xl rounded-2xl p-8 w-full max-w-lg text-center border-t-4 border-blue-500">
+    <section class="profile-card">
         <img
                 alt="Profile Picture"
-                class="w-32 h-32 mx-auto rounded-full border-4 border-blue-500 object-cover shadow-md mb-6"
+                class="profile-avatar"
                 th:src="${collaborator.avatarUrl}"
         />
 
-        <h1 class="text-3xl font-bold text-blue-700 mb-2" th:text="${collaborator.fullName}">John Doe</h1>
-        <p class="text-gray-600 mb-6" th:text="${collaborator.email}">john.doe@example.com</p>
+        <h1 class="profile-name" th:text="${collaborator.fullName}">John Doe</h1>
+        <p class="profile-email" th:text="${collaborator.email}">john.doe@example.com</p>
 
-        <div class="flex justify-center">
-        <span class="px-4 py-1 text-sm bg-blue-100 text-blue-700 font-medium rounded-full shadow-sm">
-          Collaborator Profile
-        </span>
+        <div class="profile-badge-wrapper">
+            <span class="profile-badge">Collaborator Profile</span>
         </div>
     </section>
 
     <!-- Projects Section -->
-    <section class="w-full max-w-5xl">
-        <h2 class="text-4xl font-extrabold text-blue-700 text-center mb-10">
-            Projects & Tasks
-        </h2>
+    <section class="projects-section">
+        <h2 class="projects-title">Projects & Tasks</h2>
 
-        <ul class="space-y-10">
-            <!-- Each Project -->
-            <li th:each="project : ${projects}"
-                class="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 border-t-4 border-blue-500">
-
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-semibold text-gray-800" th:text="${project.title}">Project Name</h3>
-                    <span class="text-sm text-gray-500 italic"
-                          th:text="'Role: ' + ${project.role}">role</span>
-                    <span class="text-sm text-gray-500 italic"
-                          th:text="'Tasks: ' + ${#lists.size(project.tasks)}">Tasks count</span>
+        <ul class="project-list two-columns">
+            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
+                <div class="project-header">
+                    <h3 class="project-name" th:text="${project.title}">Project Name</h3>
+                    <span class="project-meta" th:text="'Role: ' + ${project.role}">Role</span>
+                    <span class="project-meta" th:text="'Tasks: ' + ${#lists.size(project.tasks)}">Tasks count</span>
                 </div>
 
-                <!-- Task List -->
-                <ul class="space-y-3">
-                    <li th:each="task : ${project.tasks}"
-                        class="flex flex-col md:flex-row justify-between items-start md:items-center bg-gray-50 border border-gray-200 rounded-lg p-4 hover:bg-gray-100 transition-all"
-                        th:classappend="${task.completed ? 'border-green-300' : ''}"
-                    >
-
-                        <div class="flex-1">
-                            <h4 class="text-lg font-semibold text-blue-600" th:text="${task.title}">Task Title</h4>
-                            <p class="text-gray-700 text-sm mt-1" th:text="${task.description}">Task description</p>
-                        </div>
-
-                        <div class="mt-3 md:mt-0 text-right">
-                            <span class="text-sm text-gray-500 font-medium">Deadline:</span>
-                            <span class="text-gray-800 font-semibold" th:text="${task.deadline}">2025-10-15</span>
-                        </div>
-                    </li>
-                </ul>
+                <aside class="sidebar" style="height: 90%; width: 90%;">
+                    <ul class="task-list">
+                        <li th:each="task : ${project.tasks}"
+                            class="task-card flex-col" style="width: 90%;"
+                            th:classappend="${task.completed ? 'task-completed' : ''}">
+                            <h4 class="task-title task-info-label" th:text="${task.title}">Task Title</h4>
+                            <div class="task-info">
+                                <p class="task-desc" th:text="${task.description}">Task description</p>
+                            </div>
+                            <div class="task-deadline">
+                                <span class="time-label">Deadline:</span>
+                                <span class="date" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">2025-10-15</span>
+                            </div>
+                        </li>
+                    </ul>
+                </aside>
             </li>
         </ul>
     </section>

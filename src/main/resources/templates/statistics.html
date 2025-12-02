@@ -3,54 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/styles/main.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-50">
-<div th:insert="fragments :: header"></div>
+<body>
+<div th:insert=" fragments :: header"></div>
 
-<h1 class="text-3xl md:text-4xl text-green-600 font-bold text-center mb-6 mt-5">Statistics</h1>
+    <h1 class="page-title">Statistics</h1>
 
-<section class="w-full flex-grow py-8 border-r-4 mb-6">
-    <div class="flex flex-col md:flex-row gap-6 max-w-6xl mx-auto">
+    <section class="stats-section">
 
         <!-- Stats card -->
-        <div class="w-full md:w-1/2 rounded-lg bg-white text-gray-700 shadow p-4 hover:shadow-md transition">
-            <h2 class="text-lg font-semibold mb-3">Overview</h2>
-            <dl class="space-y-2 text-sm">
-                <div class="flex justify-between border-b pb-1">
+        <div class="stats-card">
+            <h2 class="label">Overview</h2>
+            <dl class="stats-lines">
+                <div class="stats-data">
                     <dt>Total projects:</dt>
                     <dd th:text="${stats.projects.total}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Active projects:</dt>
                     <dd th:text="${stats.projects.active}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Completed projects:</dt>
                     <dd th:text="${stats.projects.completed}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Project deadlines (next month):</dt>
                     <dd th:text="${stats.projects.deadlines}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Total tasks:</dt>
                     <dd th:text="${stats.tasks.total}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Completed tasks:</dt>
                     <dd th:text="${stats.tasks.completed}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Tasks in time:</dt>
                     <dd th:text="${stats.tasks.inTime}"></dd>
                 </div>
-                <div class="flex justify-between border-b pb-1">
+                <div class="stats-data">
                     <dt>Overdue tasks:</dt>
                     <dd th:text="${stats.tasks.overdue}"></dd>
                 </div>
-                <div class="flex justify-between">
+                <div class="stats-data">
                     <dt>Task deadlines (next month):</dt>
                     <dd th:text="${stats.tasks.deadlines}"></dd>
                 </div>
@@ -58,18 +57,17 @@
         </div>
 
         <!-- Charts card -->
-        <div class="w-full md:w-1/2 flex flex-col gap-4">
-            <div class="bg-white shadow rounded p-4">
-                <h2 class="text-base font-semibold mb-2">Activity per User</h2>
-                <canvas id="userActivityChart" class="w-full h-48"></canvas>
+        <div class="chart-card">
+            <div class="chart">
+                <h2 class="section-title">Activity per User</h2>
+                <canvas id="userActivityChart" class="diagram"></canvas>
             </div>
-            <div class="bg-white shadow rounded p-4">
-                <h2 class="text-base font-semibold mb-2">Activity per Project</h2>
-                <canvas id="projectActivityChart" class="w-full h-48"></canvas>
+            <div class="chart">
+                <h2 class="section-title">Activity per Project</h2>
+                <canvas id="projectActivityChart" class="diagram"></canvas>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
 <script th:inline="javascript">
     let usernames = /*[[${userChart.users}]]*/ [];

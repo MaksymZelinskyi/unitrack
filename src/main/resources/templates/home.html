@@ -3,77 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link
-            href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-            rel="stylesheet"
-    />
+    <link rel="stylesheet" href="/styles/main.css"/>
 </head>
 
 <body>
 
-    <div th:insert="fragments :: header"></div>
+<div th:insert="fragments :: header"></div>
 
-    <div class="flex min-h-screen min-h-screen">
+<div class="layout">
 
+    <!-- Main Section: Projects -->
+    <section class="main">
+        <h1 class="section-title">My Projects</h1>
+        <div class="project-grid-wrapper">
+            <ul class="project-list three-columns">
+                <li th:each="project : ${projects}" class="project-card">
 
-    <section class="w-full bg-gray-50 py-12 px-4 border-r-4">
-            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12">My Projects</h1>
+                    <div class="project-status"
+                         th:classappend="|${project.status.toLowerCase()}|"></div>
 
+                    <a th:href="@{/projects/{id}(id=${project.id})}" class="project-content">
+                        <div class="project-header">
+                            <h4 class="project-title" th:text="${project.title}">Project Name</h4>
+                            <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
+                        </div>
 
-            <ul class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-                <li th:if="${projects == null || #lists.isEmpty(projects)}">No projects yet</li>
-                <li th:each="project : ${projects}" class="flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
-                    <div th:if="${project.status == 'DONE'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-green-500"></div>
-                    <div th:if="${project.status == 'PLANNED'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-gray-500"></div>
+                        <p class="project-desc" th:text="${project.description}">Project description</p>
 
-                    <a th:href="@{/projects/{id}(id=${project.id})}">
-                        <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
-                        <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
-                        <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                            <span class="font-medium">Role:</span>
-                            <span th:text="${project.role}"></span>
+                        <div class="project-meta">
+                            <span class="meta-label">Role:</span>
+                            <span class="meta-value" th:text="${project.role}">Developer</span>
                         </div>
                     </a>
 
                 </li>
-
             </ul>
-        </section>
+        </div>
+    </section>
+
+    <!-- Sidebar: Tasks -->
+    <aside class="task-sidebar">
+        <h1 class="task-section-title">Current Tasks</h1>
+
+        <ul class="task-list-vertical">
+
+            <li th:if="${tasks == null || #lists.isEmpty(tasks)}" class="task-empty-text">
+                No tasks yet
+            </li>
+
+            <li th:each="task : ${tasks}" class="task-card-mini">
+                <a th:href="@{/tasks/{id}(id=${task.id})}">
+                    <h4 class="task-name" th:text="${task.title}">Task Title</h4>
+
+                    <div class="task-info-block">
+                        <h5 class="task-info-label">Project</h5>
+                        <p class="task-info-text" th:text="${task.project}">Project Name</p>
+                    </div>
+
+                    <div class="task-info-block">
+                        <h5 class="task-info-label">Description</h5>
+                        <p class="task-info-text" th:text="${task.description}">Task description</p>
+                    </div>
+
+                    <div class="task-info-block">
+                        <h5 class="task-info-label">Deadline</h5>
+                        <span class="task-info-date"
+                              th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">
+                          01/01/2025
+                    </span>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </aside>
 
 
-        <aside class="w-full lg:w-1/4 bg-gray-50 py-12 px-4">
-            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-8">Current Tasks</h1>
-
-
-            <ul class="space-y-6">
-
-                <li th:if="${tasks == null || #lists.isEmpty(tasks)}">No tasks yet</li>
-
-                <li th:each="task : ${tasks}"
-                    class="rounded-xl bg-white shadow-lg border border-gray-200 p-6">
-                    <a th:href="@{/tasks/{id}(id=${task.id})}">
-                        <h4 class="text-2xl font-bold text-gray-800 mb-4"
-                            th:text="${task.title}"></h4>
-                        <div class="mb-4">
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Project</h5>
-                            <p class="text-md text-gray-700 mt-1" th:text="${task.project}"></p>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Description</h5>
-                            <p class="text-md text-gray-700 mt-1" th:text="${task.description}"></p>
-                        </div>
-
-                        <div>
-                            <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide">Deadline</h5>
-                            <span class="text-md text-gray-700 mt-1" th:text="${task.deadline}"></span>
-                        </div>
-                    </a>
-                </li>
-
-            </ul>
-        </aside>
-
-    </div>
+</div>
 </body>
 </html>

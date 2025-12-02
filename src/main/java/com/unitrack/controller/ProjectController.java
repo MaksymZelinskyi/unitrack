@@ -74,7 +74,7 @@ public class ProjectController extends AuthenticatedController {
         boolean canUpdateDelete = authService.canUpdateOrDelete(principal.getName(), id);
         model.addAttribute("canUpdate", canUpdateDelete);
         model.addAttribute("canDelete", canUpdateDelete);
-        return "project-page";
+        return "project";
     }
 
     @GetMapping("/new")

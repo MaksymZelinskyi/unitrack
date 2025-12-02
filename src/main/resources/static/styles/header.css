@@ -1,0 +1,86 @@
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 14px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+    height: 100px;
+    box-sizing: border-box;
+}
+
+/* Subtitle */
+.header-subtitle {      /* noticeably smaller */
+    color: #666;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Profile container */
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 14px;
+    text-decoration: none;
+    color: inherit;
+    transform: scale(0.92); /* slightly smaller */
+}
+
+.avatar-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid #2a6ec6;   /* blue circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Text beside avatar */
+.profile-text h3 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.profile-text p {
+    font-size: 11px;
+    color: #888;
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Logout button */
+.logout-button {
+    background: #3399FF;
+    border: none;
+    padding: 7px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+}
+
+.logout-icon {
+    width: 27px;
+    height: 27px;
+    color: white;
+}
+
+/* Sticky behavior */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}

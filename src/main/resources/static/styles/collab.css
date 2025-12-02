@@ -1,0 +1,129 @@
+* ----------------------------------------------------------
+   SIDEBAR — TEAM MEMBERS
+---------------------------------------------------------- */
+
+.vertical-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Scrollbar */
+.collab-list::-webkit-scrollbar {
+    width: 6px;
+}
+.collab-list::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+.collab-list::-webkit-scrollbar-track {
+    background: #e5e7eb;
+}
+
+.collab-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 1px solid #d1d5db;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.collab-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+
+.add-collab {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;          /* prevent shrinking */
+    text-align: center;
+    gap: 0.5rem;          /* space between image and text */
+}
+
+.add-collab p {
+    white-space: nowrap;  /* prevents line break */
+    font-size: 0.95rem;
+}
+
+.add-collab img {
+    width: 45px;
+    height: 45px;
+    display: block;
+    margin: 0 auto 8px auto;
+}
+
+.collab-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    object-fit: cover;
+}
+
+.collab-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #222;
+}
+
+.new-collab-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .new-collab-container {
+    flex-direction: row;
+  }
+}
+
+.new-collab-left,
+.new-collab-right {
+  flex: 1;
+}
+
+
+/* Delete icon */
+.collab-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.collab-delete button img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.collab-delete button:hover img {
+    opacity: 0.6;
+}
+
+.collab-form {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

@@ -3,73 +3,71 @@
     <head>
         <meta charset="UTF-8">
         <title th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></title>
-        <link
-                href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-                rel="stylesheet"
-        />
+        <link rel="stylesheet" href="/styles/main.css"/>
     </head>
     <body>
         <div th:insert="fragments :: header"></div>
-        <div class="flex flex-col items-center py-10 px-4">
-            <!-- Title -->
-            <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-10">
-                Update Profile
-            </h1>
-
-            <!-- Profile Picture -->
-            <img alt="Profile Picture"
-                 class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover shadow-md mb-6"
-                 th:src="${currentUser.avatarUrl}"/>
-
-            <!-- Form -->
-            <form th:action="@{/profile}"
-                  th:object="${profile}"
-                  method="post"
-                  class="bg-white shadow-lg rounded-xl p-8 w-full max-w-lg space-y-5">
-
-                <input type="hidden" name="_method" value="put"/>
-
-                <!-- Avatar URL -->
-                <div>
-                    <label for="avatarUrl" class="block mb-1 font-medium text-gray-700">Avatar URL</label>
-                    <input th:field="*{avatarUrl}" id="avatarUrl" type="text"
-                           class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"/>
-                </div>
-
-                <!-- First name -->
-                <div>
-                    <label for="firstName" class="block mb-1 font-medium text-gray-700">First Name</label>
-                    <input th:field="*{firstName}" id="firstName" type="text"
-                           class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"/>
-                </div>
-
-                <!-- Last name -->
-                <div>
-                    <label for="lastName" class="block mb-1 font-medium text-gray-700">Last Name</label>
-                    <input th:field="*{lastName}" id="lastName" type="text"
-                           class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"/>
-                </div>
-
-                <!-- Email -->
-                <div>
-                    <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>
-                    <input th:field="*{email}" id="email" type="text"
-                           class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"/>
-                </div>
-
-                <!-- Password -->
-                <div>
-                    <label for="password" class="block mb-1 font-medium text-gray-700">Password</label>
-                    <input th:field="*{password}" id="password" type="password"
-                           class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"/>
-                </div>
-
-                <!-- Submit -->
-                <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg shadow-md transition duration-200">
+        <div class="container">
+            <div class="profile-card">
+                <!-- Title -->
+                <h1 class="page-title">
                     Update Profile
-                </button>
-            </form>
+                </h1>
+
+                <!-- Profile Picture -->
+                <img alt="Profile Picture"
+                     class="avatar" style="width: 90px; height: 90px"
+                     th:src="${currentUser.avatarUrl}"/>
+
+                <!-- Form -->
+                <form th:action="@{/profile}"
+                      th:object="${profile}"
+                      method="post">
+
+                    <input type="hidden" name="_method" value="put"/>
+
+                    <!-- Avatar URL -->
+                    <div>
+                        <label for="avatarUrl" class="block mb-1 font-medium text-gray-700">Avatar URL</label>
+                        <input th:field="*{avatarUrl}" id="avatarUrl" type="text"
+                               class="input"/>
+                    </div>
+
+                    <!-- First name -->
+                    <div>
+                        <label for="firstName" class="block mb-1 font-medium text-gray-700">First Name</label>
+                        <input th:field="*{firstName}" id="firstName" type="text"
+                               class="input"/>
+                    </div>
+
+                    <!-- Last name -->
+                    <div>
+                        <label for="lastName" class="block mb-1 font-medium text-gray-700">Last Name</label>
+                        <input th:field="*{lastName}" id="lastName" type="text"
+                               class="input"/>
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>
+                        <input th:field="*{email}" id="email" type="text"
+                               class="input"/>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block mb-1 font-medium text-gray-700">Password</label>
+                        <input th:field="*{password}" id="password" type="password"
+                               class="input"/>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            class="submit-btn">
+                        Update Profile
+                    </button>
+                </form>
+            </div>
         </div>
     </body>
 </html>

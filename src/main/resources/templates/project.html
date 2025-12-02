@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Uni-Track</title>
+    <link rel="stylesheet" href="/styles/main.css"/>
+</head>
+<body>
+<div th:insert="fragments :: header"></div>
+
+<h1 class="page-title" th:text="${project.title}"></h1>
+
+<div style="layout">
+    <section class="project-section">
+
+        <div class="card">
+            <h4 class="project-name" th:text="${project.title}"></h4>
+            <div class="project-desc">
+                <span class="font-medium">Description:</span>
+                <span th:text="${project.description}"></span>
+            </div>
+            <div>
+                <span class="time-label">Start date:</span>
+                <span class="date" th:text="${project.start}"></span>
+            </div>
+            <div>
+                <span class="time-label">Deadline:</span>
+                <span class="date" th:text="${project.end}"></span>
+            </div>
+            <div class="project-desc">
+                <span class="font-medium">Client:</span>
+                <span th:text="${project.client}"></span>
+            </div>
+        </div>
+        <div class="kanban-container">
+
+            <a class="add-card"
+               th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}">
+                <img alt="Add task" class="add-task-icon"
+                     src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png"/>
+                <p class="add-task-text">Add New task</p>
+            </a>
+
+            <div class="column">
+                <h1 class="column-title todo-title">To Do</h1>
+                <ul class="sortable" id="TODO">
+                    <li th:if="${todo == null || #lists.isEmpty(todo)}">Nothing yet</li>
+
+                    <li class="task-wrapper" th:data-id="${task.id}" th:each="task : ${todo}">
+                        <div class="card task-border-todo">
+
+                            <a th:if="${canUpdate}"
+                               th:href="@{/tasks/update/{id}(id=${task.id})}"
+                               class="task-edit-btn">
+                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                            </a>
+
+                            <div class="task-delete-btn" th:if="${canDelete}">
+                                <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
+                                    <input name="_method" type="hidden" value="delete">
+                                    <button type="submit">
+                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
+                                <h4 class="task-title" th:text="${task.title}"></h4>
+                                <p class="task-desc" th:text="${task.description}"></p>
+
+                                <div class="task-info">
+                                    <span class="task-info-label">Assignees:</span>
+                                    <ul class="assignees-list">
+                                        <li th:each="assignee : ${task.assignees}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="task-info">
+                                    <span class="task-info-label">Deadline:</span>
+                                    <span th:text="${task.deadline}"></span>
+                                </div>
+                            </a>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="column">
+                <h1 class="column-title inprogress-title">In Progress</h1>
+                <ul class="sortable" id="IN_PROGRESS">
+                    <li th:if="${in_progress == null || #lists.isEmpty(in_progress)}">Nothing yet</li>
+
+                    <li class="task-wrapper" th:data-id="${task.id}" th:each="task : ${in_progress}">
+                        <div class="card task-border-inprogress">
+
+                            <a th:if="${canUpdate}"
+                               th:href="@{/tasks/update/{id}(id=${task.id})}"
+                               class="task-edit-btn">
+                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                            </a>
+
+                            <div class="task-delete-btn" th:if="${canDelete}">
+                                <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
+                                    <input name="_method" type="hidden" value="delete">
+                                    <button type="submit">
+                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
+                                <h4 class="task-title" th:text="${task.title}"></h4>
+                                <p class="task-desc" th:text="${task.description}"></p>
+
+                                <div class="task-info">
+                                    <span class="task-info-label">Assignees:</span>
+                                    <ul class="assignees-list">
+                                        <li th:each="assignee : ${task.assignees}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="task-info">
+                                    <span class="task-info-label">Deadline:</span>
+                                    <span th:text="${task.deadline}"></span>
+                                </div>
+                            </a>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="column">
+                <h1 class="column-title done-title">Done</h1>
+                <ul class="sortable" id="DONE">
+                    <li th:if="${done == null || #lists.isEmpty(done)}">Nothing yet</li>
+
+                    <li class="task-wrapper" th:data-id="${task.id}" th:each="task : ${done}">
+                        <div class="card task-border-done">
+
+                            <a th:if="${canUpdate}"
+                               th:href="@{/tasks/update/{id}(id=${task.id})}"
+                               class="task-edit-btn">
+                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                            </a>
+
+                            <div class="task-delete-btn" th:if="${canDelete}">
+                                <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
+                                    <input name="_method" type="hidden" value="delete">
+                                    <button type="submit">
+                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
+                                <h4 class="task-title" th:text="${task.title}"></h4>
+                                <p class="task-desc" th:text="${task.description}"></p>
+
+                                <div class="task-info">
+                                    <span class="task-info-label">Assignees:</span>
+                                    <ul class="assignees-list">
+                                        <li th:each="assignee : ${task.assignees}">
+                                            <p th:text="${assignee}"></p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="task-info">
+                                    <span class="task-info-label">Deadline:</span>
+                                    <span th:text="${task.deadline}"></span>
+                                </div>
+                            </a>
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <div class="project-actions">
+
+        <form method="post"
+              th:action="@{/projects/{id}(id=${project.id})}"
+              th:if="${canDelete}">
+            <input name="_method" type="hidden" value="delete">
+
+            <button class="btn btn-danger" type="submit">
+                <img alt="Delete"
+                     class="icon"
+                     src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                <span>Delete Project</span>
+            </button>
+        </form>
+
+        <form method="get"
+              th:action="@{/projects/update/{id}(id=${project.id})}"
+              th:if="${canUpdate}">
+            <button class="btn btn-primary" type="submit">
+                <img alt="Modify"
+                     class="icon"
+                     src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                <span>Modify</span>
+            </button>
+        </form>
+
+        <form method="post"
+              th:action="@{/projects/complete/{id}(id=${project.id})}"
+              th:if="${canUpdate}">
+            <label class="toggle-label" for="completed">
+                <span>Mark as completed</span>
+
+                <div class="toggle-wrapper">
+                    <input
+                            aria-label="Mark as completed"
+                            id="completed"
+                            name="completed"
+                            onclick="this.form.submit()"
+                            th:checked="${project.status == 'DONE'}"
+                            type="checkbox"
+                            class="toggle-input"
+                    >
+
+                    <div class="toggle-bg"></div>
+                    <div class="toggle-ball"
+                         th:classappend="${project.status == 'DONE'} ? ' toggled' : ''">
+                    </div>
+                </div>
+            </label>
+        </form>
+
+    </div>
+
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script th:inline="javascript">
+        let project = [[${project}]];
+    </script>
+    <script>
+        const sections = document.querySelectorAll(".sortable");
+
+        sections.forEach(section => {
+          new Sortable(section, {
+            group: "shared", //allows moving between lists
+            animation: 150,
+            onAdd: async function (evt) {
+              let taskId = evt.item.dataset.id;
+              let newSection = evt.to.id;
+
+              //Send PUT request
+              await fetch(`/tasks/${taskId}/status`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ newStatus: newSection })
+              });
+              window.location.reload();
+            }
+          });
+        });
+    </script>
+</body>
+</html>

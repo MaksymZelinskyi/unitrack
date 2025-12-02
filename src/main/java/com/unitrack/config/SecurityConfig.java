@@ -23,6 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationConfiguration authConfig) throws Exception {
         JwtUsernamePasswordAuthFilter authFilter = new JwtUsernamePasswordAuthFilter(authenticationManager(authConfig), jwtService);
         return http.authorizeHttpRequests(x -> x
+                        .requestMatchers(HttpMethod.GET, "/styles/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/projects/new").hasRole("ADMIN")

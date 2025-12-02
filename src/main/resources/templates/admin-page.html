@@ -1,107 +1,110 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="UTF-8">
-        <title>Uni-Track</title>
-        <link
-                href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-                rel="stylesheet"
-        />
-    </head>
-    <body>
-    <div th:insert="fragments :: header"></div>
+<head>
+    <meta charset="UTF-8">
+    <title>Uni-Track</title>
+    <link rel="stylesheet" href="/styles/main.css" type="text/css"/>
+</head>
+<body>
 
-        <div class="flex min-h-screen">
+<div th:insert="fragments :: header"></div>
 
-            <section class="w-full bg-gray-50 py-12 px-4 border-r-4">
-                <a th:href="@{/statistics}"
-                   class="px-6 py-2 rounded-lg bg-blue-500 text-white font-semibold shadow-md hover:bg-blue-700 transition">
-                    View Stats
-                </a>
-                <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-12">My Projects</h1>
+<div class="layout">
 
-                <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+    <!-- MAIN SECTION -->
+    <section class="main">
 
-                    <a th:href="@{/projects/new}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-8 cursor-pointer hover:shadow-lg transition">
-                        <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Project" class="w-16 h-16 mb-4" />
-                        <p class="text-lg font-semibold">Add New Project</p>
+        <a class="stats-btn" th:href="@{/statistics}">
+            View Stats
+        </a>
+
+        <h1 class="section-title">My Projects</h1>
+        <div class="project-grid-wrapper">
+            <!-- Left: Add Project button -->
+            <a class="card add-project" th:href="@{/projects/new}">
+                <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Project"/>
+                <p>Add New Project</p>
+            </a>
+
+            <ul class="project-list two-columns">
+                <li th:each="project : ${projects}" class="project-card">
+
+                    <div class="project-status"
+                         th:classappend="|${project.status.toLowerCase()}|"></div>
+
+                    <a th:href="@{/projects/{id}(id=${project.id})}" class="project-content">
+                        <div class="project-header">
+                            <h4 class="project-title" th:text="${project.title}">Project Name</h4>
+                            <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
+                        </div>
+
+                        <p class="project-desc" th:text="${project.description}">Project description</p>
+
+                        <div class="project-meta">
+                            <span class="meta-label">Client:</span>
+                            <span class="meta-value" th:text="${project.client}">Client</span>
+                        </div>
                     </a>
 
-                    <ul>
-                        <li th:if="${projects == null || #lists.isEmpty(projects)}">No projects yet</li>
-                        <li th:each="project : ${projects}" class="relative flex flex-col rounded-xl bg-white text-gray-700 shadow-md p-6 hover:shadow-lg transition">
-                            <div th:if="${project.status == 'DONE'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-green-500"></div>
-                            <div th:if="${project.status == 'PLANNED'}" class="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-gray-500"></div>
-
-                            <a th:href="@{projects/{id}(id=${project.id})}">
-                                <h4 class="text-2xl font-semibold text-blue-700" th:text="${project.title}"></h4>
-                                <p class="mt-2 text-lg text-gray-600" th:text="${project.description}"></p>
-                                <div class="mt-auto pt-4 border-t flex justify-between text-sm text-gray-600">
-                                    <span class="font-medium">Deadline:</span>
-                                    <span th:text="${project.end}"></span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-
-
-            <aside class="w-full lg:w-1/4 bg-gray-50 py-12 px-4">
-                <h1 class="text-4xl md:text-5xl text-green-600 font-bold text-center mb-8">My Team</h1>
-
-
-                <a th:href="@{/collaborators/new}" class="flex flex-col items-center justify-center rounded-xl bg-white text-gray-500 shadow-md p-6 mb-8 cursor-pointer hover:shadow-lg transition">
-                    <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Member" class="w-16 h-16 mb-3" />
-                    <p class="text-lg font-semibold">Add New Member</p>
-                </a>
-
-
-                <ul class="space-y-6 overflow-y-scroll no-scrollbar h-64">
-                    <li th:each="collaborator : ${collaborators}" class="relative flex items-center gap-4 w-72 max-w-sm px-4 py-3 bg-cyan rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-300">
-                        <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
-                            <div class="flex">
-                                <img alt="Profile Picture"
-                                     class="w-10 h-10 rounded-full border-2 border-blue-500 object-cover"
-                                     th:src="${collaborator.avatarUrl}"/>
-                                <span> </span>
-                                <h4 class="text-2xl font-bold text-gray-800 mb-4 ml-4" th:text="${collaborator.name}"></h4>
-                            </div>
-
-                            <div class="flex flex-row">
-                                <h5 class="text-sm font-semibold text-gray-500 uppercase tracking-wide mr-4">Skills: </h5>
-
-                                <!-- If none -->
-                                <p th:if="${done == null || #lists.isEmpty(done)}">None</p>
-
-                                <!-- If there are skills -->
-                                <div th:unless="${done == null || #lists.isEmpty(done)}" class="text-md text-gray-700 mt-1">
-                                    <!-- Preview (first 15 chars of joined list) -->
-                                    <span th:text="${#strings.substring(#strings.listJoin(collaborator.skills, ', '), 0, 15)}"></span>...
-
-                                    <!-- Expandable full skills -->
-                                    <details class="inline">
-                                        <summary class="text-blue-600 cursor-pointer">more</summary>
-                                        <span th:text="${#strings.listJoin(collaborator.skills, ', ')}"></span>
-                                    </details>
-                                </div>
-                            </div>
-                        </a>
-                        <div th:if="${collaborator.id!=currentUser.id}" class="absolute w-5 h-5 top-2 right-2">
-                            <form th:action="@{/collaborators/{id}(id=${collaborator.id})}" method="post">
-                                <input type="hidden" name="_method" value="delete">
-                                <button type="submit" class="hover:opacity-80 transition">
-                                    <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"
-                                         alt="Delete"
-                                         class="w-5 h-5"/>
-                                </button>
-
-                            </form>
-                        </div>
-                    </li>
-                </ul>
-            </aside>
+                </li>
+            </ul>
         </div>
 
-    </body>
+
+    </section>
+
+
+    <!-- ASIDE SECTION -->
+    <aside class="sidebar">
+
+        <h1 class="section-title">My Team</h1>
+
+        <!-- Add member -->
+        <a class="collab-card add-collab" th:href="@{/collaborators/new}">
+            <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Member"/>
+            <p>Add New Member</p>
+        </a>
+
+        <ul class="vertical-list">
+            <li th:each="collaborator : ${collaborators}" class="collab-card">
+
+                <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
+                    <div class="collab-info">
+                        <img class="avatar" th:src="${collaborator.avatarUrl}" alt="Profile Picture"/>
+                        <h4 class="collab-name" th:text="${collaborator.name}"></h4>
+                    </div>
+
+                    <div class="collab-skills">
+                        <span class="skills-label">Skills:</span>
+
+                        <p th:if="${done == null || #lists.isEmpty(done)}" class="no-skill">None</p>
+
+                        <div th:unless="${done == null || #lists.isEmpty(done)}" class="skills-container">
+                            <span th:text="${#strings.substring(#strings.listJoin(collaborator.skills, ', '), 0, 15)}"></span>...
+
+                            <details>
+                                <summary class="show-more">more</summary>
+                                <span th:text="${#strings.listJoin(collaborator.skills, ', ')}"></span>
+                            </details>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- delete button -->
+                <div class="collab-delete" th:if="${collaborator.id != currentUser.id}">
+                    <form method="post" th:action="@{/collaborators/{id}(id=${collaborator.id})}">
+                        <input type="hidden" name="_method" value="delete"/>
+                        <button type="submit">
+                            <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" alt="Delete"/>
+                        </button>
+                    </form>
+                </div>
+
+            </li>
+        </ul>
+
+    </aside>
+</div>
+
+</body>
 </html>
