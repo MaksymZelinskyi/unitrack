@@ -2,6 +2,7 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorInListDto;
+import com.unitrack.dto.CommentDto;
 import com.unitrack.dto.request.*;
 import com.unitrack.entity.*;
 import com.unitrack.service.CollaboratorService;
@@ -74,6 +75,8 @@ public class TaskController extends AuthenticatedController {
                                 new com.unitrack.dto.AssigneeDto(x.getId(), x.getAvatarUrl(), x.getFullName(), String.valueOf(roles.get(x.getId()))
                                 )).toList())
         );
+        model.addAttribute("comments", getTaskCommentsDto(task));
+        model.addAttribute("commentForm", new com.unitrack.dto.request.CommentDto());
         return "task";
     }
 
@@ -130,5 +133,22 @@ public class TaskController extends AuthenticatedController {
         taskService.markTaskCompleted(id, completed);
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
+    }
+
+    private List<CommentDto> getTaskCommentsDto(Task task) {
+        List<CommentDto> comments = task.getComments()
+                .stream()
+                .map(x ->{
+                    Comment replyTo = x.getReplyTo();
+                    String replyToAuthor = replyTo != null ? replyTo.getAuthor().getFirstName() : null;
+                    return new CommentDto(x.getId(), x.getText(), replyTo != null ? replyTo.getId() : null, replyToAuthor,
+                            new CollaboratorInListDto(
+                                    x.getAuthor().getId(), x.getAuthor().getFullName(), x.getAuthor().getAvatarUrl()
+                            ), x.getCreatedAt()
+                    );
+                }
+                ).toList();
+        log.debug("Fetched {} comments for task {}", comments.size(), task.getId());
+        return comments;
     }
 }
