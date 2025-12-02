@@ -67,6 +67,7 @@ public class HomeController extends AuthenticatedController {
         model.addAttribute(
                 "projects", projects);
         Set<CollaboratorTaskDto> tasks = taskRepository.findAllByAssigneesContains(collaborator)
+
                 .stream()
                 .map(x -> new CollaboratorTaskDto(x.getId(), x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
                 .collect(Collectors.toSet());
