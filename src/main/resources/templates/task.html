@@ -24,7 +24,7 @@
             </div>
 
             <!-- Title -->
-            <h1 class="task-title-heading" th:text="${task.title}"></h1>
+            <h1 class="page-title" th:text="${task.title}"></h1>
 
             <!-- Description -->
             <div class="desc">
@@ -82,11 +82,13 @@
                 </li>
 
                 <li th:each="assignee : ${task.assignees}">
-                    <img alt="Profile Picture" class="avatar" th:src="${assignee.avatarUrl}"/>
-                    <div>
-                        <span class="desc" th:text="${assignee.name}"></span>
-                        <span class="desc" th:text="${assignee.role}"></span>
-                    </div>
+                    <a th:href="@{/collaborators/{id}(id=${assignee.id})}">
+                        <img alt="Profile Picture" class="avatar" th:src="${assignee.avatarUrl}"/>
+                        <div>
+                            <span class="desc" th:text="${assignee.name}"></span>
+                            <span class="desc" th:text="${assignee.role}"></span>
+                        </div>
+                    </a>
                 </li>
             </ul>
         </aside>
@@ -193,7 +195,7 @@
     </div>
 </div>
 
-<script src="/js/sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script src="/js/comments.js"></script>
 </body>
 </html>

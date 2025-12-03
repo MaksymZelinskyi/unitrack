@@ -27,25 +27,25 @@
             </a>
 
             <ul class="project-list two-columns">
-                <li th:each="project : ${projects}" class="project-card">
+                <li th:each="project : ${projects}">
+                    <a th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
+                        <div class="project-status"
+                             th:classappend="|${project.status.toLowerCase()}|"></div>
 
-                    <div class="project-status"
-                         th:classappend="|${project.status.toLowerCase()}|"></div>
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h4 class="project-title" th:text="${project.title}">Project Name</h4>
+                                <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
+                            </div>
 
-                    <a th:href="@{/projects/{id}(id=${project.id})}" class="project-content">
-                        <div class="project-header">
-                            <h4 class="project-title" th:text="${project.title}">Project Name</h4>
-                            <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
-                        </div>
+                            <p class="project-desc" th:text="${project.description}">Project description</p>
 
-                        <p class="project-desc" th:text="${project.description}">Project description</p>
-
-                        <div class="project-meta">
-                            <span class="meta-label">Client:</span>
-                            <span class="meta-value" th:text="${project.client}">Client</span>
+                            <div class="project-meta">
+                                <span class="meta-label">Client:</span>
+                                <span class="meta-value" th:text="${project.client}">Client</span>
+                            </div>
                         </div>
                     </a>
-
                 </li>
             </ul>
         </div>

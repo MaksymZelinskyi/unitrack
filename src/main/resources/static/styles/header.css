@@ -84,3 +84,7 @@ header {
     top: 0;
     z-index: 999;
 }
+
+.header-title {
+    color: #3399FF
+}
