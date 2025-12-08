@@ -8,7 +8,7 @@
 <body>
 <div th:insert="fragments :: header"></div>
 
-<form class="project-form" method="post" th:action="@{/projects/new}" th:object="${projectForm}">
+<form class="project-form two-columns" method="post" th:action="@{/projects/new}" th:object="${projectForm}">
     <!-- LEFT -->
     <div class="form-left">
         <h1 class="page-title">New Project</h1>
@@ -48,6 +48,8 @@
             <div class="assignee" th:each="assignee, iterStat : ${assignees}">
                 <button type="button" class="remove-btn"
                         th:onclick="'removeAssignee(' + ${assignee.id} + ')'">✕</button>
+                <img class="avatar avatar-sm"
+                     th:src="${assignee.avatarUrl != null ? assignee.avatarUrl : '/assets/default-avatar.png'}"/>
 
                 <span class="assignee-name" th:text="${assignee.name}"></span>
 

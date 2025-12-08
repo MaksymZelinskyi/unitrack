@@ -48,14 +48,28 @@
     <div class="form-right">
         <label class="assignee-label">Current Assignees</label>
 
-        <div id="assignees-list" class="assignees-list">
-            <div class="assignee" th:each="assignee, iterStat : ${assignees}">
-                <button type="button" class="remove-btn" th:onclick="'removeAssignee(' + ${assignee.id} + ')'">✕</button>
-                <span class="assignee-name" th:text="${assignee.name}"></span>
-                <input type="hidden" th:name="assignees[__${iterStat.index}__].id" th:value="${assignee.id}">
+        <div id="assignees-list" class="assignees-list style-enhanced">
+            <div class="task-assignee" th:each="assignee, iterStat : ${assignees}">
+                <img class="avatar avatar-sm" th:src="${assignee.avatarUrl}" alt="Profile Picture"/>
+
+                <div class="assignee-info">
+                    <span class="assignee-name" th:text="${assignee.name}">User Name</span>
+                    <span class="assignee-role" th:text="${assignee.role}">Role</span>
+                </div>
+
+                <button type="button"
+                        class="remove-btn"
+                        th:onclick="'removeAssignee(' + ${assignee.id} + ')'">
+                    ✕
+                </button>
+
+                <input type="hidden"
+                       th:name="assignees[__${iterStat.index}__].id"
+                       th:value="${assignee.id}">
             </div>
         </div>
     </div>
+
 </form>
 
 <script>

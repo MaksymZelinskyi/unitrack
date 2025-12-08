@@ -222,8 +222,12 @@
 
 @media (min-width: 768px) {
   .project-form {
-    flex-direction: row;
-    align-items: flex-start;
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
   }
 }
 
