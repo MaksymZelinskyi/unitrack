@@ -7,6 +7,7 @@
 @import "header.css";
 @import "profile.css";
 @import "stats.css";
+@import "confirm.css";
 
 .error-page {
     min-height: 100vh;

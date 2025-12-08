@@ -518,3 +518,5 @@ h3 { font-size: 1.5rem; font-weight: 600;}
 h4 { font-size: 1.25rem; font-weight: 500;}
 p  { font-size: 1rem;   font-weight: 400;}
 small { font-size: .85rem; color: #666;}
+
+.confirm-delete {}

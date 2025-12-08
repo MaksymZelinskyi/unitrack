@@ -46,5 +46,18 @@
 
     </header>
 </div>
+
+<div th:fragment="confirm-modal" id="confirm-modal" class="confirm-overlay hidden">
+    <div class="confirm-box">
+        <h3 class="confirm-title">Are you sure?</h3>
+        <p class="confirm-message">This action cannot be undone.</p>
+
+        <div class="confirm-actions">
+            <button id="confirm-yes" class="confirm-btn danger">Yes</button>
+            <button id="confirm-no" class="confirm-btn cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

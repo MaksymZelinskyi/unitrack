@@ -40,7 +40,7 @@
 
                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}" th:if="${canDelete}">
                     <input type="hidden" name="_method" value="delete"/>
-                    <button class="btn danger">Delete</button>
+                    <button class="btn danger confirm-delete">Delete</button>
                 </form>
 
                 <form method="get" th:action="@{/tasks/update/{id}(id=${task.id})}" th:if="${canUpdate}">
@@ -125,7 +125,10 @@
     </ul>
 </section>
 
+<div th:insert="fragments :: confirm-modal"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script src="/js/comments.js"></script>
+<script src="/js/confirmation.js"></script>
 </body>
 </html>

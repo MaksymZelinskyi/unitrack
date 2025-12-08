@@ -94,7 +94,7 @@
                 <div class="collab-delete" th:if="${collaborator.id != currentUser.id}">
                     <form method="post" th:action="@{/collaborators/{id}(id=${collaborator.id})}">
                         <input type="hidden" name="_method" value="delete"/>
-                        <button type="submit">
+                        <button type="submit" class="confirm-delete">
                             <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" alt="Delete"/>
                         </button>
                     </form>
@@ -106,5 +106,7 @@
     </aside>
 </div>
 
+<div th:insert="fragments :: confirm-modal"></div>
+<script src="/js/confirmation.js"></script>
 </body>
 </html>
