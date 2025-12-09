@@ -28,19 +28,23 @@ public class MailService {
      * @param password user's password
      */
     public void sendCredentials(String email, String password) {
+            String subject = "UniTrack credentials";
+            String text = String.format("You were given an account at UniTrack - the most complete team-management tool." +
+                                    "\n Here are your credentials: \n" +
+                                    "Email: %s\n" +
+                                    "Password: %s",
+                            email, password);
+            send(email, subject, text);
+    }
+
+    public void send(String email, String subject, String text) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             //compose the message
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setFrom(new InternetAddress(sender));
-            helper.setSubject("UniTrack credentials");
-            helper.setText(
-                    String.format("You were given an account at UniTrack - the most complete team-management tool." +
-                                    "\n Here are your credentials: \n" +
-                                    "Email: %s\n" +
-                                    "Password: %s",
-                            email, password)
-            );
+            helper.setSubject(subject);
+            helper.setText(text);
 
             helper.setTo(email); //set recipient
             log.debug("Message with recipient {} formed", email);
