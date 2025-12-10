@@ -8,9 +8,12 @@
 
         <!-- Left: Title -->
         <div class="header-left">
-            <h1 class="header-title">
-                <a th:href="@{/home}">UniTrack</a>
-            </h1>
+            <a th:href="@{/home}" class="flex-row">
+                <img class="logo" th:src="@{/icons/logo-icon.png}" alt="Logo">
+                <h1 class="header-title">
+                    UniTrack
+                </h1>
+            </a>
         </div>
 
         <!-- Center: Subtitle -->
@@ -46,6 +49,12 @@
 
     </header>
 </div>
+
+<th:block th:fragment="head">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/main.css"/>
+    <link rel="icon" th:href="@{/icons/logo.png}" type="image/x-icon"/>
+</th:block>
 
 <div th:fragment="confirm-modal" id="confirm-modal" class="confirm-overlay hidden">
     <div class="confirm-box">

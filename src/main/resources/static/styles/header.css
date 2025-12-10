@@ -86,5 +86,12 @@ header {
 }
 
 .header-title {
-    color: #3399FF
+    color: #3399FF;
+    margin-top: 13px;
+}
+
+.logo {
+    width: 75px;
+    height: 75px;
+    margin-right: 50px
 }

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link rel="stylesheet" href="/styles/main.css"/>
+    <th:block th:insert="fragments :: head"></th:block>
 </head>
 
 <body>
@@ -70,7 +69,7 @@
                         <span class="task-info-date"
                               th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">
                           01/01/2025
-                    </span>
+                        </span>
                     </div>
                 </a>
             </li>

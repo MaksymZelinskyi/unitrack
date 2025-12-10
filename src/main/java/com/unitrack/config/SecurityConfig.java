@@ -24,12 +24,14 @@ public class SecurityConfig {
         JwtUsernamePasswordAuthFilter authFilter = new JwtUsernamePasswordAuthFilter(authenticationManager(authConfig), jwtService);
         return http.authorizeHttpRequests(x -> x
                         .requestMatchers(HttpMethod.GET, "/styles/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/icons/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/projects/new").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/projects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/skills").hasRole("ADMIN")
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/password/**").permitAll()
                         .anyRequest().authenticated())
                 .csrf(x -> x.disable())
                 .formLogin(f -> f.loginPage("/login")

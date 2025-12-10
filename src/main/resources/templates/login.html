@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Uni-Track</title>
-    <link rel="stylesheet" href="/styles/main.css"/>
+    <th:block th:insert="fragments :: head"></th:block>
 </head>
 <body>
 
 <header>
     <div class="header-container">
         <!-- Left: Title -->
-        <div class="header-left">
+        <div class="header-left flex-row">
+            <img class="logo" th:src="@{/icons/logo-icon.png}" alt="Logo">
             <h1 class="header-title">
                 UniTrack
             </h1>
@@ -41,7 +41,7 @@
                 <input name="password" type="password" placeholder="Password" class="input">
 
                 <div class="forgot">
-                    <a th:href="@{/forgot-password}">Forgot your password?</a>
+                    <a th:href="@{/password/reset}">Forgot your password?</a>
                 </div>
 
                 <button type="submit" class="login-btn">Login</button>
