@@ -20,11 +20,11 @@
             </div>
             <div>
                 <span class="time-label">Start date:</span>
-                <span class="date" th:text="${project.start}"></span>
+                <span class="date" th:text="${#temporals.format(project.start, 'dd MMM yyyy')}"></span>
             </div>
             <div>
                 <span class="time-label">Deadline:</span>
-                <span class="date" th:text="${project.end}"></span>
+                <span class="date" th:text="${#temporals.format(project.end, 'dd MMM yyyy')}"></span>
             </div>
             <div class="project-desc">
                 <span class="font-medium">Client:</span>
@@ -78,7 +78,7 @@
 
                                 <div class="task-info">
                                     <span class="task-info-label">Deadline:</span>
-                                    <span th:text="${task.deadline}"></span>
+                                    <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
                                 </div>
                             </a>
 
@@ -125,7 +125,7 @@
 
                                 <div class="task-info">
                                     <span class="task-info-label">Deadline:</span>
-                                    <span th:text="${task.deadline}"></span>
+                                    <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
                                 </div>
                             </a>
 
@@ -172,7 +172,7 @@
 
                                 <div class="task-info">
                                     <span class="task-info-label">Deadline:</span>
-                                    <span th:text="${task.deadline}"></span>
+                                    <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
                                 </div>
                             </a>
 
