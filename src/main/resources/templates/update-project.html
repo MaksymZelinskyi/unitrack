@@ -25,8 +25,18 @@
         <label for="description">Project description</label>
         <input th:field="*{description}" id="description" type="text" class="input-field" maxlength="255"/>
 
-        <label for="client">Client name</label>
-        <input th:field="*{client}" id="client" type="text" class="input-field" maxlength="255"/>
+
+        <label class="label-strong">Select the client</label>
+        <select th:field="*{client}" class="select">
+            <option value="" disabled selected>Select the client</option>
+            <option th:each="client : ${clients}"
+                    th:value="${client.name}"
+                    th:text="${client.name}">
+            </option>
+        </select>
+
+        <label for="newClient">Or register a new one</label>
+        <input th:field="*{client}" id="newClient" type="text" class="input-field" maxlength="255"/>
 
         <label for="start">Start</label>
         <input th:field="*{start}" id="start" type="date" class="input-field" required/>

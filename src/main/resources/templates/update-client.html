@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${client.name}"></title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body class="profile-body">
+
+<div th:insert="fragments :: header"></div>
+
+<main class="profile-main">
+
+    <!-- Profile Card -->
+    <section class="profile-card">
+        <form
+                class="update-form"
+                th:action="@{/projects/{id}(id=${project.id})}"
+                th:object="${project}"
+                method="post"
+        >
+            <input type="hidden" name="_method" value="put"/>
+
+            <label for="name">Client name</label>
+            <input th:field="*{name}" id="name" type="text" class="input-field" required maxlength="255"/>
+
+            <label for="email">Email</label>
+            <input th:field="*{email}" id="email" type="text" class="input-field" maxlength="255"/>
+
+            <label for="phone">Phone number</label>
+            <input th:field="*{phoneNumber}" id="phone" type="text" class="input-field" maxlength="255"/>
+        </form>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section">
+        <h2 class="projects-title">Projects</h2>
+
+        <ul class="project-list two-columns">
+            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
+                <a th:href="@{/projects/{id}(id=${project.projectId})}">
+                    <div class="project-header">
+                        <h3 class="project-name" th:text="${project.title}">Project Name</h3>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

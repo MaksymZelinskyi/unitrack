@@ -141,4 +141,9 @@ public class ProjectService {
         return projects;
     }
 
+
+    public List<Project> getAllByClient(Long clientId) {
+        Client client = clientService.getById(clientId);
+        return projectRepository.findAllByClient(client);
+    }
 }
