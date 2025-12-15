@@ -1,5 +1,7 @@
 package com.unitrack.dto.request;
 
+import com.unitrack.dto.ProjectClientDto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -7,12 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -26,8 +27,9 @@ public class ProjectDto {
     @Length(max = 255)
     private String description;
 
-    @Length(max = 255)
     private String client;
+
+    private String newClient;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")

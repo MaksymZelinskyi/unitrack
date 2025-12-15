@@ -18,8 +18,17 @@
         <label>Project description</label>
         <input class="input" placeholder="Description" th:field="*{description}" type="text" maxlength="255"/>
 
-        <label>Client name</label>
-        <input class="input" placeholder="Client" th:field="*{client}" type="text" maxlength="255"/>
+        <label class="label-strong">Select the client</label>
+        <select th:field="*{client}" class="select">
+            <option value="" disabled selected>Select the client</option>
+            <option th:each="client : ${clients}"
+                    th:value="${client.name}"
+                    th:text="${client.name}">
+            </option>
+        </select>
+
+        <label for="newClient">Or register a new one</label>
+        <input th:field="*{client}" id="newClient" type="text" class="input-field" maxlength="255"/>
 
         <label>Start Date</label>
         <input class="input" th:field="*{start}" type="date" required/>
@@ -126,6 +135,7 @@
         reindexAssignees();
       }
     });
+
 </script>
 </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${client.name}"></title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body class="profile-body">
+
+<div th:insert="fragments :: header"></div>
+
+<main class="profile-main">
+
+    <!-- Profile Card -->
+    <section class="profile-card">
+
+        <h1 class="profile-name" th:text="${client.name}">John Doe</h1>
+        <p class="profile-email" th:text="${client.email}">john.doe@example.com</p>
+        <p class="profile-email" th:text="${client.phoneNumber}">06-777-45-55</p>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section">
+        <h2 class="projects-title">Projects</h2>
+
+        <ul class="project-list two-columns">
+            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
+                <a th:href="@{/projects/{id}(id=${project.projectId})}">
+                    <div class="project-header">
+                        <h3 class="project-name" th:text="${project.title}">Project Name</h3>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

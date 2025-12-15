@@ -132,4 +132,9 @@ public class ProjectService {
         log.info("Project {} is being marked as {}", id, status.name());
         projectRepository.save(project);
     }
+
+    public List<Project> getAllByClient(Long clientId) {
+        Client client = clientService.getById(clientId);
+        return projectRepository.findAllByClient(client);
+    }
 }
