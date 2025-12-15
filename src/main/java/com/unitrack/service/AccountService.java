@@ -6,13 +6,21 @@ import com.unitrack.exception.AuthenticationException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.RecoveryCodeRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.security.SecureRandomParameters;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -35,11 +43,8 @@ public class AccountService {
         if (optional.isPresent()) {
             recoveryCodeRepository.delete(optional.get());
         }
-        byte[] bytes = new byte[8];
-        SecureRandom random = new SecureRandom();
-        random.nextBytes(bytes);
-        String code = new String(bytes);
-        RecoveryCode generatedCode = new RecoveryCode(code, collaborator);
+
+        String code = generateRandomString();
         mailService.send(email, "UniTrack password recovery", "Your password-recovery code is: " + code);
     }
 
@@ -57,5 +62,14 @@ public class AccountService {
         }
 
         return recoveryCode.getCode().equals(code);
+    }
+
+    private String generateRandomString() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            sb.append((char)(random.nextInt('0', 'z')));
+        }
+        return sb.toString();
     }
 }
