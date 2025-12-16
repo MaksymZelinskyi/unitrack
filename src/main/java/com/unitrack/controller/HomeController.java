@@ -10,6 +10,7 @@ import com.unitrack.exception.AuthenticationException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
+import com.unitrack.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,7 +35,7 @@ public class HomeController extends AuthenticatedController {
     private final AuthorizationService authorizationService;
     private final CollaboratorRepository collaboratorRepository;
     private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
     @GetMapping
     public String home() {
@@ -53,23 +55,35 @@ public class HomeController extends AuthenticatedController {
         Collaborator collaborator = collaboratorRepository
                 .findByEmail(principal.getName())
                 .orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
-        Set<ProjectParticipationDto> projects = collaborator.getProjects()
+        List<ProjectParticipationDto> projects = collaborator.getProjects()
                 .stream()
                 .map(x -> {
                     Project project = x.getProject();
-                    return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(), x.getRoles()
-                            .stream()
-                            .map(Role::toString)
-                            .findFirst().orElse(""), project.getStatus().name());
+                    return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(),
+                            x.getRoles()
+                                    .stream()
+                                    .map(Role::toString)
+                                    .findFirst().orElse(""),
+                                    project.getStatus().name(),
+                            project.getEnd()
+                    );
                 })
-                .collect(Collectors.toSet());
+                .sorted((x, y) -> {
+                    if ("DONE".equals(x.getStatus()) && !"DONE".equals(y.getStatus())) {
+                        return 1;
+                    }
+                    return x.getDeadline().compareTo(y.getDeadline());
+                })
+                .collect(Collectors.toList());
         log.debug("{} projects extracted for collaborator {}", projects.size(), collaborator.getFirstName());
+
         model.addAttribute(
                 "projects", projects);
-        Set<CollaboratorTaskDto> tasks = taskRepository.findAllByAssigneesContains(collaborator)
 
+        Set<CollaboratorTaskDto> tasks = collaborator.getTasks()
                 .stream()
                 .map(x -> new CollaboratorTaskDto(x.getId(), x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
+                .sorted()
                 .collect(Collectors.toSet());
         log.debug("{} tasks extracted for collaborator {}", tasks.size(), collaborator.getFirstName());
         model.addAttribute("tasks", tasks);
@@ -77,8 +91,7 @@ public class HomeController extends AuthenticatedController {
     }
 
     public String getAdminHome(Principal principal, Model model) {
-        Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectService.getAllSortedByDeadline();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
         model.addAttribute(
                 "projects",
@@ -92,13 +105,14 @@ public class HomeController extends AuthenticatedController {
                 .map(x ->
                         new CollaboratorDto(
                                 x.getId(),
-                                x.getFirstName() + " " + x.getLastName(),
+                                x.getFullName(),
                                 x.getAvatarUrl(),
                                 x.getSkills().stream().map(Skill::getName).toList(),
                                 x.getProjects().stream().map(y -> y.getProject().getTitle()).collect(Collectors.toList())
                         )
                 )
-                .collect(Collectors.toSet()));
+                .sorted(Comparator.comparing(x -> x.name))
+                .toList());
         return "admin-page";
     }
 }

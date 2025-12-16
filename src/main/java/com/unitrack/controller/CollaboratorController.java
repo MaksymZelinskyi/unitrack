@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -58,7 +59,11 @@ public class CollaboratorController extends AuthenticatedController {
     @GetMapping("/new")
     public String newCollaborator(Model model) {
         List<Skill> skills = skillService.getAll();
-        List<ProjectInListDto> projects = projectService.getAll().stream().map(x-> new ProjectInListDto(x.getId(), x.getTitle())).toList();
+        List<ProjectInListDto> projects = projectService.getAll()
+                .stream()
+                .map(x-> new ProjectInListDto(x.getId(), x.getTitle()))
+                .sorted(Comparator.comparing(x -> x.getTitle()))
+                .toList();
         model.addAttribute("selected", new ArrayList<>());
         model.addAttribute("collaboratorForm", new CollaboratorDto());
         model.addAttribute("skills", skills);
