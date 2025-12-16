@@ -16,9 +16,9 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/client")
+@RequestMapping("/clients")
 @RequiredArgsConstructor
-public class ClientController {
+public class ClientController extends AuthenticatedController {
 
     private final ClientService clientService;
     private final ProjectService projectService;
