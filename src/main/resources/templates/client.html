@@ -24,7 +24,7 @@
 
         <ul class="project-list two-columns">
             <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
-                <a th:href="@{/projects/{id}(id=${project.projectId})}">
+                <a th:href="@{/projects/{id}(id=${project.id})}">
                     <div class="project-header">
                         <h3 class="project-name" th:text="${project.title}">Project Name</h3>
                     </div>

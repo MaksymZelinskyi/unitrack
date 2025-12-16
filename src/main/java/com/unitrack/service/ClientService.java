@@ -3,6 +3,7 @@ package com.unitrack.service;
 import com.unitrack.dto.request.UpdateClientDto;
 import com.unitrack.entity.Client;
 import com.unitrack.entity.Project;
+import com.unitrack.exception.ClientNotFoundException;
 import com.unitrack.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class ClientService {
     }
 
     public Client getById(Long id) {
-        return clientRepository.findById(id).orElse(null);
+        return clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("id", id));
     }
 
     public void deleteById(Long id) {
