@@ -137,4 +137,5 @@ public class ProjectService {
     public List<Project> getAllSortedByDeadline() {
         return projectRepository.findAll(Sort.by("status", "end"));
     }
+
 }

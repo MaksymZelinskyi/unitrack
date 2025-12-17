@@ -2,10 +2,7 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.*;
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Project;
-import com.unitrack.entity.Role;
-import com.unitrack.entity.Skill;
+import com.unitrack.entity.*;
 import com.unitrack.exception.AuthenticationException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
@@ -57,6 +54,7 @@ public class HomeController extends AuthenticatedController {
                 .orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
         List<ProjectParticipationDto> projects = collaborator.getProjects()
                 .stream()
+                .sorted(Comparator.comparing(Participation::getProject))
                 .map(x -> {
                     Project project = x.getProject();
                     return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(),
@@ -68,12 +66,6 @@ public class HomeController extends AuthenticatedController {
                             project.getEnd()
                     );
                 })
-                .sorted((x, y) -> {
-                    if ("DONE".equals(x.getStatus()) && !"DONE".equals(y.getStatus())) {
-                        return 1;
-                    }
-                    return x.getDeadline().compareTo(y.getDeadline());
-                })
                 .collect(Collectors.toList());
         log.debug("{} projects extracted for collaborator {}", projects.size(), collaborator.getFirstName());
 
@@ -83,7 +75,6 @@ public class HomeController extends AuthenticatedController {
         Set<CollaboratorTaskDto> tasks = collaborator.getTasks()
                 .stream()
                 .map(x -> new CollaboratorTaskDto(x.getId(), x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
-                .sorted()
                 .collect(Collectors.toSet());
         log.debug("{} tasks extracted for collaborator {}", tasks.size(), collaborator.getFirstName());
         model.addAttribute("tasks", tasks);
