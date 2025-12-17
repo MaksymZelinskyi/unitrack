@@ -26,12 +26,16 @@ public class CollaboratorService {
     private final ParticipationRepository participationRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final GravatarService gravatarService;
     private final WorkspaceService workspaceService;
 
     public void add(CollaboratorDto dto, String currentUserEmail) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
             throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
 
+    public void add(CollaboratorDto dto) {
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
         Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
 
