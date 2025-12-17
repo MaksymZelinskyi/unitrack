@@ -48,6 +48,7 @@ public class TaskController extends AuthenticatedController {
                 collaboratorService.getCollaboratorsByProject(project)
                         .stream()
                         .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl()))
+                        .sorted(Comparator.comparing(x -> x.getName()))
                         .toList());
         model.addAttribute("taskForm", new TaskDto());
         model.addAttribute("assignees", new ArrayList<>());
@@ -89,11 +90,13 @@ public class TaskController extends AuthenticatedController {
         List<CollaboratorInListDto> collaborators = collaboratorService.getCollaboratorsByProject(project)
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl()))
+                .sorted(Comparator.comparing(x -> x.getName()))
                 .toList();
 
         List<CollaboratorInListDto> assignees = task.getAssignees()
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl()))
+                .sorted(Comparator.comparing(x -> x.getName()))
                 .toList();
         model.addAttribute("task",
                 new UpdateTaskDto(task.getId(), task.getTitle(), task.getDescription(),

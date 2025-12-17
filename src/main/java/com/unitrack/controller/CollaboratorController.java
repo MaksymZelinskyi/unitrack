@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -58,7 +59,11 @@ public class CollaboratorController extends AuthenticatedController {
     @GetMapping("/new")
     public String newCollaborator(Model model) {
         List<Skill> skills = skillService.getAll();
-        List<ProjectInListDto> projects = projectService.getAll().stream().map(x-> new ProjectInListDto(x.getId(), x.getTitle())).toList();
+        List<ProjectInListDto> projects = projectService.getAll()
+                .stream()
+                .map(x-> new ProjectInListDto(x.getId(), x.getTitle()))
+                .sorted(Comparator.comparing(x -> x.getTitle()))
+                .toList();
         model.addAttribute("selected", new ArrayList<>());
         model.addAttribute("collaboratorForm", new CollaboratorDto());
         model.addAttribute("skills", skills);
@@ -80,20 +85,24 @@ public class CollaboratorController extends AuthenticatedController {
         dto.setFullName(collaborator.getFullName());
         dto.setEmail(collaborator.getEmail());
         dto.setAvatarUrl(collaborator.getAvatarUrl());
-        List<CollaboratorProjectDto> projects = new ArrayList<>();
-        for (Participation p : collaborator.getProjects()) {
-            CollaboratorProjectDto projectDto = new CollaboratorProjectDto();
-            projectDto.setProjectId(p.getProject().getId());
-            projectDto.setTitle(p.getProject().getTitle());
-            projectDto.setRole(String.valueOf(p.getRoles().stream().findFirst().orElse(null)));
-            projectDto.setTasks(p.getProject().getTasks()
-                    .stream()
-                    .map(x -> new TaskInListDto(x.getId(), x.getTitle(), x.getDescription(),
-                            x.getDeadline(), x.getStatus()== Task.Status.DONE))
-                    .toList()
-            );
-            projects.add(projectDto);
-        }
+        List<CollaboratorProjectDto> projects = collaborator.getProjects()
+                .stream()
+                .sorted(Comparator.comparing(Participation::getProject))
+                .map(p -> {
+                            CollaboratorProjectDto projectDto = new CollaboratorProjectDto();
+                            projectDto.setProjectId(p.getProject().getId());
+                            projectDto.setTitle(p.getProject().getTitle());
+                            projectDto.setRole(String.valueOf(p.getRoles().stream().findFirst().orElse(null)));
+                            projectDto.setTasks(p.getProject().getTasks()
+                                    .stream()
+                                    .sorted()
+                                    .map(x -> new TaskInListDto(x.getId(), x.getTitle(), x.getDescription(),
+                                            x.getDeadline(), x.getStatus() == Task.Status.DONE))
+                                    .toList()
+                            );
+                            return projectDto;
+                })
+                .toList();
         model.addAttribute("projects", projects);
         model.addAttribute("collaborator", dto);
         return "collaborator";

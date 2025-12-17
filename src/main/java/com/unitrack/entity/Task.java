@@ -15,7 +15,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = {"project", "assignees"})
-public class Task {
+public class Task implements Comparable<Task> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,6 @@ public class Task {
     @ManyToOne
     private Project project;
 
-
     public Task(String title, String description, LocalDateTime deadline, Project project) {
         this.title = title;
         this.description = description;
@@ -46,6 +45,15 @@ public class Task {
     public void addAssignees(Collection<Collaborator> assignees) {
         this.assignees.addAll(assignees);
     }
+
+    @Override
+    public int compareTo(Task other) {
+        if (this.status == Status.DONE && other.status != Task.Status.DONE) {
+            return 1;
+        }
+        return this.deadline.compareTo(other.deadline);
+    }
+
 
     public enum Status {
         TODO, IN_PROGRESS, DONE

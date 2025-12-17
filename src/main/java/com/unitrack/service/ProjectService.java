@@ -14,6 +14,7 @@ import com.unitrack.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -132,4 +133,9 @@ public class ProjectService {
         log.info("Project {} is being marked as {}", id, status.name());
         projectRepository.save(project);
     }
+
+    public List<Project> getAllSortedByDeadline() {
+        return projectRepository.findAll(Sort.by("status", "end"));
+    }
+
 }

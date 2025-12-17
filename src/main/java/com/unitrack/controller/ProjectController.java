@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -82,7 +83,8 @@ public class ProjectController extends AuthenticatedController {
         ProjectDto projectForm = new ProjectDto();
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
                 .stream()
-                .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl())).toList();
+                .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl()))
+                .sorted(Comparator.comparing(x -> x.getName())).toList();
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
@@ -109,7 +111,10 @@ public class ProjectController extends AuthenticatedController {
                     return new AssigneeDto(
                             c.getId(), role != null ? role.name() : null, c.getFullName()
                     );
-                }).toList();
+                })
+                .sorted(Comparator.comparing(x -> x.getName()))
+                .toList();
+
         List<AssigneeDto> assignees = projectService.getProjectAssignees(project)
                 .stream()
                 .map(x -> new AssigneeDto(

@@ -1,9 +1,11 @@
 package com.unitrack.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
 @AllArgsConstructor
 public class ProjectInListDto {
-    public Long id;
-    public String title;
+    private Long id;
+    private String title;
 }

@@ -16,7 +16,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "assignees, tasks")
-public class Project {
+public class Project implements Comparable<Project> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +54,14 @@ public class Project {
 
     public void removeAssignee(Participation participation) {
         this.assignees.remove(participation);
+    }
+
+    @Override
+    public int compareTo(Project other) {
+        if (this.status == Status.DONE && other.status != Status.DONE) {
+            return 1;
+        }
+        return this.end.compareTo(other.end);
     }
 
     public enum Status {
