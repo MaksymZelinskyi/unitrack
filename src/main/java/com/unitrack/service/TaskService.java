@@ -63,6 +63,7 @@ public class TaskService {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
         task.setTitle(dto.getTitle());
         task.setDescription(dto.getDescription());
+        task.setDeadline(dto.getDeadline());
         task.getAssignees().clear();
         for (CollaboratorInListDto c : dto.getAssignees()) {
             task.getAssignees().add(collaboratorRepository

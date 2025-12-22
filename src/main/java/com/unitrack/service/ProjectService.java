@@ -11,6 +11,7 @@ import com.unitrack.repository.ClientRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.ProjectRepository;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,9 @@ public class ProjectService {
     }
 
     public void add(ProjectDto dto) {
+        if (dto.getStart().isAfter(dto.getDeadline()))
+            throw new ValidationException("Project start time must precede the deadline");
+
         //create project entity with dto data
         Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline());
 
@@ -83,6 +87,10 @@ public class ProjectService {
         //set DTO data
         project.setTitle(dto.getTitle());
         project.setDescription(dto.getDescription());
+
+        if (dto.getStart().isAfter(dto.getDeadline()))
+            throw new ValidationException("Project start time must precede the deadline");
+
         project.setStart(dto.getStart());
         project.setEnd(dto.getDeadline());
         project.setClient(clientService.getByNameOrCreate(dto.getClient()));
