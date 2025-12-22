@@ -52,3 +52,17 @@ document.addEventListener('click', e => {
         reindexAssignees();
       }
 });
+
+const form = document.getElementById('projectForm')
+const start = document.getElementById('start');
+const deadline = document.getElementById('deadline')
+const errorSpan = document.getElementById('error');
+
+form.addEventListener('submit', (event) => {
+    if (new Date(start.value) > new Date(deadline.value)) {
+        event.preventDefault();
+        errorSpan.style.display = 'inline';
+    } else {
+        errorSpan.style.display = 'none';
+    }
+});

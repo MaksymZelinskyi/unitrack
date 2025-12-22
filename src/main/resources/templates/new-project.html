@@ -7,7 +7,7 @@
 <body>
 <div th:insert="fragments :: header"></div>
 
-<form class="project-form two-columns" method="post" th:action="@{/projects/new}" th:object="${projectForm}">
+<form class="project-form two-columns" method="post" th:action="@{/projects/new}" th:object="${projectForm}" id="projectForm">
     <!-- LEFT -->
     <div class="form-left">
         <h1 class="page-title">New Project</h1>
@@ -22,10 +22,11 @@
         <input class="input" placeholder="Client" th:field="*{client}" type="text" maxlength="255"/>
 
         <label>Start Date</label>
-        <input class="input" th:field="*{start}" type="date" required/>
+        <input class="input" th:field="*{start}" type="date" required id="start"/>
 
         <label>Deadline</label>
-        <input class="input" th:field="*{deadline}" type="date" required/>
+        <input class="input" th:field="*{deadline}" type="date" required id="deadline"/>
+        <span id="error" class="error-msg">The deadline must be later than start date</span>
 
         <label class="label-strong">Add Collaborator</label>
         <select id="collabPicker" class="select" onchange="addAssignee(this)">
