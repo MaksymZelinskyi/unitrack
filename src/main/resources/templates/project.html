@@ -240,33 +240,8 @@
 </div>
 <div th:insert="fragments :: confirm-modal"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script th:inline="javascript">
-        let project = [[${project}]];
-    </script>
-    <script>
-        const sections = document.querySelectorAll(".sortable");
-
-        sections.forEach(section => {
-          new Sortable(section, {
-            group: "shared", //allows moving between lists
-            animation: 150,
-            onAdd: async function (evt) {
-              let taskId = evt.item.dataset.id;
-              let newSection = evt.to.id;
-
-              //Send PUT request
-              await fetch(`/tasks/${taskId}/status`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ newStatus: newSection })
-              });
-              window.location.reload();
-            }
-          });
-        });
-    </script>
-
-    <script src="/js/confirmation.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script src="/js/sort-tasks.js"></script>
+<script src="/js/confirmation.js"></script>
 </body>
 </html>
