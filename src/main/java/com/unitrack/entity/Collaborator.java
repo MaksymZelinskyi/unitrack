@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ public class Collaborator {
 
     private String firstName;
     private String lastName;
+    @NaturalId
     private String email;
     private String password;
     private String avatarUrl;

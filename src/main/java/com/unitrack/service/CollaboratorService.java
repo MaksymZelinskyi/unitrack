@@ -8,11 +8,14 @@ import com.unitrack.entity.Project;
 import com.unitrack.entity.Skill;
 import com.unitrack.exception.AuthenticationException;
 import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.DuplicateException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +33,11 @@ public class CollaboratorService {
     private final MailService mailService;
 
     public void add(CollaboratorDto dto) {
+        if (collaboratorRepository.existsByEmail(dto.getEmail()))
+            throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
+
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+
         collaborator = collaboratorRepository.save(collaborator);
         log.info("Collaborator with email {} has been added. Their id is {}", collaborator.getEmail(), collaborator.getId());
         mailService.sendCredentials(dto.getEmail(), dto.getPassword());
