@@ -90,7 +90,9 @@ public class HomeController extends AuthenticatedController {
                 "projects",
                 projects
                         .stream()
-                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient() != null ? x.getClient().getName() : "None", x.getStart(), x.getEnd(), x.getStatus().name()))
+                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(),
+                                x.getClient() != null ? new ProjectClientDto(x.getClient().getId(), x.getClient().getName()) : null,
+                                x.getStart(), x.getEnd(), x.getStatus().name()))
                         .toList()
         );
         model.addAttribute("collaborators", collaborators

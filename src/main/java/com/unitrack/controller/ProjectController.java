@@ -70,10 +70,13 @@ public class ProjectController extends AuthenticatedController {
             }
         }
         Client client = project.getClient();
+        ProjectClientDto clientDto = null;
+        if (client != null) clientDto = new ProjectClientDto(client.getId(), client.getName());
         model.addAttribute("project",
-                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(),
-                        client != null ? new ProjectClientDto(client.getId(), client.getName()) : null, project.getStart(),
-                        project.getEnd(), project.getStatus().name()));
+                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), clientDto,
+                        project.getStart(), project.getEnd(), project.getStatus().name()
+                )
+        );
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
@@ -131,8 +134,14 @@ public class ProjectController extends AuthenticatedController {
                 new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),
                         project.getStart(), project.getEnd(),
                         assignees));
+        List<ProjectClientDto> clients = clientService.getAll()
+                .stream()
+                .map(x -> new ProjectClientDto(x.getId(), x.getName()))
+                .toList();
+
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", assignees);
+        model.addAttribute("clients", clients);
         return "update-project";
     }
 
