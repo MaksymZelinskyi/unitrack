@@ -255,6 +255,7 @@
 
 .task-sidebar {
     width: 320px;
+    height: 45vh;
     background: #f8fafc;
     border-radius: 14px;
     padding: 1rem;
@@ -365,6 +366,9 @@ h1, h2, h3, h4 {
 
 /* LEFT MAIN TASK VIEW */
 .task-view {
+    font-size: 1.2em;
+    position: relative;
+    height: 45vh;
     flex: 1;
     background: white;
     padding: 1.8rem;
@@ -418,9 +422,19 @@ h1, h2, h3, h4 {
 
 /* ACTIONS */
 .task-buttons {
+    font-size: 1.2em;
+    position: absolute;
+    width: full;
     display: flex;
     gap: .8rem;
     margin-top: 2em;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem;
 }
 
 /* BUTTONS */

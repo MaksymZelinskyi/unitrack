@@ -35,7 +35,7 @@
                 <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
             </section>
 
-            <div class="task-buttons">
+            <div class="task-buttons bottom">
 
                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}" th:if="${canDelete}">
                     <input type="hidden" name="_method" value="delete"/>
@@ -45,14 +45,26 @@
                 <form method="get" th:action="@{/tasks/update/{id}(id=${task.id})}" th:if="${canUpdate}">
                     <button class="btn primary">Modify</button>
                 </form>
+                <form method="post" th:action="@{/tasks/complete/{id}(id=${task.id})}" th:if="${canUpdate}" class="right">
+                    <label class="toggle-label" for="completed">
+                         <span>Mark as completed</span>
 
-                <form method="post" th:action="@{/tasks/complete/{id}(id=${task.id})}" th:if="${canUpdate}">
-                    <label class="toggle-wrap">
-                        <span>Completed</span>
-                        <input class="toggle-input" type="checkbox"
-                               onclick="this.form.submit()"
-                               th:checked="${task.status == 'DONE'}">
-                        <span class="toggle-slider"></span>
+                        <div class="toggle-wrapper">
+                            <input
+                                    aria-label="Mark as completed"
+                                    id="completed"
+                                    name="completed"
+                                    onclick="this.form.submit()"
+                                    th:checked="${task.status == 'DONE'}"
+                                    type="checkbox"
+                                    class="toggle-input"
+                            >
+
+                            <div class="toggle-bg"></div>
+                            <div class="toggle-ball"
+                                 th:classappend="${task.status == 'DONE'} ? ' toggled' : ''">
+                            </div>
+                        </div>
                     </label>
                 </form>
             </div>
@@ -60,7 +72,7 @@
         </div>
 
         <!-- Right: Sidebar -->
-        <aside class="sidebar">
+        <aside class="task-sidebar">
             <label class="sidebar-title">Assignees</label>
             <ul class="assignee-list">
 

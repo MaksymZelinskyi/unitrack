@@ -73,8 +73,11 @@ public class TaskController extends AuthenticatedController {
                 new TaskDto(task.getId(), task.getTitle(), task.getDescription(), task.getProject().getId(),
                         task.getStatus().name(), task.getDeadline(),
                         task.getAssignees().stream().map(x ->
-                                new com.unitrack.dto.AssigneeDto(x.getId(), x.getAvatarUrl(), x.getFullName(), String.valueOf(roles.get(x.getId()))
-                                )).toList())
+                                new com.unitrack.dto.AssigneeDto(
+                                        x.getId(), x.getAvatarUrl(), String.valueOf(roles.get(x.getId())),  x.getFullName()
+                                )
+                        ).toList()
+                )
         );
         model.addAttribute("comments", getTaskCommentsDto(task));
         model.addAttribute("commentForm", new com.unitrack.dto.request.CommentDto());
