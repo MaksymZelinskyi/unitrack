@@ -12,7 +12,7 @@ public class ProjectDto {
     private Long id;
     private String title;
     private String description;
-    private String client;
+    private ProjectClientDto client;
     private LocalDate start;
     private LocalDate end;
     private String status;

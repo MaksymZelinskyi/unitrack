@@ -2,10 +2,7 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.*;
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Project;
-import com.unitrack.entity.Role;
-import com.unitrack.entity.Skill;
+import com.unitrack.entity.*;
 import com.unitrack.exception.AuthenticationException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
@@ -80,11 +77,14 @@ public class HomeController extends AuthenticatedController {
         Collaborator collaborator = collaboratorRepository.findByEmail(principal.getName()).orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
         List<Project> projects = projectRepository.findAll();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
+
         model.addAttribute(
                 "projects",
                 projects
                         .stream()
-                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient() != null ? x.getClient().getName() : "None", x.getStart(), x.getEnd(), x.getStatus().name()))
+                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(),
+                                x.getClient() != null ? new ProjectClientDto(x.getClient().getId(), x.getClient().getName()) : null,
+                                x.getStart(), x.getEnd(), x.getStatus().name()))
                         .collect(Collectors.toSet())
         );
         model.addAttribute("collaborators", collaborators

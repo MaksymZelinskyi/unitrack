@@ -26,13 +26,10 @@
                 <span class="time-label">Deadline:</span>
                 <span class="date" th:text="${#temporals.format(project.end, 'dd MMM yyyy')}"></span>
             </div>
-            <div class="project-desc">
-                <span class="font-medium">Client:</span>
-                <span th:text="${project.client}"></span>
-            </div>
+            <div th:insert="fragments :: client" class="project-desc"></div>
         </div>
-        <div class="kanban-container">
 
+        <div class="kanban-container">
             <a class="add-card"
                th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}">
                 <img alt="Add task" class="add-task-icon"

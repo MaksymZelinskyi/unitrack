@@ -7,6 +7,7 @@ import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
+import com.unitrack.entity.Client;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.service.ClientService;
@@ -67,10 +68,15 @@ public class ProjectController extends AuthenticatedController {
                     done.add(task);
             }
         }
+
+        Client client = project.getClient();
+        ProjectClientDto clientDto = null;
+        if (client != null) clientDto = new ProjectClientDto(client.getId(), client.getName());
         model.addAttribute("project",
-                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(),
-                        project.getClient() != null ? project.getClient().getName() : "None", project.getStart(),
-                        project.getEnd(), project.getStatus().name()));
+                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), clientDto,
+                        project.getStart(), project.getEnd(), project.getStatus().name()
+                )
+        );
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
