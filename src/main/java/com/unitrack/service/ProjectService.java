@@ -59,7 +59,12 @@ public class ProjectService {
                 ))
                 .collect(Collectors.toSet());
         project.addAssignees(assignees);
-        project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+        if (dto.getNewClient() != null && !dto.getNewClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getNewClient()));
+        } else  if (dto.getClient() != null && !dto.getClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+        }
+
         //set default status
         if (dto.getStart().isAfter(LocalDate.now()))
             project.setStatus(Project.Status.ACTIVE); //started
