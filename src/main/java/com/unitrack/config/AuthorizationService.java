@@ -34,6 +34,12 @@ public class AuthorizationService {
         return canUpdateOrDelete(email, task.getProject().getId());
     }
 
+    public boolean canViewTask(String email, Long taskId) {
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new AuthenticationException("Collaborator with email " + email + " not found."));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("id", taskId));
+        return isAdmin(email) || task.getProject().getAssignees().stream().anyMatch(x -> x.getCollaborator().equals(collaborator));
+    }
+
     public boolean canUpdateComment(String email, Long commentId) {
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new AuthenticationException("Collaborator with email " + email + " not found."));
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException("id", commentId));

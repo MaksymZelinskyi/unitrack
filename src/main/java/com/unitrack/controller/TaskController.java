@@ -28,7 +28,7 @@ public class TaskController extends AuthenticatedController {
     private final TaskService taskService;
     private final CollaboratorService collaboratorService;
     private final ProjectService projectService;
-    private final AuthorizationService authorizationService;
+    private final AuthorizationService authService;
 
     @PostMapping
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
@@ -56,11 +56,12 @@ public class TaskController extends AuthenticatedController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@authService.canViewTask(#principal.getName(), #id)")
     public String getTaskById(@PathVariable Long id, Model model, Principal principal) {
         Task task = taskService.getById(id);
         Project project = task.getProject();
 
-        boolean canUpdateDelete = authorizationService.canUpdateOrDeleteTask(principal.getName(), id);
+        boolean canUpdateDelete = authService.canUpdateOrDeleteTask(principal.getName(), id);
         Set<Participation> assignees = project.getAssignees();
         Map<Long, Role> roles = new HashMap<>();
         assignees.forEach(x -> roles.put(x.getCollaborator().getId(),
