@@ -21,7 +21,7 @@
         <div class="project-grid-wrapper">
             <!-- Left: Add Project button -->
             <a class="card add-project" th:href="@{/projects/new}">
-                <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Project"/>
+                <img src="/icons/plus.png" alt="Add Project"/>
                 <p>Add New Project</p>
             </a>
 
@@ -60,7 +60,7 @@
 
         <!-- Add member -->
         <a class="collab-card add-collab" th:href="@{/collaborators/new}">
-            <img src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png" alt="Add Member"/>
+            <img src="/icons/plus.png" alt="Add Member"/>
             <p>Add New Member</p>
         </a>
 
@@ -69,7 +69,7 @@
 
                 <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
                     <div class="collab-info">
-                        <img class="avatar" th:src="${collaborator.avatarUrl}" alt="Profile Picture"/>
+                        <img class="avatar" th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"/>
                         <h4 class="collab-name" th:text="${collaborator.name}"></h4>
                     </div>
 
@@ -94,7 +94,7 @@
                     <form method="post" th:action="@{/collaborators/{id}(id=${collaborator.id})}">
                         <input type="hidden" name="_method" value="delete"/>
                         <button type="submit" class="confirm-delete">
-                            <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png" alt="Delete"/>
+                            <img src="/icons/trash.png" alt="Delete"/>
                         </button>
                     </form>
                 </div>

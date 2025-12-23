@@ -36,7 +36,7 @@
             <a class="add-card"
                th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}">
                 <img alt="Add task" class="add-task-icon"
-                     src="https://www.pngarts.com/files/3/Plus-Symbol-Transparent-Images.png"/>
+                     src="/icons/plus.png"/>
                 <p class="add-task-text">Add New task</p>
             </a>
 
@@ -51,14 +51,14 @@
                             <a th:if="${canUpdate}"
                                th:href="@{/tasks/update/{id}(id=${task.id})}"
                                class="task-edit-btn">
-                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                                <img src="/icons/pencil.png"/>
                             </a>
 
                             <div class="task-delete-btn" th:if="${canDelete}">
                                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
                                     <input name="_method" type="hidden" value="delete">
                                     <button type="submit" class="confirm-delete">
-                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                                        <img src="/icons/trash.png"/>
                                     </button>
                                 </form>
                             </div>
@@ -98,14 +98,14 @@
                             <a th:if="${canUpdate}"
                                th:href="@{/tasks/update/{id}(id=${task.id})}"
                                class="task-edit-btn">
-                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                                <img src="/icons/pencil.png"/>
                             </a>
 
                             <div class="task-delete-btn" th:if="${canDelete}">
                                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
                                     <input name="_method" type="hidden" value="delete">
                                     <button type="submit" class="confirm-delete">
-                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                                        <img src="/icons/trash.png"/>
                                     </button>
                                 </form>
                             </div>
@@ -145,14 +145,14 @@
                             <a th:if="${canUpdate}"
                                th:href="@{/tasks/update/{id}(id=${task.id})}"
                                class="task-edit-btn">
-                                <img src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                                <img src="/icons/pencil.png"/>
                             </a>
 
                             <div class="task-delete-btn" th:if="${canDelete}">
                                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
                                     <input name="_method" type="hidden" value="delete">
                                     <button type="submit" class="confirm-delete">
-                                        <img src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                                        <img src="/icons/trash.png"/>
                                     </button>
                                 </form>
                             </div>
@@ -194,7 +194,7 @@
             <button class="btn btn-danger confirm-delete" type="submit">
                 <img alt="Delete"
                      class="icon"
-                     src="https://www.pngmart.com/files/17/Waste-Garbage-Can-Vector-PNG-Clipart.png"/>
+                     src="/icons/trash.png"/>
                 <span>Delete Project</span>
             </button>
         </form>
@@ -205,7 +205,7 @@
             <button class="btn btn-primary" type="submit">
                 <img alt="Modify"
                      class="icon"
-                     src="https://www.pngmart.com/files/23/Pens-PNG-Isolated-File.png"/>
+                     src="/icons/pencil.png"/>
                 <span>Modify</span>
             </button>
         </form>

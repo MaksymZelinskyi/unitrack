@@ -70,7 +70,7 @@
 
                 <li th:each="assignee : ${task.assignees}">
                     <a class="assignee-row" th:href="@{/collaborators/{id}(id=${assignee.id})}">
-                        <img class="avatar" th:src="${assignee.avatarUrl}" alt="">
+                        <img class="avatar" th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}">
                         <div>
                             <p class="assignee-name" th:text="${assignee.name}"></p>
                             <p class="assignee-role" th:text="${assignee.role}"></p>
@@ -104,7 +104,9 @@
 
                 <div class="comment-header">
                     <a class="author-link" th:href="@{/collaborators/{id}(id=${comment.author.id})}">
-                        <img class="avatar small" th:src="${comment.author.avatarUrl}">
+                        <img class="avatar small"
+                             th:src="${#strings.isEmpty(comment.author.avatarUrl) ? '/icons/profile-icon.png' : comment.author.avatarUrl}"
+                        >
                         <div>
                             <p class="author-name" th:text="${comment.author.name}"></p>
                             <small th:text="${#temporals.format(comment.createdAt, 'dd MMM yyyy HH:mm')}"></small>

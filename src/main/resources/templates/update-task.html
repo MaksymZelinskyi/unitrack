@@ -65,12 +65,8 @@
                  th:each="assignee, iterStat : ${assignees}"
                  th:attr="data-id=${assignee.id}">
 
-                <button type="button"
-                        class="remove-btn"
-                        aria-label="Remove">
-                    <img src="https://pngimg.com/uploads/minus/minus_PNG34.png"
-                         alt="Remove"
-                         class="remove-icon"/>
+                <button type="button" class="remove-btn" aria-label="Remove">
+                    <img src="/icons/minus.png" alt="Remove" class="remove-icon"/>
                 </button>
 
                 <span class="assignee-name"

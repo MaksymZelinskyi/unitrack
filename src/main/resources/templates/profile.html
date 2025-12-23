@@ -14,9 +14,8 @@
                 </h1>
 
                 <!-- Profile Picture -->
-                <img alt="Profile Picture"
-                     class="avatar" style="width: 90px; height: 90px"
-                     th:src="${currentUser.avatarUrl}"/>
+                <img alt="Profile Picture" class="avatar" style="width: 90px; height: 90px"
+                     th:src="${#strings.isEmpty(currentUser.avatarUrl) ? '/icons/profile-icon.png' : currentUser.avatarUrl}"/>
 
                 <!-- Form -->
                 <form th:action="@{/profile}"

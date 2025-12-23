@@ -13,9 +13,8 @@
     <!-- Profile Card -->
     <section class="profile-card">
         <img
-                alt="Profile Picture"
-                class="profile-avatar"
-                th:src="${collaborator.avatarUrl}"
+                alt="Profile Picture" class="profile-avatar"
+                th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"
         />
 
         <h1 class="profile-name" th:text="${collaborator.fullName}">John Doe</h1>

@@ -49,7 +49,7 @@
                 <button type="button" class="remove-btn"
                         th:onclick="'removeAssignee(' + ${assignee.id} + ')'">✕</button>
                 <img class="avatar avatar-sm"
-                     th:src="${assignee.avatarUrl != null ? assignee.avatarUrl : '/assets/default-avatar.png'}"/>
+                     th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"/>
 
                 <span class="assignee-name" th:text="${assignee.name}"></span>
 
