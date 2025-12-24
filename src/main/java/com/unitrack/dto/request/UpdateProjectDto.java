@@ -39,4 +39,12 @@ public class UpdateProjectDto {
     private LocalDate deadline;
 
     private List<AssigneeDto> assignees = new ArrayList<>();
+
+    public UpdateProjectDto(String title, String description, String client, LocalDate start, LocalDate deadline) {
+        this.title = title;
+        this.description = description;
+        this.client = client;
+        this.start = start;
+        this.deadline = deadline;
+    }
 }

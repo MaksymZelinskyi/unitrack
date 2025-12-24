@@ -65,6 +65,7 @@ public class TaskService {
         task.setDescription(dto.getDescription());
         task.setDeadline(dto.getDeadline());
         task.getAssignees().clear();
+        //todo: take assignees from the project only
         for (CollaboratorInListDto c : dto.getAssignees()) {
             task.getAssignees().add(collaboratorRepository
                     .findById(c.getId())
