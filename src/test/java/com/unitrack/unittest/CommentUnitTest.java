@@ -32,6 +32,7 @@ public class CommentUnitTest {
 
     @Test
     public void testAllFieldsAreUpdated() {
+        //arrange
         CommentDto dto = new CommentDto("Comment text", 1L);
         Comment comment = new Comment();
         Comment replyTo = new Comment();
@@ -43,8 +44,10 @@ public class CommentUnitTest {
         when(commentRepository.findById(2L)).thenReturn(Optional.of(comment));
         when(commentRepository.findById(1L)).thenReturn(Optional.of(replyTo));
 
+        //act
         commentService.updateComment(2L, dto);
 
+        //assert
         assertEquals(dto.getText(), comment.getText());
         assertEquals(dto.getReplyTo(), comment.getReplyTo().getId());
 

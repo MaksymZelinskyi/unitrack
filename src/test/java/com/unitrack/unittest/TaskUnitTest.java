@@ -34,6 +34,7 @@ public class TaskUnitTest {
 
     @Test
     public void testAllFieldsAreUpdated() {
+        //arrange
         UpdateTaskDto dto = new UpdateTaskDto("Task", "Lorem ipsum", LocalDateTime.now());
         Project project = new Project();
 
@@ -52,8 +53,10 @@ public class TaskUnitTest {
         entity.setProject(project);
         when(taskRepository.findById(1L)).thenReturn(Optional.of(entity));
 
+        //act
         taskService.update(1L, dto);
 
+        //assert
         assertEquals(dto.getTitle(), entity.getTitle());
         assertEquals(dto.getDescription(), entity.getDescription());
         assertEquals(dto.getDeadline(), entity.getDeadline());

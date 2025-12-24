@@ -34,11 +34,13 @@ public class CollaboratorUnitTest {
 
     @Test
     public void testAllFieldsAreUpdated() {
+        //arrange
         UpdateProfileDto dto = new UpdateProfileDto("John", "Doe", "url", "john@doe.com", "password");
         Collaborator entity = new Collaborator("name", "name", "email", "pass");
         when(collaboratorRepository.findByEmail("email")).thenReturn(Optional.of(entity));
+        //act
         collaboratorService.update("email", dto);
-
+        //assert
         assertEquals(dto.getFirstName(), entity.getFirstName());
         assertEquals(dto.getLastName(), entity.getLastName());
         assertEquals(dto.getAvatarUrl(), entity.getAvatarUrl());
@@ -48,6 +50,7 @@ public class CollaboratorUnitTest {
 
     @Test
     public void testDeleteClearsParticipationList() {
+        //arrange
         Collaborator collaborator = new Collaborator();
         for (int i = 0; i < 5; i++) {
             Project project = new Project();
@@ -59,8 +62,10 @@ public class CollaboratorUnitTest {
 
         assertEquals(5, collaborator.getProjects().size(), "Projects not added");
 
+        //act
         collaboratorService.delete(1L);
 
+        //assert
         assertEquals(0, collaborator.getProjects().size());
     }
 }

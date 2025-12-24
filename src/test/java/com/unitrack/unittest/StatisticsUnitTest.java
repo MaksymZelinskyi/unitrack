@@ -36,6 +36,7 @@ public class StatisticsUnitTest {
 
     @Test
     public void testProjectStatsGeneratedProperly() {
+        //arrange
         List<Project> projects = new ArrayList<>();
         Project project = new Project();
         project.setTitle("Project");
@@ -55,14 +56,17 @@ public class StatisticsUnitTest {
 
         when(projectRepository.findAll()).thenReturn(projects);
 
+        //act
         ProjectStatsChart projectStatsChart = statisticsService.getProjectChart();
 
+        //assert
         assertEquals("Project", projectStatsChart.getProjects().get(0));
         assertEquals(1, projectStatsChart.getTasksPerProject().get(0));
     }
 
     @Test
     public void testCollabStatsGeneratedProperly() {
+        //arrange
         List<Collaborator> collaborators = new ArrayList<>();
         Collaborator collaborator = new Collaborator();
         collaborator.setFirstName("John");
@@ -83,8 +87,10 @@ public class StatisticsUnitTest {
 
         when(collaboratorRepository.findAll()).thenReturn(collaborators);
 
+        //act
         UserStatsChart projectStatsChart = statisticsService.getUserChart();
 
+        //assert
         assertEquals("John D", projectStatsChart.getUsers().get(0));
         assertEquals(1, projectStatsChart.getTasksPerUser().get(0));
     }
