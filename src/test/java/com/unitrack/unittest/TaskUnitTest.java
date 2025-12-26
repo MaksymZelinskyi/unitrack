@@ -40,7 +40,9 @@ public class TaskUnitTest {
 
         for (int i = 1; i <= 5; i++) {
             Collaborator collaborator = new Collaborator();
+            collaborator.setId((long)i); //set a property to distinguish the collaborators in assignees set
             project.addAssignee(new Participation(collaborator, project, Role.TESTER));
+            collaborator.addProject(project, Role.TESTER);
             dto.getAssignees().add(new CollaboratorInListDto((long) i, "Collaborator" + i, "url"));
             when(collaboratorRepository.findById((long) i)).thenReturn(Optional.of(collaborator));
         }
@@ -54,6 +56,9 @@ public class TaskUnitTest {
         when(taskRepository.findById(1L)).thenReturn(Optional.of(entity));
 
         //act
+        assertThrows(IllegalArgumentException.class, () -> taskService.update(1L, dto));
+
+        dto.getAssignees().remove(wrongCollab);
         taskService.update(1L, dto);
 
         //assert

@@ -3,6 +3,7 @@ package com.unitrack.service;
 import com.unitrack.dto.*;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
+import com.unitrack.entity.Task;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
@@ -48,7 +49,10 @@ public class StatisticsService {
         List<Project> projects = projectRepository.findAll();
         for (Project project : projects) {
             //todo: check task status
-            chart.addProject(project.getTitle(), (int) project.getTasks().stream().filter(x -> x.getCompletedOn() == null || x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1))).count());
+            chart.addProject(project.getTitle(), (int) project.getTasks()
+                    .stream()
+                    .filter(x -> x.getStatus() == Task.Status.DONE && x.getCompletedOn() != null && x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1)))
+                    .count());
         }
         log.info("Project statistics chart generated");
         return chart;
@@ -62,8 +66,11 @@ public class StatisticsService {
         UserStatsChart chart = new UserStatsChart();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
         for (Collaborator collaborator : collaborators) {
-            //todo: check task status; add null-check for completed on
-            chart.addUser(collaborator.getFirstName() + " " +collaborator.getLastName().charAt(0), (int)collaborator.getTasks().stream().filter(x -> x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1))).count());
+            chart.addUser(collaborator.getFirstName() + " " +collaborator.getLastName().charAt(0),
+                    (int) collaborator.getTasks()
+                            .stream()
+                            .filter(x -> x.getStatus() == Task.Status.DONE && x.getCompletedOn() != null && x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1)))
+                            .count());
         }
         log.info("Collaborator statistics chart generated");
         return chart;
