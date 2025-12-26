@@ -125,6 +125,11 @@
                         </div>
                     </a>
 
+                    <a class="reply-ref"
+                       th:href="'#comment'+${comment.replyTo}"
+                       th:if="${comment.replyTo != null}"
+                       th:text="'Replied to ' + ${comment.replyToAuthor}"></a>
+
                     <button class="btn edit-btn"
                             th:if="${comment.author.id == currentUser.id}"
                             type="button">Edit</button>
@@ -132,7 +137,46 @@
 
                 <p class="comment-text" th:text="${comment.text}"></p>
 
+                    <!-- Edit Form -->
+                    <form class="comment-edit-form hidden"
+                          method="post"
+                          th:action="@{/tasks/comments/{id}(id=${comment.id})}"
+                          th:if="${comment.author.id == currentUser.id}">
+                        <input name="_method" type="hidden" value="put">
+                        <textarea class="input" name="text" th:text="${comment.text}"></textarea>
+                        <div>
+                            <button class="submit-btn" type="submit">Save</button>
+                            <button class="cancel-btn" type="button">Cancel</button>
+                        </div>
+                    </form>
+
+                    <div class="flex-row">
+                        <!-- Delete -->
+                        <form method="post"
+                              th:action="@{/tasks/comments/{id}(id=${comment.id})}"
+                              th:if="${comment.author.id == currentUser.id || currentUser.status == 'Admin'}">
+                            <input name="_method" type="hidden" value="delete">
+                            <button class="delete-btn" type="submit">
+                                <span>Delete</span>
+                            </button>
+                        </form>
+
+                        <!-- Reply -->
+                        <button class="reply-btn" type="button">💬 Reply</button>
+                    </div>
             </div>
+
+            <!-- Reply form -->
+            <form class="comment-reply-form hidden"
+                  method="post"
+                  th:action="@{/tasks/comments?taskId={taskId}(taskId=${task.id})}">
+                <input name="replyTo" th:value="${comment.id}" type="hidden"/>
+                <input class="input" name="text" type="text"/>
+                <div>
+                    <button class="submit-btn" type="submit">Save</button>
+                    <button class="cancel-btn" type="button">Cancel</button>
+                </div>
+            </form>
         </li>
 
     </ul>

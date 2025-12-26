@@ -1,6 +1,7 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.request.CommentDto;
+import com.unitrack.dto.request.UpdateCommentDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Comment;
 import com.unitrack.entity.Task;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,21 +50,19 @@ public class CommentService {
         log.info("Saved comment with id {}", comment.getId());
     }
 
-    public void updateComment(Long id, CommentDto dto) {
+    public void updateComment(Long id, UpdateCommentDto dto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException("id", id));
-        Task task = comment.getTask();
-        Comment replyTo = null;
-        if (dto.getReplyTo() != null)
-            replyTo = commentRepository.findById(dto.getReplyTo()).orElse(null);
-        if (replyTo != null && !replyTo.getTask().equals(task)) throw new IllegalArgumentException("Comment replies to an unreachable comment");
 
-        comment.setTask(task);
         comment.setText(dto.getText());
-        comment.setReplyTo(replyTo);
         commentRepository.save(comment);
     }
 
     public void deleteComment(Long id) {
-        commentRepository.deleteById(id);
+        Optional<Comment> commentOptional = commentRepository.findById(id);
+        if (commentOptional.isPresent()) {
+            Comment comment = commentOptional.get();
+            comment.getReplies().forEach(x -> x.setReplyTo(null));
+            commentRepository.deleteById(id);
+        }
     }
 }

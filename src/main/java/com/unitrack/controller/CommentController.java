@@ -2,6 +2,7 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.request.CommentDto;
+import com.unitrack.dto.request.UpdateCommentDto;
 import com.unitrack.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class CommentController {
 
     @PutMapping("/{id}")
     @PreAuthorize("@authService.canUpdateComment(#principal.getName(), #id)")
-    public String updateComment(@PathVariable Long id, CommentDto dto, HttpServletRequest request, Principal principal) {
+    public String updateComment(@PathVariable Long id, UpdateCommentDto dto, HttpServletRequest request, Principal principal) {
         commentService.updateComment(id, dto);
 
         String referer = request.getHeader("Referer");
