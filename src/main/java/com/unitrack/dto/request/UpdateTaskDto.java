@@ -23,8 +23,14 @@ public class UpdateTaskDto {
     private String title;
     @Length(max = 255)
     private String description;
+
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime deadline;
     private List<CollaboratorInListDto> assignees = new ArrayList<>();
 
+    public UpdateTaskDto(String title, String description, LocalDateTime deadline) {
+        this.title = title;
+        this.description = description;
+        this.deadline = deadline;
+    }
 }

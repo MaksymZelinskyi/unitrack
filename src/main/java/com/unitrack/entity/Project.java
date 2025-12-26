@@ -1,10 +1,7 @@
 package com.unitrack.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -16,7 +13,8 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "assignees, tasks")
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"assignees", "tasks"})
 @ToString(exclude = {"assignees", "tasks"})
 public class Project implements Comparable<Project> {
 

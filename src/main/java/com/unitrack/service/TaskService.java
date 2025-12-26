@@ -65,11 +65,16 @@ public class TaskService {
         task.setDescription(dto.getDescription());
         task.setDeadline(dto.getDeadline());
         task.getAssignees().clear();
+        Project project = task.getProject();
+
         for (CollaboratorInListDto c : dto.getAssignees()) {
-            task.getAssignees().add(collaboratorRepository
+            Collaborator collaborator = collaboratorRepository
                     .findById(c.getId())
-                    .orElseThrow(() -> new CollaboratorNotFoundException("id", c.getId()))
-            );
+                    .orElseThrow(() -> new CollaboratorNotFoundException("id", c.getId()));
+            if (project.getAssignees().stream().anyMatch(x -> x.getCollaborator().equals(collaborator)))
+                task.getAssignees().add(collaborator);
+            else
+                throw new IllegalArgumentException("Attempted to assign task to a collaborator that is not in the project");
         }
         taskRepository.save(task);
         log.info("Task with id {} updated: {}", id, task.getTitle());
