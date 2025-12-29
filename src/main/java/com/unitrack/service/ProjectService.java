@@ -71,12 +71,6 @@ public class ProjectService {
             project.setClient(clientService.getByNameOrCreate(dto.getClient()));
         }
 
-        //set default status
-        if (dto.getStart().isAfter(LocalDate.now()))
-            project.setStatus(Project.Status.ACTIVE); //started
-        else
-            project.setStatus(Project.Status.PLANNED); //planned
-
         projectRepository.save(project); //save
         log.info("Project '{}' saved", project.getTitle());
     }

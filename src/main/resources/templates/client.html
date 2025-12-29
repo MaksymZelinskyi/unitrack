@@ -3,8 +3,7 @@
 <head>
     <title th:text="${client.name}"></title>
     <th:block th:insert="fragments :: head"></th:block>
-</head>
-<body class="profile-body">
+</head><body class="profile-body">
 
 <div th:insert="fragments :: header"></div>
 
@@ -12,10 +11,14 @@
 
     <!-- Profile Card -->
     <section class="profile-card">
+        <a class="client-edit"
+           th:href="@{/clients/update/{id}(id=${client.id})}">
+            <img src="/icons/pencil.png" alt="Edit"/>
+        </a>
 
         <h1 class="profile-name" th:text="${client.name}">John Doe</h1>
-        <p class="profile-email" th:text="${client.email}">john.doe@example.com</p>
-        <p class="profile-email" th:text="${client.phoneNumber}">06-777-45-55</p>
+        <p class="client-meta" th:text="${client.email}">john.doe@example.com</p>
+        <p class="client-meta" th:text="${client.phoneNumber}">06-777-45-55</p>
     </section>
 
     <!-- Projects Section -->
@@ -23,15 +26,26 @@
         <h2 class="projects-title">Projects</h2>
 
         <ul class="project-list two-columns">
-            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
-                <a th:href="@{/projects/{id}(id=${project.id})}">
-                    <div class="project-header">
-                        <h3 class="project-name" th:text="${project.title}">Project Name</h3>
+            <li th:each="project : ${projects}">
+                <a th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
+                    <div class="project-status"
+                         th:classappend="|${project.status.toLowerCase()}|"></div>
+
+                    <div class="project-content">
+                        <div class="project-header">
+                            <h4 class="project-title" th:text="${project.title}">Project Name</h4>
+                            <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
+                        </div>
+
+                        <p class="project-desc" th:text="${project.description}">Project description</p>
+
                     </div>
                 </a>
             </li>
         </ul>
     </section>
+
 </main>
 </body>
+
 </html>

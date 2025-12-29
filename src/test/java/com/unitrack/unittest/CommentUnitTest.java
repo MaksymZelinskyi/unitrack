@@ -1,6 +1,7 @@
 package com.unitrack.unittest;
 
 import com.unitrack.dto.request.CommentDto;
+import com.unitrack.dto.request.UpdateCommentDto;
 import com.unitrack.entity.Comment;
 import com.unitrack.entity.Task;
 import com.unitrack.repository.CollaboratorRepository;
@@ -33,7 +34,7 @@ public class CommentUnitTest {
     @Test
     public void testAllFieldsAreUpdated() {
         //arrange
-        CommentDto dto = new CommentDto("Comment text", 1L);
+        UpdateCommentDto dto = new UpdateCommentDto("Comment text", 1L);
         Comment comment = new Comment();
         Comment replyTo = new Comment();
         Task task = new Task("Task", "desc", null, null);

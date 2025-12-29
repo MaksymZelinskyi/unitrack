@@ -10,41 +10,43 @@
 
 <main class="profile-main">
 
-    <!-- Profile Card -->
     <section class="profile-card">
-        <form
-                class="update-form"
-                th:action="@{/projects/{id}(id=${project.id})}"
-                th:object="${project}"
-                method="post"
-        >
+        <!-- Form -->
+        <form th:action="@{/clients/{id}(id=${client.id})}"
+              th:object="${client}"
+              method="post">
+
             <input type="hidden" name="_method" value="put"/>
 
-            <label for="name">Client name</label>
-            <input th:field="*{name}" id="name" type="text" class="input-field" required maxlength="255"/>
+            <!-- Client name -->
+            <div>
+                <label for="name" class="block mb-1 font-medium text-gray-700">Name</label>
+                <input th:field="*{name}" id="name" type="text"
+                       class="input"/>
+            </div>
 
-            <label for="email">Email</label>
-            <input th:field="*{email}" id="email" type="text" class="input-field" maxlength="255"/>
+            <!-- Email -->
+            <div>
+                <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>
+                <input th:field="*{email}" id="email" type="text"
+                       class="input"/>
+            </div>
 
-            <label for="phone">Phone number</label>
-            <input th:field="*{phoneNumber}" id="phone" type="text" class="input-field" maxlength="255"/>
+            <!-- Password -->
+            <div>
+                <label for="phoneNumber" class="block mb-1 font-medium text-gray-700">Phone number</label>
+                <input th:field="*{phoneNumber}" id="phoneNumber" type="password"
+                       class="input"/>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="submit-btn">
+                Update Client
+            </button>
         </form>
     </section>
 
-    <!-- Projects Section -->
-    <section class="projects-section">
-        <h2 class="projects-title">Projects</h2>
-
-        <ul class="project-list two-columns">
-            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
-                <a th:href="@{/projects/{id}(id=${project.projectId})}">
-                    <div class="project-header">
-                        <h3 class="project-name" th:text="${project.title}">Project Name</h3>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </section>
 </main>
 </body>
 </html>
