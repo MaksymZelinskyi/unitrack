@@ -1,9 +1,6 @@
 package com.unitrack.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +21,9 @@ public class Client {
 
     private String email;
     private String phoneNumber;
+
+    @ManyToOne
+    private Workspace workspace;
 
     public Client(String name, String email, String phoneNumber) {
         this.name = name;

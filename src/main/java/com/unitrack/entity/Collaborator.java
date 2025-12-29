@@ -33,9 +33,10 @@ public class Collaborator {
     private Set<Skill> skills = new HashSet<>();
     @OneToMany(mappedBy = "collaborator", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Participation> projects = new HashSet<>();
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks = new HashSet<>();
+    @ManyToOne
+    private Workspace workspace;
 
     private LocalDate joinDate;
     private boolean isAdmin;
