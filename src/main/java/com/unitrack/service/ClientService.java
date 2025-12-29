@@ -1,14 +1,15 @@
 package com.unitrack.service;
 
-import com.unitrack.dto.request.ClientDto;
+import com.unitrack.dto.request.UpdateClientDto;
 import com.unitrack.entity.Client;
+import com.unitrack.entity.Project;
+import com.unitrack.exception.ClientNotFoundException;
 import com.unitrack.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -18,7 +19,11 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
-    public void add(ClientDto dto) {
+    public List<Client> getAll() {
+        return clientRepository.findAll();
+    }
+
+    public void add(UpdateClientDto dto) {
         Client client = new Client(dto.name(), dto.email(), dto.phoneNumber());
         clientRepository.save(client);
     }
@@ -27,11 +32,15 @@ public class ClientService {
         return clientRepository.findByName(name).orElse(null);
     }
 
+    public Client getById(Long id) {
+        return clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException("id", id));
+    }
+
     public void deleteById(Long id) {
         clientRepository.deleteById(id);
     }
 
-    public Client updateById(Long id, ClientDto dto) {
+    public Client updateById(Long id, UpdateClientDto dto) {
         Client client = clientRepository.findById(id).orElseThrow(); //retrieve the client from the database
         //write dto data
         client.setName(dto.name());
@@ -53,4 +62,5 @@ public class ClientService {
         }
         return client;
     }
+
 }

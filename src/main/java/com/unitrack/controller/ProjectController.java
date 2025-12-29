@@ -1,18 +1,22 @@
 package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
+import com.unitrack.dto.ProjectClientDto;
 import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
+import com.unitrack.entity.Client;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
+import com.unitrack.service.ClientService;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +42,7 @@ public class ProjectController extends AuthenticatedController {
     private final TaskService taskService;
     private final CollaboratorService collaboratorService;
     private final AuthorizationService authService;
+    private final ClientService clientService;
 
     @GetMapping("/{id}")
     public String getProjectById(@PathVariable Long id, Model model, Principal principal) {
@@ -64,10 +69,14 @@ public class ProjectController extends AuthenticatedController {
                     done.add(task);
             }
         }
+        Client client = project.getClient();
+        ProjectClientDto clientDto = null;
+        if (client != null) clientDto = new ProjectClientDto(client.getId(), client.getName());
         model.addAttribute("project",
-                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(),
-                        project.getClient() != null ? project.getClient().getName() : "None", project.getStart(),
-                        project.getEnd(), project.getStatus().name()));
+                new com.unitrack.dto.ProjectDto(project.getId(), project.getTitle(), project.getDescription(), clientDto,
+                        project.getStart(), project.getEnd(), project.getStatus().name()
+                )
+        );
         model.addAttribute("todo", todo);
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
@@ -84,10 +93,13 @@ public class ProjectController extends AuthenticatedController {
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl()))
-                .sorted(Comparator.comparing(x -> x.getName())).toList();
+                .sorted(Comparator.comparing(x -> x.getName()))
+                .toList();
+        List<ProjectClientDto> clients = clientService.getAll().stream().map(x -> new ProjectClientDto(x.getId(), x.getName())).toList();
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
+        model.addAttribute("clients", clients);
         return "new-project";
     }
 
@@ -111,10 +123,7 @@ public class ProjectController extends AuthenticatedController {
                     return new AssigneeDto(
                             c.getId(), role != null ? role.name() : null, c.getFullName()
                     );
-                })
-                .sorted(Comparator.comparing(x -> x.getName()))
-                .toList();
-
+                }).toList();
         List<AssigneeDto> assignees = projectService.getProjectAssignees(project)
                 .stream()
                 .map(x -> new AssigneeDto(
@@ -125,8 +134,14 @@ public class ProjectController extends AuthenticatedController {
                 new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),
                         project.getStart(), project.getEnd(),
                         assignees));
+        List<ProjectClientDto> clients = clientService.getAll()
+                .stream()
+                .map(x -> new ProjectClientDto(x.getId(), x.getName()))
+                .toList();
+
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", assignees);
+        model.addAttribute("clients", clients);
         return "update-project";
     }
 

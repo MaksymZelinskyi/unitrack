@@ -32,7 +32,7 @@ public class Project implements Comparable<Project> {
     private LocalDate start;
     private LocalDate end;
 
-    private Status status;
+    private boolean completed;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Client client;
@@ -56,15 +56,30 @@ public class Project implements Comparable<Project> {
         this.assignees.remove(participation);
     }
 
+    public Status getStatus() {
+        return computeStatus();
+    }
+
+    private Status computeStatus() {
+        if (this.completed) return Status.DONE;
+
+        if (this.start.isAfter(LocalDate.now())) {
+            return Status.PLANNED;
+        } else {
+            return Status.ACTIVE;
+        }
+    }
+
     @Override
     public int compareTo(Project other) {
-        if (this.status == Status.DONE && other.status != Status.DONE) {
-            return 1;
+        Status status = getStatus();
+        if (status == other.getStatus()) {
+            return this.end.compareTo(other.end);
         }
-        return this.end.compareTo(other.end);
+        return this.getStatus().ordinal() - other.getStatus().ordinal();
     }
 
     public enum Status {
-        PLANNED, ACTIVE, DONE
+        ACTIVE, PLANNED, DONE
     }
 }

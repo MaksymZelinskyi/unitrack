@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -82,14 +83,17 @@ public class HomeController extends AuthenticatedController {
     }
 
     public String getAdminHome(Principal principal, Model model) {
-        List<Project> projects = projectService.getAllSortedByDeadline();
+        List<Project> projects = projectService.getAllSorted();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
+        List<ProjectDto> dtoList = new ArrayList<>();
         model.addAttribute(
                 "projects",
                 projects
                         .stream()
-                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(), x.getClient() != null ? x.getClient().getName() : "None", x.getStart(), x.getEnd(), x.getStatus().name()))
-                        .collect(Collectors.toSet())
+                        .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(),
+                                x.getClient() != null ? new ProjectClientDto(x.getClient().getId(), x.getClient().getName()) : null,
+                                x.getStart(), x.getEnd(), x.getStatus().name()))
+                        .toList()
         );
         model.addAttribute("collaborators", collaborators
                 .stream()

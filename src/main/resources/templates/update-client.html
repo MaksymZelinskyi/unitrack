@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${client.name}"></title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body class="profile-body">
+
+<div th:insert="fragments :: header"></div>
+
+<main class="profile-main">
+
+    <section class="profile-card">
+        <!-- Form -->
+        <form th:action="@{/clients/{id}(id=${client.id})}"
+              th:object="${client}"
+              method="post">
+
+            <input type="hidden" name="_method" value="put"/>
+
+            <!-- Client name -->
+            <div>
+                <label for="name" class="block mb-1 font-medium text-gray-700">Name</label>
+                <input th:field="*{name}" id="name" type="text"
+                       class="input"/>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>
+                <input th:field="*{email}" id="email" type="text"
+                       class="input"/>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="phoneNumber" class="block mb-1 font-medium text-gray-700">Phone number</label>
+                <input th:field="*{phoneNumber}" id="phoneNumber" type="password"
+                       class="input"/>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="submit-btn">
+                Update Client
+            </button>
+        </form>
+    </section>
+
+</main>
+</body>
+</html>

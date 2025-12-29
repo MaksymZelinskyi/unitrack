@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -64,12 +65,11 @@ public class ProjectService {
                 ))
                 .collect(Collectors.toSet());
         project.addAssignees(assignees);
-        project.setClient(clientService.getByNameOrCreate(dto.getClient()));
-        //set default status
-        if (dto.getStart().isAfter(LocalDate.now()))
-            project.setStatus(Project.Status.ACTIVE); //started
-        else
-            project.setStatus(Project.Status.PLANNED); //planned
+        if (dto.getNewClient() != null && !dto.getNewClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getNewClient()));
+        } else  if (dto.getClient() != null && !dto.getClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+        }
 
         projectRepository.save(project); //save
         log.info("Project '{}' saved", project.getTitle());
@@ -110,6 +110,7 @@ public class ProjectService {
         project.getAssignees().clear();
         project.addAssignees(assignees);
         log.debug("Number of project assignees added: {}", assignees.size());
+
         //persist changes
         projectRepository.save(project);
         return project;
@@ -132,18 +133,21 @@ public class ProjectService {
     public void markAsCompleted(Long id, boolean completed) {
         Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("id", id));
         log.debug("Project {} fetched", id);
-        var status = Project.Status.DONE;
-        if (!completed) {
-            status = project.getStart().isAfter(LocalDate.now()) ? Project.Status.PLANNED : Project.Status.ACTIVE;
-        }
-        project.setStatus(status);
+        project.setCompleted(completed);
 
-        log.info("Project {} is being marked as {}", id, status.name());
+        log.info("Project {} is being marked as {}", id, project.getStatus().name());
         projectRepository.save(project);
     }
 
-    public List<Project> getAllSortedByDeadline() {
-        return projectRepository.findAll(Sort.by("status", "end"));
+    public List<Project> getAllSorted() {
+        List<Project> projects = projectRepository.findAll();
+        projects.sort(Comparator.naturalOrder());
+        return projects;
     }
 
+
+    public List<Project> getAllByClient(Long clientId) {
+        Client client = clientService.getById(clientId);
+        return projectRepository.findAllByClient(client);
+    }
 }

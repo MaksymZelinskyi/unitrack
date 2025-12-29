@@ -69,5 +69,12 @@
     </div>
 </div>
 
+<div th:fragment="client">
+    <span class="font-medium">Client:</span>
+    <a th:unless="${project.client == null}" th:href="@{/clients/{id}(id=${project.client.id})}">
+        <span th:text="${project.client.name}"></span>
+    </a>
+    <span th:if="${project.client == null}">None</span>
+</div>
 </body>
 </html>

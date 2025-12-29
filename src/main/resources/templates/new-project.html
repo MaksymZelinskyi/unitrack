@@ -18,15 +18,23 @@
         <label>Project description</label>
         <input class="input" placeholder="Description" th:field="*{description}" type="text" maxlength="255"/>
 
-        <label>Client name</label>
-        <input class="input" placeholder="Client" th:field="*{client}" type="text" maxlength="255"/>
+        <label class="label-strong">Select the client</label>
+        <select th:field="*{client}" class="select">
+            <option value="" disabled selected>Select the client</option>
+            <option th:each="client : ${clients}"
+                    th:value="${client.name}"
+                    th:text="${client.name}">
+            </option>
+        </select>
+
+        <label for="newClient">Or register a new one</label>
+        <input th:field="*{newClient}" id="newClient" type="text" class="input-field" maxlength="255"/>
 
         <label>Start Date</label>
-        <input class="input" th:field="*{start}" type="date" required id="start"/>
+        <input class="input" th:field="*{start}" type="date" required/>
 
         <label>Deadline</label>
-        <input class="input" th:field="*{deadline}" type="date" required id="deadline"/>
-        <span id="error" class="error-msg">The deadline must be later than start date</span>
+        <input class="input" th:field="*{deadline}" type="date" required/>
 
         <label class="label-strong">Add Collaborator</label>
         <select id="collabPicker" class="select" onchange="addAssignee(this)">
@@ -49,7 +57,7 @@
                 <button type="button" class="remove-btn"
                         th:onclick="'removeAssignee(' + ${assignee.id} + ')'">✕</button>
                 <img class="avatar avatar-sm"
-                     th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"/>
+                     th:src="${assignee.avatarUrl != null ? assignee.avatarUrl : '/assets/default-avatar.png'}"/>
 
                 <span class="assignee-name" th:text="${assignee.name}"></span>
 
