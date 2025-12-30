@@ -32,6 +32,8 @@ public class Task implements Comparable<Task> {
 
     @ManyToOne
     private Project project;
+    @ManyToOne
+    private Workspace workspace;
 
     public Task(String title, String description, LocalDateTime deadline, Project project) {
         this.title = title;

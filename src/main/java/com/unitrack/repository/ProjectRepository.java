@@ -2,6 +2,7 @@ package com.unitrack.repository;
 
 import com.unitrack.entity.Client;
 import com.unitrack.entity.Project;
+import com.unitrack.entity.Workspace;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -16,4 +17,5 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findAllByClient(Client client);
 
+    List<Project> findAllByWorkspace(Workspace workspace);
 }

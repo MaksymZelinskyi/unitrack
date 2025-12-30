@@ -16,7 +16,6 @@ import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -88,9 +87,9 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @GetMapping("/new")
-    public String newProject(Model model) {
+    public String newProject(Model model, Principal principal) {
         ProjectDto projectForm = new ProjectDto();
-        List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
+        List<CollaboratorInListDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl()))
                 .sorted(Comparator.comparing(x -> x.getName()))
@@ -104,9 +103,9 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @PostMapping("/new")
-    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto) {
+    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto, Principal principal) {
         log.debug("The assignees of project being created: {}", dto.getAssignees());
-        projectService.add(dto);
+        projectService.add(dto, principal.getName());
         return "redirect:/home";
     }
 
@@ -115,7 +114,7 @@ public class ProjectController extends AuthenticatedController {
     public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
 
-        List<AssigneeDto> collaborators = collaboratorService.getAll()
+        List<AssigneeDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(c -> {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);

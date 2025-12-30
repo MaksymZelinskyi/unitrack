@@ -36,12 +36,19 @@ public class Project implements Comparable<Project> {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Client client;
+    @ManyToOne
+    private Workspace workspace;
 
     public Project(String title, String description, LocalDate start, LocalDate end) {
         this.title = title;
         this.description = description;
         this.start = start;
         this.end = end;
+    }
+
+    public Project(String title, String description, LocalDate start, LocalDate end, Workspace workspace) {
+        this(title, description, start, end);
+        this.workspace = workspace;
     }
 
     public void addAssignees(Collection<Participation> assignees) {

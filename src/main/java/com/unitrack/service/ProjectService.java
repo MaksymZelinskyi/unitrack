@@ -4,9 +4,7 @@ import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.*;
-import com.unitrack.exception.CollaboratorNotFoundException;
-import com.unitrack.exception.EntityNotFoundException;
-import com.unitrack.exception.ProjectNotFoundException;
+import com.unitrack.exception.*;
 import com.unitrack.repository.ClientRepository;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
@@ -34,6 +32,7 @@ public class ProjectService {
     private final CollaboratorRepository collaboratorRepository;
     private final ClientService clientService;
     private final ParticipationRepository participationRepository;
+    private final WorkspaceService workspaceService;
 
     public Project getByTitle(String title) {
         return projectRepository.findByTitle(title).orElse(null);
@@ -47,12 +46,14 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public void add(ProjectDto dto) {
+    public void add(ProjectDto dto, String userEmail) {
         if (dto.getStart().isAfter(dto.getDeadline()))
             throw new ValidationException("Project start time must precede the deadline");
 
+        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
+
         //create project entity with dto data
-        Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline());
+        Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline(), workspace);
 
         //set project assignees
         Set<Participation> assignees = dto.getAssignees()
@@ -100,11 +101,11 @@ public class ProjectService {
         Set<Participation> assignees = dto.getAssignees()
                 .stream()
                 .filter(x -> x.getId() != null)
-                .map(x -> new Participation(
-                        collaboratorRepository.findById(x.getId())
-                                .orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId())),
-                        project,
-                        Role.valueOf(x.getRole().split(",")[0]))
+                .map(x -> {
+                    Collaborator collaborator = collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId()));
+                    if (collaborator.getWorkspace() != project.getWorkspace()) throw new WorkspaceException("Collaborator isn't in the project's workspace");
+                    return new Participation(collaborator, project, Role.valueOf(x.getRole().split(",")[0]));
+                    }
                 )
                 .collect(Collectors.toSet());
         project.getAssignees().clear();
@@ -139,12 +140,12 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public List<Project> getAllSorted() {
-        List<Project> projects = projectRepository.findAll();
+    public List<Project> getAllSorted(String userEmail) {
+        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
+        List<Project> projects = projectRepository.findAllByWorkspace(workspace);
         projects.sort(Comparator.naturalOrder());
         return projects;
     }
-
 
     public List<Project> getAllByClient(Long clientId) {
         Client client = clientService.getById(clientId);

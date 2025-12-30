@@ -1,5 +1,6 @@
 package com.unitrack.config;
 
+import com.unitrack.controller.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final JwtService jwtService;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationConfiguration authConfig) throws Exception {
@@ -36,9 +38,10 @@ public class SecurityConfig {
                 .csrf(x -> x.disable())
                 .formLogin(f -> f.loginPage("/login")
                                 .defaultSuccessUrl("/home", true)
-                                .permitAll()
                                 .failureUrl("/login?error=true")
                                 .loginProcessingUrl("/process-login")
+                                .successHandler(loginSuccessHandler)
+                                .permitAll()
                 )
                 .logout(x ->
                         x.logoutSuccessUrl("/login?logout=true")

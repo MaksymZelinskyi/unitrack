@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -34,9 +35,9 @@ public class CollaboratorController extends AuthenticatedController {
     private final SkillService skillService;
     private final ProjectService projectService;
 
-    @PostMapping("/")
+    @PostMapping("/register")
     public void addCollaborator(CollaboratorDto collaborator) {
-        collaboratorService.add(collaborator);
+        collaboratorService.register(collaborator);
     }
 
     @DeleteMapping("/{id}")
@@ -57,9 +58,9 @@ public class CollaboratorController extends AuthenticatedController {
     }
 
     @GetMapping("/new")
-    public String newCollaborator(Model model) {
+    public String newCollaborator(Model model, Principal principal) {
         List<Skill> skills = skillService.getAll();
-        List<ProjectInListDto> projects = projectService.getAll()
+        List<ProjectInListDto> projects = projectService.getAllSorted(principal.getName())
                 .stream()
                 .map(x-> new ProjectInListDto(x.getId(), x.getTitle()))
                 .sorted(Comparator.comparing(x -> x.getTitle()))
@@ -72,8 +73,8 @@ public class CollaboratorController extends AuthenticatedController {
     }
 
     @PostMapping("/new")
-    public String newCollaborator(@Validated CollaboratorDto dto) {
-        collaboratorService.add(dto);
+    public String newCollaborator(@Validated CollaboratorDto dto, Principal principal) {
+        collaboratorService.add(dto, principal.getName());
         return "redirect:/home";
     }
 
