@@ -35,7 +35,7 @@ public class Collaborator {
     private Set<Participation> projects = new HashSet<>();
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Task> tasks = new HashSet<>();
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Workspace workspace;
 
     private LocalDate joinDate;
@@ -46,6 +46,11 @@ public class Collaborator {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public Collaborator(String firstName, String lastName, String email, String password, Workspace workspace) {
+        this(firstName, lastName, email, password);
+        this.workspace = workspace;
     }
 
     public void addProject(Project project, Role role) {

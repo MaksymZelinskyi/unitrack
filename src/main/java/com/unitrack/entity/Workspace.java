@@ -44,4 +44,8 @@ public class Workspace {
 
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
+
+    public Workspace(String name) {
+        this.name = name;
+    }
 }

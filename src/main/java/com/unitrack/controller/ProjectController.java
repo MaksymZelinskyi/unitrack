@@ -87,9 +87,9 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @GetMapping("/new")
-    public String newProject(Model model) {
+    public String newProject(Model model, Principal principal) {
         ProjectDto projectForm = new ProjectDto();
-        List<CollaboratorInListDto> collaborators = collaboratorService.getAll()
+        List<CollaboratorInListDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl()))
                 .sorted(Comparator.comparing(x -> x.getName()))
@@ -114,7 +114,7 @@ public class ProjectController extends AuthenticatedController {
     public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
 
-        List<AssigneeDto> collaborators = collaboratorService.getAll()
+        List<AssigneeDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(c -> {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);

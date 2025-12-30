@@ -27,15 +27,25 @@ public class CollaboratorService {
     private final MailService mailService;
     private final WorkspaceService workspaceService;
 
-    public void add(CollaboratorDto dto) {
+    public void add(CollaboratorDto dto, String currentUserEmail) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
             throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
 
-        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
 
         collaborator = collaboratorRepository.save(collaborator);
         log.info("Collaborator with email {} has been added. Their id is {}", collaborator.getEmail(), collaborator.getId());
         mailService.sendCredentials(dto.getEmail(), dto.getPassword());
+    }
+
+    public void register(CollaboratorDto dto) {
+        if (collaboratorRepository.existsByEmail(dto.getEmail()))
+            throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
+        Workspace workspace = new Workspace();
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
+
+        collaborator = collaboratorRepository.save(collaborator);
     }
 
     public List<Collaborator> getAll() {
