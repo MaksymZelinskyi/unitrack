@@ -1,9 +1,12 @@
 package com.unitrack.controller;
 
 import com.unitrack.dto.request.LoginDto;
+import com.unitrack.dto.request.RegisterDto;
 import com.unitrack.dto.request.ResetPasswordDto;
 import com.unitrack.service.AccountService;
+import com.unitrack.service.CollaboratorService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final AccountService accountService;
+    private final CollaboratorService collaboratorService;
 
     @GetMapping("/login")
     public String login(@Validated LoginDto dto) {
@@ -52,6 +56,17 @@ public class AuthenticationController {
 
         accountService.changePassword(dto.getEmail(), dto.getPassword());
         return "redirect:/login";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public String register(@Validated RegisterDto dto) {
+        collaboratorService.register(dto);
+        return "/login";
     }
 
 }

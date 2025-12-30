@@ -35,10 +35,6 @@ public class CollaboratorController extends AuthenticatedController {
     private final SkillService skillService;
     private final ProjectService projectService;
 
-    @PostMapping("/register")
-    public void addCollaborator(CollaboratorDto collaborator) {
-        collaboratorService.register(collaborator);
-    }
 
     @DeleteMapping("/{id}")
     public String deleteCollaborator(@PathVariable Long id) {

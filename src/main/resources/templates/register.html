@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Uni-Track</title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body>
+
+<header th:insert="fragments :: unauthenticated"></header>
+
+<div class="page">
+
+    <div class="login-wrapper">
+        <div class="card-bg yellow-card"></div>
+        <div class="card-bg blue-card"></div>
+
+        <div class="login-card">
+            <label>Create account</label>
+
+            <form method="post" th:action="@{/register}">
+                <input name="firstName" type="text" placeholder="John" maxlength="255" required class="input">
+                <input name="lastName" type="text" placeholder="Doe" maxlength="255" required class="input">
+                <div>
+                    <input name="email" type="email" placeholder="Email" required class="input">
+                    <span id="error" class="error-msg">Invalid email address</span>
+                </div>
+                <input name="password" type="password" placeholder="Password" required class="input">
+                <input name="teamName" type="text" placeholder="My super team" maxlength="255" required class="input">
+
+                <button type="submit" class="login-btn">Create account</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/email-validation.js"></script>
+</body>
+</html>

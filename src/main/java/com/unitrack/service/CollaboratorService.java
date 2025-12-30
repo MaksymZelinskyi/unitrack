@@ -1,6 +1,7 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.request.CollaboratorDto;
+import com.unitrack.dto.request.RegisterDto;
 import com.unitrack.dto.request.UpdateProfileDto;
 import com.unitrack.entity.*;
 import com.unitrack.exception.CollaboratorNotFoundException;
@@ -39,13 +40,16 @@ public class CollaboratorService {
         mailService.sendCredentials(dto.getEmail(), dto.getPassword());
     }
 
-    public void register(CollaboratorDto dto) {
-        if (collaboratorRepository.existsByEmail(dto.getEmail()))
-            throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
-        Workspace workspace = new Workspace();
-        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
+    public void register(RegisterDto dto) {
+        if (collaboratorRepository.existsByEmail(dto.email()))
+            throw new DuplicateException("A user with email: " + dto.email() + " already exists");
 
+        Workspace workspace = new Workspace(dto.teamName());
+        Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()), workspace);
+        collaborator.setAdmin(true);
+        log.debug("Saving collaborator with email {}", collaborator.getEmail());
         collaborator = collaboratorRepository.save(collaborator);
+        log.debug("Saved collaborator with id {}", collaborator.getId());
     }
 
     public List<Collaborator> getAll() {

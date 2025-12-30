@@ -6,22 +6,7 @@
 </head>
 <body>
 
-<header>
-    <div class="header-container">
-        <!-- Left: Title -->
-        <div class="header-left flex-row">
-            <img class="logo" th:src="@{/icons/logo-icon.png}" alt="Logo">
-            <h1 class="header-title">
-                UniTrack
-            </h1>
-        </div>
-
-        <!-- Center: Subtitle -->
-        <h3 class="header-subtitle">
-            The most complete team-management tool
-        </h3>
-    </div>
-</header>
+<div th:insert="fragments :: unauthenticated"></div>
 
 <div class="page">
 
@@ -47,8 +32,10 @@
                 <button type="submit" class="login-btn">Login</button>
 
                 <div class="no-account">
-                    <span>No account?</span>
-                    <h5>Ask your employer for credentials</h5>
+                    <span>Want to create your own team?</span>
+                    <a href="/register">
+                        <h5>Create an account</h5>
+                    </a>
                 </div>
             </form>
         </div>
