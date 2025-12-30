@@ -46,6 +46,11 @@ public class Project implements Comparable<Project> {
         this.end = end;
     }
 
+    public Project(String title, String description, LocalDate start, LocalDate end, Workspace workspace) {
+        this(title, description, start, end);
+        this.workspace = workspace;
+    }
+
     public void addAssignees(Collection<Participation> assignees) {
         this.assignees.addAll(assignees);
     }

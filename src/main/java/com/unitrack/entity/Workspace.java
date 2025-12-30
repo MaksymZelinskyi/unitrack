@@ -28,6 +28,8 @@ public class Workspace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
     @OneToOne(mappedBy = "workspace", cascade = CascadeType.REMOVE)
     private Collaborator admin;
 
