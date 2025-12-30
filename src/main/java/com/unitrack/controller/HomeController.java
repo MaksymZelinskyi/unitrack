@@ -4,14 +4,10 @@ import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.*;
 import com.unitrack.entity.*;
 import com.unitrack.exception.AuthenticationException;
-import com.unitrack.repository.CollaboratorRepository;
-import com.unitrack.repository.ProjectRepository;
-import com.unitrack.repository.TaskRepository;
 import com.unitrack.service.ProjectService;
+import com.unitrack.service.CollaboratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +27,7 @@ import java.util.stream.Collectors;
 public class HomeController extends AuthenticatedController {
 
     private final AuthorizationService authorizationService;
-    private final CollaboratorRepository collaboratorRepository;
-    private final TaskRepository taskRepository;
+    private final CollaboratorService collaboratorService;
     private final ProjectService projectService;
 
     @GetMapping
@@ -50,9 +45,8 @@ public class HomeController extends AuthenticatedController {
     }
 
     public String getUserHome(Principal principal, Model model) {
-        Collaborator collaborator = collaboratorRepository
-                .findByEmail(principal.getName())
-                .orElseThrow(() -> new AuthenticationException("Collaborator with email " + principal.getName() + " not found."));
+        Collaborator collaborator = collaboratorService
+                .getByEmail(principal.getName());
         List<ProjectParticipationDto> projects = collaborator.getProjects()
                 .stream()
                 .sorted(Comparator.comparing(Participation::getProject))
@@ -83,8 +77,8 @@ public class HomeController extends AuthenticatedController {
     }
 
     public String getAdminHome(Principal principal, Model model) {
-        List<Project> projects = projectService.getAllSorted();
-        List<Collaborator> collaborators = collaboratorRepository.findAll();
+        List<Project> projects = projectService.getAllSorted(principal.getName());
+        List<Collaborator> collaborators = collaboratorService.getAll(principal.getName());
         List<ProjectDto> dtoList = new ArrayList<>();
         model.addAttribute(
                 "projects",

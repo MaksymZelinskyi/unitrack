@@ -16,7 +16,6 @@ import com.unitrack.service.ProjectService;
 import com.unitrack.service.TaskService;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -104,9 +103,9 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @PostMapping("/new")
-    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto) {
+    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto, Principal principal) {
         log.debug("The assignees of project being created: {}", dto.getAssignees());
-        projectService.add(dto);
+        projectService.add(dto, principal.getName());
         return "redirect:/home";
     }
 

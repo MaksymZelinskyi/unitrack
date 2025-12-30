@@ -2,11 +2,7 @@ package com.unitrack.service;
 
 import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.dto.request.UpdateProfileDto;
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Participation;
-import com.unitrack.entity.Project;
-import com.unitrack.entity.Skill;
-import com.unitrack.exception.AuthenticationException;
+import com.unitrack.entity.*;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.DuplicateException;
 import com.unitrack.repository.CollaboratorRepository;
@@ -14,8 +10,6 @@ import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +25,7 @@ public class CollaboratorService {
     private final ParticipationRepository participationRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
+    private final WorkspaceService workspaceService;
 
     public void add(CollaboratorDto dto) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
@@ -45,6 +40,11 @@ public class CollaboratorService {
 
     public List<Collaborator> getAll() {
         return collaboratorRepository.findAll();
+    }
+
+    public List<Collaborator> getAll(String userEmail) {
+        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
+        return collaboratorRepository.findAllByWorkspace(workspace);
     }
 
     public Collaborator getById(Long id) {
