@@ -41,9 +41,21 @@
 
                             <p class="project-desc" th:text="${project.description}">Project description</p>
 
-                            <div class="project-meta">
-                                <span class="meta-label">Client:</span>
-                                <span class="meta-value" th:text="${project.client.name}">Client</span>
+                            <div class="bottom">
+                                <div class="project-meta">
+                                    <span class="meta-label">Start time:</span>
+                                    <span class="meta-value" th:text="${#temporals.format(project.start, 'dd MMM yyyy')}"></span>
+                                </div>
+
+                                <div class="project-meta">
+                                    <span class="meta-label">Deadline:</span>
+                                    <span class="meta-value" th:text="${#temporals.format(project.end, 'dd MMM yyyy')}"></span>
+                                </div>
+
+                                <div class="project-meta">
+                                    <span class="meta-label">Client:</span>
+                                    <span class="meta-value" th:text="${project.client.name}">Client</span>
+                                </div>
                             </div>
                         </div>
                     </a>

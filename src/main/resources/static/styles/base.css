@@ -527,7 +527,11 @@ small { font-size: .85rem; color: #666;}
 .confirm-delete {}
 
 .right { margin-left: auto;}
-.bottom {bottom: 0;}
+.bottom {
+    bottom: 0;
+    margin-top: auto;
+}
+.margin-top-max {margin-top: max;}
 
 .header-row {
     position: relative;
