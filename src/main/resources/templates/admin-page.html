@@ -12,20 +12,22 @@
 
     <!-- MAIN SECTION -->
     <section class="main">
-
-        <a class="stats-btn" th:href="@{/statistics}">
-            View Stats
-        </a>
-
-        <h1 class="section-title">My Projects</h1>
-        <div class="project-grid-wrapper">
-            <!-- Left: Add Project button -->
-            <a class="card add-project" th:href="@{/projects/new}">
-                <img src="/icons/plus.png" alt="Add Project"/>
-                <p>Add New Project</p>
+        <div class="header-row">
+            <a class="stats-btn" th:href="@{/statistics}">
+                View Stats
             </a>
 
-            <ul class="project-list two-columns">
+            <h1 class="section-title centered">My Projects</h1>
+        </div>
+
+        <div class="project-grid-wrapper">
+
+            <ul class="project-list four-columns">
+                <!-- Left: Add Project button -->
+                <a class="card add-project" th:href="@{/projects/new}">
+                    <img src="/icons/plus.png" alt="Add Project"/>
+                    <p>Add New Project</p>
+                </a>
                 <li th:each="project : ${projects}">
                     <a th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
                         <div class="project-status"
