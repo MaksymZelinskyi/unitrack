@@ -45,7 +45,7 @@ public class StatsTests {
         when(projectRepository.countByEndBetween(LocalDate.now().minusMonths(1L), LocalDate.now())).thenReturn(1);
         when(taskRepository.countByCompletedOnAfter(LocalDate.now().minusMonths(1L))).thenReturn(1);
 
-        StatisticsDto dto = statisticsService.getStats();
+        StatisticsDto dto = statisticsService.getStats("");
         assertNotNull(dto);
         assertEquals(1, dto.getProjects().getTotal());
         assertEquals(1, dto.getTasks().getTotal());

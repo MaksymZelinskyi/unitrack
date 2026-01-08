@@ -15,7 +15,13 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     int countByEndBetween(LocalDate start, LocalDate end);
 
+    int countByEndBetweenAndWorkspace(LocalDate start, LocalDate end, Workspace workspace);
+
     List<Project> findAllByClient(Client client);
 
+    List<Project> findAllByClientAndWorkspace(Client client, Workspace workspace);
+
     List<Project> findAllByWorkspace(Workspace workspace);
+
+    int countByWorkspace(Workspace workspace);
 }
