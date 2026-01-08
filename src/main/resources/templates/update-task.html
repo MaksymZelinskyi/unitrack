@@ -8,14 +8,14 @@
 
 <div th:insert="fragments :: header"></div>
 
-<h1 class="task-title-heading">Update Task</h1>
+<h1 class="page-title">Update Task</h1>
 
-<form class="form-layout"
+<form class="update-form"
       th:action="@{/tasks/{id}(id=${task.id})}"
       th:object="${task}"
       method="post">
 
-    <div class="form-left-column">
+    <div class="left-panel">
         <input type="hidden" name="_method" value="put"/>
 
         <label for="title">Task title</label>
@@ -55,18 +55,18 @@
         </button>
     </div>
 
-    <div class="assignees-panel">
+    <div class="right-panel">
         <label class="current-assignees-label">
             Current Assignees
         </label>
 
-        <div id="assignees-list" class="assignee-list">
+        <div id="assignees-list" class="assignees-list">
             <div class="assignee"
                  th:each="assignee, iterStat : ${assignees}"
                  th:attr="data-id=${assignee.id}">
 
                 <button type="button" class="remove-btn" aria-label="Remove">
-                    <img src="/icons/minus.png" alt="Remove" class="remove-icon"/>
+                    ✕
                 </button>
 
                 <span class="assignee-name"

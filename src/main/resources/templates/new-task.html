@@ -48,7 +48,7 @@
         <label class="assignee-label">Current Assignees</label>
 
         <div id="assignees-list" class="assignees-list style-enhanced">
-            <div class="task-assignee" th:each="assignee, iterStat : ${assignees}">
+            <div class="assignee" th:each="assignee, iterStat : ${assignees}">
                 <img th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"
                      class="avatar avatar-sm" alt="Profile Picture"/>
 

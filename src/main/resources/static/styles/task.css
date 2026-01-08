@@ -489,14 +489,6 @@ h1, h2, h3, h4 {
     margin-bottom: 1rem;
 }
 
-.assignee-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-left: 0;
-    list-style: none;
-}
-
 .assignee-row {
     display: flex;
     align-items: center;

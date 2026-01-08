@@ -473,7 +473,7 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 400px;
+    width: 50%;
 }
 
 /* INPUTS */
@@ -494,6 +494,7 @@ ul {
     background: white;
     border-radius: 12px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    width: 50%;
 }
 
 .two-columns {grid-template-columns: 1fr 1fr;}
