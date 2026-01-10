@@ -8,6 +8,7 @@ import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.Client;
+import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Participation;
 import com.unitrack.entity.Project;
 import com.unitrack.service.ClientService;
@@ -120,14 +121,17 @@ public class ProjectController extends AuthenticatedController {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);
                     var role = participation != null ? participation.getRoles().stream().findFirst().orElse(null) : null;
                     return new AssigneeDto(
-                            c.getId(), role != null ? role.name() : null, c.getFullName()
+                            c.getId(), role != null ? role.name() : null, c.getFullName(), c.getAvatarUrl()
                     );
                 }).toList();
         List<AssigneeDto> assignees = projectService.getProjectAssignees(project)
                 .stream()
-                .map(x -> new AssigneeDto(
-                        x.getCollaborator().getId(), x.getRoles().isEmpty() ? "" : x.getRoles().stream().findFirst().orElseThrow().name(),
-                        x.getCollaborator().getFullName())
+                .map(x -> {
+                    Collaborator c = x.getCollaborator();
+                    return new AssigneeDto(
+                            c.getId(), x.getRoles().isEmpty() ? "" : x.getRoles().stream().findFirst().orElseThrow().name(),
+                            c.getFullName(), c.getAvatarUrl());
+                        }
                 ).toList();
         model.addAttribute("project",
                 new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),

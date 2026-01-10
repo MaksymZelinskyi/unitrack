@@ -62,7 +62,7 @@ public class StatsTests {
         collaborator.setTasks(Set.of(task));
         when(collaboratorRepository.findAll()).thenReturn(List.of(collaborator));
 
-        UserStatsChart usc = statisticsService.getUserChart();
+        UserStatsChart usc = statisticsService.getUserChart("");
         assertNotNull(usc);
         assertEquals("Collaborator M", usc.getUsers().get(0));
         assertEquals(1, usc.getTasksPerUser().get(0));
@@ -76,7 +76,7 @@ public class StatsTests {
         project.setTasks(Set.of(task));
         when(projectRepository.findAll()).thenReturn(List.of(project));
 
-        ProjectStatsChart psc = statisticsService.getProjectChart();
+        ProjectStatsChart psc = statisticsService.getProjectChart("");
         assertNotNull(psc);
         assertEquals(project.getTitle(), psc.getProjects().get(0));
         assertEquals(1, psc.getTasksPerProject().get(0));

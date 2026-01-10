@@ -85,20 +85,6 @@
                         <h4 class="collab-name" th:text="${collaborator.name}"></h4>
                     </div>
 
-                    <div class="collab-skills">
-                        <span class="skills-label">Skills:</span>
-
-                        <p th:if="${done == null || #lists.isEmpty(done)}" class="no-skill">None</p>
-
-                        <div th:unless="${done == null || #lists.isEmpty(done)}" class="skills-container">
-                            <span th:text="${#strings.substring(#strings.listJoin(collaborator.skills, ', '), 0, 15)}"></span>...
-
-                            <details>
-                                <summary class="show-more">more</summary>
-                                <span th:text="${#strings.listJoin(collaborator.skills, ', ')}"></span>
-                            </details>
-                        </div>
-                    </div>
                 </a>
 
                 <!-- delete button -->

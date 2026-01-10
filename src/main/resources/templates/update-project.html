@@ -68,13 +68,18 @@
                     ✕
                 </button>
 
+                <div class="avatar-wrapper">
+                    <img th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"
+                         class="profile-avatar" alt="Profile Picture"/>
+                </div>
+
                 <span class="assignee-name" th:text="${assignee.name}"></span>
 
                 <input type="hidden"
                        th:name="assignees[__${iterStat.index}__].id"
                        th:value="${assignee.id}"/>
 
-                <select class="role-picker"
+                <select class="role-select"
                         th:name="assignees[__${iterStat.index}__].role">
 
                     <option value="BACKEND_DEV" th:selected="${assignee.role == 'BACKEND_DEV'}">Backend Dev</option>

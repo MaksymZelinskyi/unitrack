@@ -1,11 +1,12 @@
 function addAssignee(selectEl) {
+      const id = Number(selectEl.value);
+
+      assignee = collaborators.find(c => c.id == id);
+      if (!assignee) return;
+
       const list = document.getElementById('assignees-list');
-      const id = selectEl.value;
-      if (!id) return;
 
-      const name = selectEl.options[selectEl.selectedIndex].text;
-
-      if (list.querySelector(`[data-id="${CSS.escape(id)}"]`)) {
+      if (list.querySelector(`[data-id="${id}"]`)) {
         selectEl.value = '';
         return;
       }
@@ -16,8 +17,12 @@ function addAssignee(selectEl) {
 
       row.innerHTML = `
         <button type="button" class="remove-btn" aria-label="Remove">✕</button>
-        <span class="assignee-name">${name}</span>
-        <input type="hidden" name="assignees[0].id" value="${id}">
+        <div class="avatar-wrapper">
+            <img src="${assignee.avatarUrl || '/icons/profile-icon.png'}"
+                class="profile-avatar" alt="Profile Picture"/>
+        </div>
+        <span class="assignee-name">${assignee.name}</span>
+        <input type="hidden" name="assignees[0].id" value="${assignee.id}">
         <select name="assignees[0].role" class="role-select">
           <option value="BACKEND_DEV" selected>Backend Dev</option>
           <option value="FRONTEND_DEV">Frontend Dev</option>
