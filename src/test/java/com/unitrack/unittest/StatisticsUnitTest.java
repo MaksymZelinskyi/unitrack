@@ -31,7 +31,7 @@ public class StatisticsUnitTest {
     public void init() {
         projectRepository = mock(ProjectRepository.class);
         collaboratorRepository = mock(CollaboratorRepository.class);
-        statisticsService = new StatisticsService(projectRepository, collaboratorRepository, taskRepository);
+        statisticsService = new StatisticsService(projectRepository, collaboratorRepository, taskRepository, null);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class StatisticsUnitTest {
         when(projectRepository.findAll()).thenReturn(projects);
 
         //act
-        ProjectStatsChart projectStatsChart = statisticsService.getProjectChart();
+        ProjectStatsChart projectStatsChart = statisticsService.getProjectChart("");
 
         //assert
         assertEquals("Project", projectStatsChart.getProjects().get(0));
@@ -88,7 +88,7 @@ public class StatisticsUnitTest {
         when(collaboratorRepository.findAll()).thenReturn(collaborators);
 
         //act
-        UserStatsChart projectStatsChart = statisticsService.getUserChart();
+        UserStatsChart projectStatsChart = statisticsService.getUserChart("");
 
         //assert
         assertEquals("John D", projectStatsChart.getUsers().get(0));

@@ -38,7 +38,7 @@ public class ProjectUnitTest {
         //arrange
         UpdateProjectDto dto = new UpdateProjectDto("Project", "Lorem ipsum", "Client", LocalDate.now().minusMonths(1L), LocalDate.now());
         for (int i = 0; i < 5; i++) {
-            AssigneeDto assigneeDto = new AssigneeDto((long) i,Role.TESTER.name(), "Assignee" + i);
+            AssigneeDto assigneeDto = new AssigneeDto((long) i,Role.TESTER.name(), "Assignee" + i, "");
             dto.getAssignees().add(assigneeDto);
             when(collaboratorRepository.findById((long)i)).thenReturn(Optional.of(new Collaborator()));
         }
