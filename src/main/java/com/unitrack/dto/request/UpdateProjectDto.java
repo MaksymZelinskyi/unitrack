@@ -31,6 +31,9 @@ public class UpdateProjectDto {
     @Length(max = 255)
     private String client;
 
+    @Length(max = 255)
+    private String newClient;
+
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start;

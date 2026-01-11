@@ -10,12 +10,8 @@
 
 <h1 class="page-title">Update Project</h1>
 
-<form
-        class="update-form"
-        th:action="@{/projects/{id}(id=${project.id})}"
-        th:object="${project}"
-        method="post"
->
+<form method="post" id="projectForm" class="update-form"
+      th:action="@{/projects/{id}(id=${project.id})}" th:object="${project}">
     <div class="left-panel">
         <input type="hidden" name="_method" value="put"/>
 
@@ -24,7 +20,6 @@
 
         <label for="description">Project description</label>
         <input th:field="*{description}" id="description" type="text" class="input-field" maxlength="255"/>
-
 
         <label class="label-strong">Select the client</label>
         <select th:field="*{client}" class="select">
@@ -36,7 +31,7 @@
         </select>
 
         <label for="newClient">Or register a new one</label>
-        <input th:field="*{client}" id="newClient" type="text" class="input-field" maxlength="255"/>
+        <input th:field="*{newClient}" id="newClient" type="text" class="input-field" maxlength="255" value=""/>
 
         <label for="start">Start</label>
         <input th:field="*{start}" id="start" type="date" class="input-field" required/>
@@ -58,47 +53,40 @@
     <div class="right-panel">
         <label class="assignees-title">Current Assignees</label>
 
-        <div id="assignees-list" class="assignees-list">
+        <ul id="assignees-list" class="assignees-list">
 
-            <div class="assignee-row"
+            <li class="assignee"
                  th:each="assignee, iterStat : ${assignees}"
                  th:attr="data-id=${assignee.id}">
 
-                <button type="button" class="remove-btn" aria-label="Remove">
-                    ✕
-                </button>
-
+                <button type="button" class="remove-btn" aria-label="Remove">✕</button>
                 <div class="avatar-wrapper">
                     <img th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"
                          class="profile-avatar" alt="Profile Picture"/>
                 </div>
-
                 <span class="assignee-name" th:text="${assignee.name}"></span>
-
-                <input type="hidden"
-                       th:name="assignees[__${iterStat.index}__].id"
-                       th:value="${assignee.id}"/>
-
-                <select class="role-select"
-                        th:name="assignees[__${iterStat.index}__].role">
-
-                    <option value="BACKEND_DEV" th:selected="${assignee.role == 'BACKEND_DEV'}">Backend Dev</option>
-                    <option value="FRONTEND_DEV" th:selected="${assignee.role == 'FRONTEND_DEV'}">Frontend Dev</option>
-                    <option value="FULLSTACK_DEV" th:selected="${assignee.role == 'FULLSTACK_DEV'}">Fullstack Dev</option>
-                    <option value="TESTER" th:selected="${assignee.role == 'TESTER'}">Tester</option>
-                    <option value="DEVOPS" th:selected="${assignee.role == 'DEVOPS'}">DevOps</option>
-                    <option value="DESIGNER" th:selected="${assignee.role == 'DESIGNER'}">Designer</option>
-                    <option value="PRODUCT_OWNER" th:selected="${assignee.role == 'PRODUCT_OWNER'}">Product Owner</option>
-                    <option value="INTERN" th:selected="${assignee.role == 'INTERN'}">Intern</option>
-
+                <input type="hidden" th:field="*{assignees[__${iterStat.index}__].id}" th:value="${assignee.id}">
+                <select th:field="*{assignees[__${iterStat.index}__].role}"
+                        class="role-select">
+                    <option value="BACKEND_DEV" selected>Backend Dev</option>
+                    <option value="FRONTEND_DEV">Frontend Dev</option>
+                    <option value="FULLSTACK_DEV">Fullstack Dev</option>
+                    <option value="TESTER">Tester</option>
+                    <option value="DEVOPS">DevOps</option>
+                    <option value="DESIGNER">Designer</option>
+                    <option value="PRODUCT_OWNER">Product Owner</option>
+                    <option value="INTERN">Intern</option>
                 </select>
-
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 </form>
 
-<script src="/js/update-project.js"></script>
+<script th:inline="javascript">
+    const collaborators = [[${collaborators}]];
+    const assignees = [[${assignees}]];
+</script>
+<script src="/js/new-project.js"></script>
 
 </body>
 </html>

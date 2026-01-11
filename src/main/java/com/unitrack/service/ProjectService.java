@@ -94,7 +94,12 @@ public class ProjectService {
 
         project.setStart(dto.getStart());
         project.setEnd(dto.getDeadline());
-        project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+
+        if (dto.getNewClient() != null && !dto.getNewClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getNewClient()));
+        } else  if (dto.getClient() != null && !dto.getClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+        }
 
         log.debug("Assignees set for project: {}", dto.getAssignees().size());
         log.debug("Assignee id + role: {}", dto.getAssignees().stream().map(x -> "Id: " + x.getId() + "; role: " + x.getRole()).toList());
