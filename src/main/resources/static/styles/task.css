@@ -483,26 +483,10 @@ h1, h2, h3, h4 {
 /* ─────────────────────────────────────────── */
 /* SIDEBAR */
 /* ─────────────────────────────────────────── */
-.sidebar {
-    width: 260px;
-    background: white;
-    border-radius: 14px;
-    padding: 1.5rem;
-    border: 1px solid #dee3eb;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-}
 .sidebar-title {
     font-weight: 600;
     display: block;
     margin-bottom: 1rem;
-}
-
-.assignee-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-left: 0;
-    list-style: none;
 }
 
 .assignee-row {

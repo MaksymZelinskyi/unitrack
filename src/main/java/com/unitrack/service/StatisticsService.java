@@ -4,6 +4,7 @@ import com.unitrack.dto.*;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Project;
 import com.unitrack.entity.Task;
+import com.unitrack.entity.Workspace;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
@@ -22,20 +23,28 @@ public class StatisticsService {
     private final ProjectRepository projectRepository;
     private final CollaboratorRepository collaboratorRepository;
     private final TaskRepository taskRepository;
+    private final WorkspaceService workspaceService;
 
-    public StatisticsDto getStats() {
+    public StatisticsDto getStats(String userEmail) {
+        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
         StatisticsDto dto = new StatisticsDto();
         ProjectStatistics projectStats = new ProjectStatistics();
         TaskStatistics taskStats = new TaskStatistics();
 
+        projectStats.setDeadlines(
+                projectRepository
+                        .countByEndBetweenAndWorkspace(
+                                LocalDate.now().minusMonths(1), LocalDate.now(), workspace
+                        )
+        );
+        projectStats.setTotal((int)projectRepository.countByWorkspace(workspace));
+
+        taskStats.setTotal((int)taskRepository.countByWorkspace(workspace));
+        taskStats.setDeadlines(taskRepository.countByCompletedOnAfterAndWorkspace(LocalDate.now().minusMonths(1), workspace));
+
         dto.setProjects(projectStats);
         dto.setTasks(taskStats);
 
-        projectStats.setDeadlines(projectRepository.countByEndBetween(LocalDate.now().minusMonths(1), LocalDate.now()));
-        projectStats.setTotal((int)projectRepository.count());
-
-        taskStats.setTotal((int)taskRepository.count());
-        taskStats.setDeadlines(taskRepository.countByCompletedOnAfter(LocalDate.now().minusMonths(1)));
         log.info("Project/task statistics generated");
         return dto;
     }
@@ -44,11 +53,12 @@ public class StatisticsService {
      * getProjectChart
      * @return Data for the chart of tasks completed last month per project
      */
-    public ProjectStatsChart getProjectChart() {
+    public ProjectStatsChart getProjectChart(String userEmail) {
+        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
         ProjectStatsChart chart = new ProjectStatsChart();
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectRepository.findAllByWorkspace(workspace);
+
         for (Project project : projects) {
-            //todo: check task status
             chart.addProject(project.getTitle(), (int) project.getTasks()
                     .stream()
                     .filter(x -> x.getStatus() == Task.Status.DONE && x.getCompletedOn() != null && x.getCompletedOn().isAfter(LocalDate.now().minusMonths(1)))
@@ -62,7 +72,8 @@ public class StatisticsService {
      * getUserChart
      * @return Data for the chart of tasks completed last month per collaborator
      */
-    public UserStatsChart getUserChart() {
+    public UserStatsChart getUserChart(String userEmail) {
+        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
         UserStatsChart chart = new UserStatsChart();
         List<Collaborator> collaborators = collaboratorRepository.findAll();
         for (Collaborator collaborator : collaborators) {

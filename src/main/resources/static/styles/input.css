@@ -1,0 +1,38 @@
+
+/* Inputs and selects */
+.input,
+.select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.role-select {
+  width: 50%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.input:focus,
+.select:focus,
+.role-select:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+/* Right section */
+.form-left,
+.form-right {
+  flex: 1;
+}
+
+.form-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+}

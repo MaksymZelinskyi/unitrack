@@ -21,9 +21,4 @@ public class UniTrackApplication {
 		SpringApplication.run(UniTrackApplication.class, args);
 	}
 
-	@EventListener(ApplicationReadyEvent.class)
-	public void logFinalMessage() {
-		log.info("The server is running at: localhost:2017");
-		log.info("Default credentials: Username: admin@email.com; Password: password");
-	}
 }

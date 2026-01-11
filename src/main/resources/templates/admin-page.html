@@ -12,20 +12,22 @@
 
     <!-- MAIN SECTION -->
     <section class="main">
-
-        <a class="stats-btn" th:href="@{/statistics}">
-            View Stats
-        </a>
-
-        <h1 class="section-title">My Projects</h1>
-        <div class="project-grid-wrapper">
-            <!-- Left: Add Project button -->
-            <a class="card add-project" th:href="@{/projects/new}">
-                <img src="/icons/plus.png" alt="Add Project"/>
-                <p>Add New Project</p>
+        <div class="header-row right">
+            <a class="stats-btn" th:href="@{/statistics}">
+                View Stats
             </a>
 
-            <ul class="project-list two-columns">
+            <h1 class="section-title centered">My Projects</h1>
+        </div>
+
+        <div class="project-grid-wrapper">
+
+            <ul class="project-list four-columns">
+                <!-- Left: Add Project button -->
+                <a class="card add-project" th:href="@{/projects/new}">
+                    <img src="/icons/plus.png" alt="Add Project"/>
+                    <p>Add New Project</p>
+                </a>
                 <li th:each="project : ${projects}">
                     <a th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
                         <div class="project-status"
@@ -39,9 +41,21 @@
 
                             <p class="project-desc" th:text="${project.description}">Project description</p>
 
-                            <div class="project-meta">
-                                <span class="meta-label">Client:</span>
-                                <span class="meta-value" th:text="${project.client.name}">Client</span>
+                            <div class="bottom">
+                                <div class="project-meta">
+                                    <span class="meta-label">Start time:</span>
+                                    <span class="meta-value" th:text="${#temporals.format(project.start, 'dd MMM yyyy')}"></span>
+                                </div>
+
+                                <div class="project-meta">
+                                    <span class="meta-label">Deadline:</span>
+                                    <span class="meta-value" th:text="${#temporals.format(project.end, 'dd MMM yyyy')}"></span>
+                                </div>
+
+                                <div class="project-meta">
+                                    <span class="meta-label">Client:</span>
+                                    <span class="meta-value" th:text="${project.client.name}">Client</span>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -71,20 +85,6 @@
                         <h4 class="collab-name" th:text="${collaborator.name}"></h4>
                     </div>
 
-                    <div class="collab-skills">
-                        <span class="skills-label">Skills:</span>
-
-                        <p th:if="${done == null || #lists.isEmpty(done)}" class="no-skill">None</p>
-
-                        <div th:unless="${done == null || #lists.isEmpty(done)}" class="skills-container">
-                            <span th:text="${#strings.substring(#strings.listJoin(collaborator.skills, ', '), 0, 15)}"></span>...
-
-                            <details>
-                                <summary class="show-more">more</summary>
-                                <span th:text="${#strings.listJoin(collaborator.skills, ', ')}"></span>
-                            </details>
-                        </div>
-                    </div>
                 </a>
 
                 <!-- delete button -->

@@ -10,7 +10,7 @@
 <form class="project-form two-columns" method="post" th:action="@{/projects/new}" th:object="${projectForm}" id="projectForm">
     <!-- LEFT -->
     <div class="form-left">
-        <h1 class="page-title">New Project</h1>
+        <h1 class="section-title">New Project</h1>
 
         <label>Project title</label>
         <input class="input" placeholder="Title" th:field="*{title}" type="text" required maxlength="255"/>
@@ -52,34 +52,17 @@
     <div class="form-right">
         <label class="label-strong">Current Assignees</label>
 
-        <div id="assignees-list">
-            <div class="assignee" th:each="assignee, iterStat : ${assignees}">
-                <button type="button" class="remove-btn"
-                        th:onclick="'removeAssignee(' + ${assignee.id} + ')'">✕</button>
-                <img class="avatar avatar-sm"
-                     th:src="${assignee.avatarUrl != null ? assignee.avatarUrl : '/assets/default-avatar.png'}"/>
+        <ul id="assignees-list">
+            <li class="assignee" th:each="assignee, iterStat : ${assignees}">
 
-                <span class="assignee-name" th:text="${assignee.name}"></span>
-
-                <input type="hidden" th:name="assignees[__${iterStat.index}__].id" th:value="${assignee.id}"/>
-
-                <select class="role-select"
-                        th:name="assignees[__${iterStat.index}__].role"
-                        th:value="${assignee.role}">
-                    <option value="BACKEND_DEV">Backend Dev</option>
-                    <option value="FRONTEND_DEV">Frontend Dev</option>
-                    <option value="FULLSTACK_DEV">Fullstack Dev</option>
-                    <option value="TESTER">Tester</option>
-                    <option value="DEVOPS">DevOps</option>
-                    <option value="DESIGNER">Designer</option>
-                    <option value="PRODUCT_OWNER">Product Owner</option>
-                    <option value="INTERN">Intern</option>
-                </select>
-            </div>
-        </div>
+            </li>
+        </ul>
     </div>
 </form>
 
+<script th:inline="javascript">
+    const collaborators = [[${collaborators}]];
+</script>
 <script src="/js/new-project.js"></script>
 </body>
 </html>

@@ -9,6 +9,8 @@
 @import "stats.css";
 @import "confirm.css";
 @import "client.css";
+@import "assignment.css";
+@import "input.css";
 
 .error-page {
     min-height: 100vh;

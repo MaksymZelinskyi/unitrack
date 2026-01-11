@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = "projects")
+@EqualsAndHashCode(exclude = {"projects", "skills", "tasks", "workspace"})
 public class Collaborator {
 
     @Id
