@@ -91,7 +91,6 @@ dd {
     color: white;
     border-radius: 8px;
     font-weight: 600;
-    margin-bottom: 2rem;
     margin-left: 6rem;
     box-shadow: 0 3px 8px rgba(0,0,0,0.15);
     transition: background 0.2s ease, transform 0.1s ease;
