@@ -1,0 +1,38 @@
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+
+    background: #ffffff;
+    color: #1f2937;
+
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+
+    border: 1px solid #d1d5db;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+    transition: transform 0.15s ease,
+                box-shadow 0.15s ease,
+                background 0.15s ease;
+}
+
+.google-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.google-btn:hover {
+    background: #f9fafb;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.google-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
