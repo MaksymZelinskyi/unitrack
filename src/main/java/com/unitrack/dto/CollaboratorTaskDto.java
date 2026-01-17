@@ -1,18 +1,6 @@
 package com.unitrack.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-public class CollaboratorTaskDto {
-
-    private Long id;
-    private String title;
-    private String description;
-    private String project;
-    private LocalDateTime deadline;
-
+public record CollaboratorTaskDto(Long id, String title, String description, String project, LocalDateTime deadline) {
 }

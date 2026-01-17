@@ -79,7 +79,6 @@ public class HomeController extends AuthenticatedController {
     public String getAdminHome(Principal principal, Model model) {
         List<Project> projects = projectService.getAllSorted(principal.getName());
         List<Collaborator> collaborators = collaboratorService.getAll(principal.getName());
-        List<ProjectDto> dtoList = new ArrayList<>();
         model.addAttribute(
                 "projects",
                 projects
@@ -100,7 +99,7 @@ public class HomeController extends AuthenticatedController {
                                 x.getProjects().stream().map(y -> y.getProject().getTitle()).collect(Collectors.toList())
                         )
                 )
-                .sorted(Comparator.comparing(x -> x.name))
+                .sorted(Comparator.comparing(CollaboratorDto::name))
                 .toList());
         return "admin-page";
     }

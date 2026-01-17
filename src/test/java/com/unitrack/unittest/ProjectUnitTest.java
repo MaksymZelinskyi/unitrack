@@ -39,7 +39,7 @@ public class ProjectUnitTest {
         UpdateProjectDto dto = new UpdateProjectDto("Project", "Lorem ipsum", "Client", LocalDate.now().minusMonths(1L), LocalDate.now());
         for (int i = 0; i < 5; i++) {
             AssigneeDto assigneeDto = new AssigneeDto((long) i,Role.TESTER.name(), "Assignee" + i, "");
-            dto.getAssignees().add(assigneeDto);
+            dto.assignees().add(assigneeDto);
             when(collaboratorRepository.findById((long)i)).thenReturn(Optional.of(new Collaborator()));
         }
         Project entity = new Project("title", "description", LocalDate.MIN, LocalDate.MAX);
@@ -50,11 +50,11 @@ public class ProjectUnitTest {
         projectService.update(1L, dto);
 
         //assert
-        assertEquals(dto.getTitle(), entity.getTitle());
-        assertEquals(dto.getDescription(), entity.getDescription());
-        assertEquals(dto.getClient(), entity.getClient().getName());
-        assertEquals(dto.getStart(), entity.getStart());
-        assertEquals(dto.getDeadline(), entity.getEnd());
+        assertEquals(dto.title(), entity.getTitle());
+        assertEquals(dto.description(), entity.getDescription());
+        assertEquals(dto.client(), entity.getClient().getName());
+        assertEquals(dto.start(), entity.getStart());
+        assertEquals(dto.deadline(), entity.getEnd());
         assertEquals(5, entity.getAssignees().size());
     }
 

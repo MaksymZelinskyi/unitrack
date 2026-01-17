@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class StatisticsDto {
 
-    private ProjectStatistics projects;
+    private ProjectStatisticsDto projects;
     private TaskStatistics tasks;
 
 }

@@ -1,21 +1,8 @@
 package com.unitrack.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CommentDto {
-
-    private Long id;
-    private String text;
-    private Long replyTo;
-    private String replyToAuthor;
-    private CollaboratorInListDto author;
-    private LocalDateTime createdAt;
+public record CommentDto(Long id, String text, Long replyTo, String replyToAuthor, CollaboratorInListDto author,
+                         LocalDateTime createdAt) {
 
 }

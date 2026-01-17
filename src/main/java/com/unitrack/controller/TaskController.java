@@ -48,7 +48,7 @@ public class TaskController extends AuthenticatedController {
                 collaboratorService.getCollaboratorsByProject(project)
                         .stream()
                         .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName()+" "+x.getLastName(), x.getAvatarUrl()))
-                        .sorted(Comparator.comparing(x -> x.getName()))
+                        .sorted(Comparator.comparing(CollaboratorInListDto::name))
                         .toList());
         model.addAttribute("taskForm", new TaskDto());
         model.addAttribute("assignees", new ArrayList<>());
@@ -94,13 +94,13 @@ public class TaskController extends AuthenticatedController {
         List<CollaboratorInListDto> collaborators = collaboratorService.getCollaboratorsByProject(project)
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl()))
-                .sorted(Comparator.comparing(x -> x.getName()))
+                .sorted(Comparator.comparing(CollaboratorInListDto::name))
                 .toList();
 
         List<CollaboratorInListDto> assignees = task.getAssignees()
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl()))
-                .sorted(Comparator.comparing(x -> x.getName()))
+                .sorted(Comparator.comparing(CollaboratorInListDto::name))
                 .toList();
         model.addAttribute("task",
                 new UpdateTaskDto(task.getId(), task.getTitle(), task.getDescription(),
@@ -129,7 +129,7 @@ public class TaskController extends AuthenticatedController {
     @PutMapping("/{id}/status")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
     public String updateTaskStatus(@PathVariable Long id, @RequestBody UpdateTaskStatusDto status, HttpServletRequest request, Principal principal) {
-        taskService.setTaskStatus(id, status.getNewStatus());
+        taskService.setTaskStatus(id, status.newStatus());
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }

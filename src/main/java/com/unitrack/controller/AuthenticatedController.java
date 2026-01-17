@@ -1,9 +1,8 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.CurrentUser;
+import com.unitrack.dto.CurrentUserDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.exception.AuthenticationException;
-import com.unitrack.exception.EntityNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,18 +24,18 @@ public abstract class AuthenticatedController {
     private CollaboratorRepository collaboratorRepository;
 
     @ModelAttribute("currentUser")
-    public CurrentUser currentUser() {
-        CurrentUser currentUser = new CurrentUser();
+    public CurrentUserDto currentUser() {
+        CurrentUserDto currentUserDto = new CurrentUserDto();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             Collaborator collaborator = collaboratorRepository.findByEmail(auth.getName()).orElseThrow(() -> new AuthenticationException("Collaborator with email " + auth.getName() + " not found."));
-            currentUser.setId(collaborator.getId());
-            currentUser.setFirstName(collaborator.getFirstName());
-            currentUser.setLastName(collaborator.getLastName());
-            currentUser.setEmail(collaborator.getEmail());
-            currentUser.setAvatarUrl(collaborator.getAvatarUrl());
-            currentUser.setStatus(collaborator.isAdmin() ? "Admin" : "User");
+            currentUserDto.setId(collaborator.getId());
+            currentUserDto.setFirstName(collaborator.getFirstName());
+            currentUserDto.setLastName(collaborator.getLastName());
+            currentUserDto.setEmail(collaborator.getEmail());
+            currentUserDto.setAvatarUrl(collaborator.getAvatarUrl());
+            currentUserDto.setStatus(collaborator.isAdmin() ? "Admin" : "User");
         }
-        return currentUser;
+        return currentUserDto;
     }
 }

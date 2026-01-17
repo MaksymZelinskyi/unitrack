@@ -1,16 +1,4 @@
 package com.unitrack.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class CollaboratorInListDto {
-
-    private Long id;
-    private String name;
-    private String avatarUrl;
-
+public record CollaboratorInListDto(Long id, String name, String avatarUrl) {
 }
