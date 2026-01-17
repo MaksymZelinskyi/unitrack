@@ -43,11 +43,11 @@ public class TaskUnitTest {
             collaborator.setId((long)i); //set a property to distinguish the collaborators in assignees set
             project.addAssignee(new Participation(collaborator, project, Role.TESTER));
             collaborator.addProject(project, Role.TESTER);
-            dto.getAssignees().add(new CollaboratorInListDto((long) i, "Collaborator" + i, "url"));
+            dto.assignees().add(new CollaboratorInListDto((long) i, "Collaborator" + i, "url"));
             when(collaboratorRepository.findById((long) i)).thenReturn(Optional.of(collaborator));
         }
         CollaboratorInListDto wrongCollab = new CollaboratorInListDto(6L, "Anonymous", "url"); // not engaged in the project
-        dto.getAssignees().add(wrongCollab);
+        dto.assignees().add(wrongCollab);
         when(collaboratorRepository.findById(6L)).thenReturn(Optional.of(new Collaborator()));
 
         Task entity = new Task();
@@ -58,13 +58,13 @@ public class TaskUnitTest {
         //act
         assertThrows(IllegalArgumentException.class, () -> taskService.update(1L, dto));
 
-        dto.getAssignees().remove(wrongCollab);
+        dto.assignees().remove(wrongCollab);
         taskService.update(1L, dto);
 
         //assert
-        assertEquals(dto.getTitle(), entity.getTitle());
-        assertEquals(dto.getDescription(), entity.getDescription());
-        assertEquals(dto.getDeadline(), entity.getDeadline());
+        assertEquals(dto.title(), entity.getTitle());
+        assertEquals(dto.description(), entity.getDescription());
+        assertEquals(dto.deadline(), entity.getDeadline());
         assertEquals(5, entity.getAssignees().size());
     }
 }

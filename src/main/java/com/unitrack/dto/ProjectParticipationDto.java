@@ -1,19 +1,7 @@
 package com.unitrack.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.time.LocalDate;
-import java.util.Set;
 
-@Data
-@AllArgsConstructor
-public class ProjectParticipationDto {
+public record ProjectParticipationDto(Long id, String title, String description, String role, String status, LocalDate deadline) {
 
-    private Long id;
-    private String title;
-    private String description;
-    private String role;
-    private String status;
-    private LocalDate deadline;
 }

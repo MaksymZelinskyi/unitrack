@@ -1,15 +1,5 @@
 package com.unitrack.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+public record ResetPasswordDto (String email, String resetCode, String password) {
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ResetPasswordDto {
-
-    private String email;
-    private String resetCode;
-    private String password;
 }

@@ -1,11 +1,5 @@
 package com.unitrack.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record ProjectInListDto(Long id, String title) {
 
-@Data
-@AllArgsConstructor
-public class ProjectInListDto {
-    private Long id;
-    private String title;
 }

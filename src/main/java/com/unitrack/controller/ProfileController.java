@@ -1,6 +1,6 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.CurrentUser;
+import com.unitrack.dto.CurrentUserDto;
 import com.unitrack.dto.request.UpdateProfileDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.service.CollaboratorService;
@@ -33,12 +33,12 @@ public class ProfileController extends AuthenticatedController {
 
     @PutMapping
     public String updateProfile(@Validated UpdateProfileDto dto, Principal principal,
-                                @ModelAttribute("currentUser") CurrentUser currentUser) {
+                                @ModelAttribute("currentUser") CurrentUserDto currentUser) {
         collaboratorService.update(principal.getName(), dto);
-        currentUser.setFirstName(dto.getFirstName());
-        currentUser.setLastName(dto.getLastName());
-        currentUser.setEmail(dto.getEmail());
-        currentUser.setAvatarUrl(dto.getAvatarUrl());
+        currentUser.setFirstName(dto.firstName());
+        currentUser.setLastName(dto.lastName());
+        currentUser.setEmail(dto.email());
+        currentUser.setAvatarUrl(dto.avatarUrl());
         return "redirect:/profile";
     }
 }

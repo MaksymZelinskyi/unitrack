@@ -49,8 +49,8 @@ public class CommentUnitTest {
         commentService.updateComment(2L, dto);
 
         //assert
-        assertEquals(dto.getText(), comment.getText());
-        assertEquals(dto.getReplyTo(), comment.getReplyTo().getId());
+        assertEquals(dto.text(), comment.getText());
+        assertEquals(dto.replyTo(), comment.getReplyTo().getId());
 
         replyTo.setTask(new Task());
 
