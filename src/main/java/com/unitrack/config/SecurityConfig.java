@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/password/**").permitAll()
+                        .requestMatchers("/.well-known/**").permitAll()
                         .anyRequest().authenticated())
                 .csrf(x -> x.disable())
                 .formLogin(f -> f.loginPage("/login")
@@ -55,17 +56,16 @@ public class SecurityConfig {
                                 .successHandler(loginSuccessHandler)
                                 .permitAll()
                 )
+                .oauth2Login(oauth -> oauth
+                       // .userInfoEndpoint(userInfo -> userInfo.oidcUserService(oidcUserService))
+                        .loginPage("/login")
+                        .successHandler(loginSuccessHandler)
+                        )
                 .logout(x ->
                         x.logoutSuccessUrl("/login?logout=true")
                         .deleteCookies("JSESSIONID"))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+               // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilter(authFilter);
-
-        http.oauth2Login(oauth -> oauth
-                .userInfoEndpoint(userInfo -> userInfo
-                        .oidcUserService(oidcUserService)
-                )
-        );
 
         return http.build();
     }
