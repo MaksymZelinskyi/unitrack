@@ -45,7 +45,7 @@
                 <form method="get" th:action="@{/tasks/update/{id}(id=${task.id})}" th:if="${canUpdate}">
                     <button class="btn primary">Modify</button>
                 </form>
-                <form method="post" th:action="@{/tasks/complete/{id}(id=${task.id})}" th:if="${canUpdate}" class="right">
+                <form method="post" th:action="@{/tasks/complete/{id}(id=${task.id})}" th:if="${engaged}" class="right">
                     <label class="toggle-label" for="completed">
                          <span>Mark as completed</span>
 
