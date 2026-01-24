@@ -58,11 +58,11 @@ public class ProjectService {
         //set project assignees
         Set<Participation> assignees = dto.getAssignees()
                 .stream()
-                .filter(x -> x.id() != null)
+                .filter(x -> x.getId() != null)
                 .map(x -> new Participation(
-                        collaboratorRepository.findById(x.id()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.id())),
+                        collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId())),
                         project,
-                        Role.valueOf(x.role())
+                        Role.valueOf(x.getRole())
                 ))
                 .collect(Collectors.toSet());
         project.addAssignees(assignees);
@@ -86,30 +86,30 @@ public class ProjectService {
         Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("id", id));
         log.debug("Project with id {} fetched", id);
         //set DTO data
-        project.setTitle(dto.title());
-        project.setDescription(dto.description());
+        project.setTitle(dto.getTitle());
+        project.setDescription(dto.getDescription());
 
-        if (dto.start().isAfter(dto.deadline()))
+        if (dto.getStart().isAfter(dto.getDeadline()))
             throw new ValidationException("Project start time must precede the deadline");
 
-        project.setStart(dto.start());
-        project.setEnd(dto.deadline());
+        project.setStart(dto.getStart());
+        project.setEnd(dto.getDeadline());
 
-        if (dto.newClient() != null && !dto.newClient().isBlank()) {
-            project.setClient(clientService.getByNameOrCreate(dto.newClient()));
-        } else  if (dto.client() != null && !dto.client().isBlank()) {
-            project.setClient(clientService.getByNameOrCreate(dto.client()));
+        if (dto.getNewClient() != null && !dto.getNewClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getNewClient()));
+        } else  if (dto.getClient() != null && !dto.getClient().isBlank()) {
+            project.setClient(clientService.getByNameOrCreate(dto.getClient()));
         }
 
-        log.debug("Assignees set for project: {}", dto.assignees().size());
-        log.debug("Assignee id + role: {}", dto.assignees().stream().map(x -> "Id: " + x.id() + "; role: " + x.role()).toList());
-        Set<Participation> assignees = dto.assignees()
+        log.debug("Assignees set for project: {}", dto.getAssignees().size());
+        log.debug("Assignee id + role: {}", dto.getAssignees().stream().map(x -> "Id: " + x.getId() + "; role: " + x.getRole()).toList());
+        Set<Participation> assignees = dto.getAssignees()
                 .stream()
-                .filter(x -> x.id() != null)
+                .filter(x -> x.getId() != null)
                 .map(x -> {
-                    Collaborator collaborator = collaboratorRepository.findById(x.id()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.id()));
+                    Collaborator collaborator = collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId()));
                     if (collaborator.getWorkspace() != project.getWorkspace()) throw new WorkspaceException("Collaborator isn't in the project's workspace");
-                    return new Participation(collaborator, project, Role.valueOf(x.role().split(",")[0]));
+                    return new Participation(collaborator, project, Role.valueOf(x.getRole().split(",")[0]));
                     }
                 )
                 .collect(Collectors.toSet());

@@ -61,13 +61,13 @@ public class TaskService {
 
     public Task update(Long id, UpdateTaskDto dto) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
-        task.setTitle(dto.title());
-        task.setDescription(dto.description());
-        task.setDeadline(dto.deadline());
+        task.setTitle(dto.getTitle());
+        task.setDescription(dto.getDescription());
+        task.setDeadline(dto.getDeadline());
         task.getAssignees().clear();
         Project project = task.getProject();
 
-        for (CollaboratorInListDto c : dto.assignees()) {
+        for (CollaboratorInListDto c : dto.getAssignees()) {
             Collaborator collaborator = collaboratorRepository
                     .findById(c.id())
                     .orElseThrow(() -> new CollaboratorNotFoundException("id", c.id()));
