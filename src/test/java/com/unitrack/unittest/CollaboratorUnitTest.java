@@ -41,11 +41,11 @@ public class CollaboratorUnitTest {
         //act
         collaboratorService.update("email", dto);
         //assert
-        assertEquals(dto.getFirstName(), entity.getFirstName());
-        assertEquals(dto.getLastName(), entity.getLastName());
-        assertEquals(dto.getAvatarUrl(), entity.getAvatarUrl());
-        assertEquals(dto.getEmail(), entity.getEmail());
-        assertTrue(passwordEncoder.matches(dto.getPassword(), entity.getPassword()));
+        assertEquals(dto.firstName(), entity.getFirstName());
+        assertEquals(dto.lastName(), entity.getLastName());
+        assertEquals(dto.avatarUrl(), entity.getAvatarUrl());
+        assertEquals(dto.email(), entity.getEmail());
+        assertTrue(passwordEncoder.matches(dto.password(), entity.getPassword()));
     }
 
     @Test

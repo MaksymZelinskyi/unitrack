@@ -1,9 +1,7 @@
 package com.unitrack.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,7 +16,9 @@ import java.util.Set;
  * @see Task
  * @see Client
  */
-@Data
+
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

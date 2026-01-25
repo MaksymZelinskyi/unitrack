@@ -9,6 +9,7 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
 import com.unitrack.service.StatisticsService;
+import com.unitrack.service.WorkspaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ public class StatisticsUnitTest {
     public void init() {
         projectRepository = mock(ProjectRepository.class);
         collaboratorRepository = mock(CollaboratorRepository.class);
-        statisticsService = new StatisticsService(projectRepository, collaboratorRepository, taskRepository);
+        statisticsService = new StatisticsService(projectRepository, collaboratorRepository, taskRepository, mock(WorkspaceService.class));
     }
 
     @Test
@@ -57,7 +58,7 @@ public class StatisticsUnitTest {
         when(projectRepository.findAll()).thenReturn(projects);
 
         //act
-        ProjectStatsChart projectStatsChart = statisticsService.getProjectChart();
+        ProjectStatsChart projectStatsChart = statisticsService.getProjectChart("");
 
         //assert
         assertEquals("Project", projectStatsChart.getProjects().get(0));
@@ -88,7 +89,7 @@ public class StatisticsUnitTest {
         when(collaboratorRepository.findAll()).thenReturn(collaborators);
 
         //act
-        UserStatsChart projectStatsChart = statisticsService.getUserChart();
+        UserStatsChart projectStatsChart = statisticsService.getUserChart("");
 
         //assert
         assertEquals("John D", projectStatsChart.getUsers().get(0));
