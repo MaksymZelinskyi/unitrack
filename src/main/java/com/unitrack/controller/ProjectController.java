@@ -93,7 +93,7 @@ public class ProjectController extends AuthenticatedController {
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl()))
-                .sorted(Comparator.comparing(CollaboratorInListDto::name))
+                .sorted(Comparator.comparing(CollaboratorInListDto::getName))
                 .toList();
         List<ProjectClientDto> clients = clientService.getAll().stream().map(x -> new ProjectClientDto(x.getId(), x.getName())).toList();
         model.addAttribute("collaborators", collaborators);

@@ -69,8 +69,8 @@ public class TaskService {
 
         for (CollaboratorInListDto c : dto.getAssignees()) {
             Collaborator collaborator = collaboratorRepository
-                    .findById(c.id())
-                    .orElseThrow(() -> new CollaboratorNotFoundException("id", c.id()));
+                    .findById(c.getId())
+                    .orElseThrow(() -> new CollaboratorNotFoundException("id", c.getId()));
             if (project.getAssignees().stream().anyMatch(x -> x.getCollaborator().equals(collaborator)))
                 task.getAssignees().add(collaborator);
             else

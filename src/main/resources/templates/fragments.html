@@ -8,7 +8,7 @@
 
         <!-- Left: Title -->
         <div class="header-left">
-            <a th:href="@{/home}" class="flex-row">
+            <a title="Home" th:href="@{/home}" class="flex-row">
                 <img class="logo" th:src="@{/icons/logo-icon.png}" alt="Logo">
                 <h1 class="header-title">
                     UniTrack
@@ -22,7 +22,7 @@
         </h3>
 
         <!-- Profile -->
-        <a class="profile-link" th:href="@{/profile}">
+        <a title="My profile" class="profile-link" th:href="@{/profile}">
             <div class="avatar-wrapper">
                 <img th:src="${#strings.isEmpty(currentUser.avatarUrl) ? '/icons/profile-icon.png' : currentUser.avatarUrl}"
                      class="profile-avatar" alt="Profile Picture"/>
@@ -35,7 +35,7 @@
 
         <!-- Logout -->
         <form class="logout-wrapper" method="post" th:action="@{/logout}">
-            <button class="logout-button" type="submit">
+            <button title="Log out" class="logout-button" type="submit">
                 <svg aria-hidden="true"
                      class="logout-icon"
                      fill="none" stroke="currentColor" stroke-linecap="round"

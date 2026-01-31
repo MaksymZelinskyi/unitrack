@@ -33,14 +33,19 @@ public class CollaboratorOidcUserService
         OidcUser user = delegate.loadUser(request);
 
         Optional<Collaborator> optional = collaboratorRepository.findByEmail(user.getEmail());
-
+        Collaborator collaborator;
         Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         if (optional.isEmpty()) {
-            Collaborator collaborator = new Collaborator(user.getGivenName(), user.getFamilyName(), user.getEmail());
+            collaborator = new Collaborator(user.getGivenName(), user.getFamilyName(), user.getEmail());
             collaborator.setAdmin(true);
             collaboratorRepository.save(collaborator);
+        } else {
+            collaborator = optional.get();
+        }
+
+        if (collaborator.isAdmin()) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
