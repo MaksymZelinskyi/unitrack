@@ -17,7 +17,7 @@
         <div class="project-grid-wrapper">
             <ul class="project-list three-columns">
                 <li th:each="project : ${projects}" class="project-card">
-                    <a th:href="@{/projects/{id}(id=${project.id})}">
+                    <a title="Open project" th:href="@{/projects/{id}(id=${project.id})}">
                         <div class="project-status"
                              th:classappend="|${project.status.toLowerCase()}|"></div>
 
@@ -58,7 +58,7 @@
             </li>
 
             <li th:each="task : ${tasks}" class="task-card-mini">
-                <a th:href="@{/tasks/{id}(id=${task.id})}">
+                <a title="Open task" th:href="@{/tasks/{id}(id=${task.id})}">
                     <h4 class="task-name" th:text="${task.title}">Task Title</h4>
 
                     <div class="task-info-block">

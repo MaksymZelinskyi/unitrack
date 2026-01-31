@@ -14,7 +14,7 @@
       th:object="${taskForm}" method="post" class="task-form-container">
 
     <!-- LEFT: Task form -->
-    <div class="task-form-left">
+    <div class="form-left">
         <div class="form-group">
             <label>Task Title</label>
             <input th:field="*{title}" type="text" placeholder="Title" required maxlength="255">
@@ -45,9 +45,10 @@
 
     <!-- RIGHT: Current Assignees -->
     <div class="form-right">
-        <label class="assignee-label">Current Assignees</label>
+        <label class="section-title">Current Assignees</label>
 
-        <div id="assignees-list" class="assignees-list style-enhanced">
+        <div id="selected-list" class="assignees-list style-enhanced">
+            <p id="no-assignees" class="placeholder">No assignees selected yet.</p>
             <div class="assignee" th:each="assignee, iterStat : ${assignees}">
                 <img th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"
                      class="avatar avatar-sm" alt="Profile Picture"/>

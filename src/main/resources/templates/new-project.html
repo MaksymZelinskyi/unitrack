@@ -10,7 +10,7 @@
 <form class="project-form two-columns" method="post" th:action="@{/projects/new}" th:object="${projectForm}" id="projectForm">
     <!-- LEFT -->
     <div class="form-left">
-        <h1 class="section-title">New Project</h1>
+        <h1 class="page-title">New Project</h1>
 
         <label>Project title</label>
         <input class="input" placeholder="Title" th:field="*{title}" type="text" required maxlength="255"/>
@@ -50,9 +50,10 @@
 
     <!-- RIGHT -->
     <div class="form-right">
-        <label class="label-strong">Current Assignees</label>
+        <label class="section-title">Selected Assignees</label>
 
-        <ul id="assignees-list">
+        <ul id="selected-list" class="assignees-list">
+            <p id="no-assignees" class="placeholder">No assignees selected yet.</p>
             <li class="assignee" th:each="assignee, iterStat : ${assignees}">
 
             </li>
@@ -63,6 +64,6 @@
 <script th:inline="javascript">
     const collaborators = [[${collaborators}]];
 </script>
-<script src="/js/new-project.js"></script>
+<script src="/js/project.js"></script>
 </body>
 </html>

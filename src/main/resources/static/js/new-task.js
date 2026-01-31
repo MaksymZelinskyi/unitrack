@@ -1,6 +1,7 @@
 function addAssignee(selectEl) {
-      const list = document.getElementById('assignees-list');
       const id = selectEl.value;
+      const list = document.getElementById('selected-list');
+      const placeholder = document.getElementById('no-assignees')
       if (!id) return;
 
       const name = selectEl.options[selectEl.selectedIndex].text;
@@ -9,6 +10,8 @@ function addAssignee(selectEl) {
         selectEl.value = '';
         return;
       }
+
+      placeholder?.remove();
 
       const row = document.createElement('div');
       row.className = 'assignee';
@@ -26,17 +29,21 @@ function addAssignee(selectEl) {
 }
 
 function reindexAssignees() {
-      const list = document.getElementById('assignees-list');
+      const list = document.getElementById('selected-list');
       list.querySelectorAll('.assignee').forEach((row, i) => {
         const idInput = row.querySelector('input[type="hidden"]');
         if (idInput) idInput.name = `assignees[${i}].id`;
       });
 }
 
+const list = document.getElementById('selected-list');
 document.addEventListener('click', e => {
       if (e.target.closest('.remove-btn')) {
         const row = e.target.closest('.assignee');
         row.remove();
         reindexAssignees();
+        if (!list.children.length) {
+             list.innerHTML = '<p id="no-assignees" class="placeholder">No assignees selected yet.</p>';
+                  }
       }
 });
