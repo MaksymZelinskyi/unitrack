@@ -7,15 +7,8 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.RecoveryCodeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
-import java.security.SecureRandomParameters;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
