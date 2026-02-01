@@ -33,11 +33,9 @@ public class CollaboratorService {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
             throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
 
-    public void add(CollaboratorDto dto) {
-        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
-        collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
         Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
+        collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
 
         collaborator = collaboratorRepository.save(collaborator);
         log.info("Collaborator with email {} has been added. Their id is {}", collaborator.getEmail(), collaborator.getId());
