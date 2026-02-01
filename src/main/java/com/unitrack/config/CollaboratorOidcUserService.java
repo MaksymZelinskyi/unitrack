@@ -1,7 +1,9 @@
 package com.unitrack.config;
 
+import com.unitrack.entity.AuthProvider;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.repository.CollaboratorRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -15,8 +17,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
-public class CollaboratorOidcUserService
+public class  CollaboratorOidcUserService
         implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
     private final CollaboratorRepository collaboratorRepository;
@@ -40,15 +43,17 @@ public class CollaboratorOidcUserService
         if (optional.isEmpty()) {
             collaborator = new Collaborator(user.getGivenName(), user.getFamilyName(), user.getEmail());
             collaborator.setAdmin(true);
-            collaboratorRepository.save(collaborator);
         } else {
             collaborator = optional.get();
         }
+        collaborator.addAuthProvider(AuthProvider.OIDC_GOOGLE);
 
         if (collaborator.isAdmin()) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
 
+        collaboratorRepository.save(collaborator);
+        log.debug("OIDC authentication succeeded for user {}", user.getEmail());
         return new DefaultOidcUser(
                 authorities,
                 user.getIdToken(),

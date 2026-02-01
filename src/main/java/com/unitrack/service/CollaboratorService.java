@@ -36,7 +36,7 @@ public class CollaboratorService {
         Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
         collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
-
+        collaborator.addAuthProvider(AuthProvider.PASSWORD);
         collaborator = collaboratorRepository.save(collaborator);
         log.info("Collaborator with email {} has been added. Their id is {}", collaborator.getEmail(), collaborator.getId());
         mailService.sendCredentials(dto.getEmail(), dto.getPassword());
@@ -49,6 +49,7 @@ public class CollaboratorService {
         Workspace workspace = new Workspace(dto.teamName());
         Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()), workspace);
         collaborator.setAdmin(true);
+        collaborator.addAuthProvider(AuthProvider.PASSWORD);
         log.debug("Saving collaborator with email {}", collaborator.getEmail());
         collaborator = collaboratorRepository.save(collaborator);
         log.debug("Saved collaborator with id {}", collaborator.getId());
