@@ -15,6 +15,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
+  margin-left: auto;
 }
 
 .input:focus,
@@ -28,6 +29,10 @@
 .form-left,
 .form-right {
   flex: 1;
+}
+.form-right {
+  margin-left: 30px;
+  text-align: center;
 }
 
 .form-left {

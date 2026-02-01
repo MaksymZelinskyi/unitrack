@@ -24,12 +24,12 @@
 
             <ul class="project-list four-columns">
                 <!-- Left: Add Project button -->
-                <a class="card add-project" th:href="@{/projects/new}">
+                <a title="New project" class="card add-project" th:href="@{/projects/new}">
                     <img src="/icons/plus.png" alt="Add Project"/>
                     <p>Add New Project</p>
                 </a>
                 <li th:each="project : ${projects}">
-                    <a th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
+                    <a title="Open project" th:href="@{/projects/{id}(id=${project.id})}" class="project-card">
                         <div class="project-status"
                              th:classappend="|${project.status.toLowerCase()}|"></div>
 
@@ -71,7 +71,7 @@
         <h1 class="section-title">My Team</h1>
 
         <!-- Add member -->
-        <a class="collab-card add-collab" th:href="@{/collaborators/new}">
+        <a title="New collaborator" class="collab-card add-collab" th:href="@{/collaborators/new}">
             <img src="/icons/plus.png" alt="Add Member"/>
             <p>Add New Member</p>
         </a>
@@ -79,7 +79,7 @@
         <ul class="vertical-list">
             <li th:each="collaborator : ${collaborators}" class="collab-card">
 
-                <a th:href="@{/collaborators/{id}(id=${collaborator.id})}">
+                <a title="View profile" th:href="@{/collaborators/{id}(id=${collaborator.id})}">
                     <div class="collab-info">
                         <img class="avatar" th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"/>
                         <h4 class="collab-name" th:text="${collaborator.name}"></h4>

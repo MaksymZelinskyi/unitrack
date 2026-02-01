@@ -59,7 +59,7 @@ public class CollaboratorController extends AuthenticatedController {
         List<ProjectInListDto> projects = projectService.getAllSorted(principal.getName())
                 .stream()
                 .map(x-> new ProjectInListDto(x.getId(), x.getTitle()))
-                .sorted(Comparator.comparing(x -> x.getTitle()))
+                .sorted(Comparator.comparing(ProjectInListDto::title))
                 .toList();
         model.addAttribute("selected", new ArrayList<>());
         model.addAttribute("collaboratorForm", new CollaboratorDto());
@@ -78,27 +78,21 @@ public class CollaboratorController extends AuthenticatedController {
     public String getCollaborator(@PathVariable Long id, Model model) {
         Collaborator collaborator = collaboratorService.getById(id);
 
-        DisplayCollaboratorDto dto = new DisplayCollaboratorDto();
-        dto.setFullName(collaborator.getFullName());
-        dto.setEmail(collaborator.getEmail());
-        dto.setAvatarUrl(collaborator.getAvatarUrl());
+        DisplayCollaboratorDto dto = new DisplayCollaboratorDto(collaborator.getFullName(), collaborator.getEmail(), collaborator.getAvatarUrl());
+
         List<CollaboratorProjectDto> projects = collaborator.getProjects()
                 .stream()
                 .sorted(Comparator.comparing(Participation::getProject))
-                .map(p -> {
-                            CollaboratorProjectDto projectDto = new CollaboratorProjectDto();
-                            projectDto.setProjectId(p.getProject().getId());
-                            projectDto.setTitle(p.getProject().getTitle());
-                            projectDto.setRole(String.valueOf(p.getRoles().stream().findFirst().orElse(null)));
-                            projectDto.setTasks(p.getProject().getTasks()
-                                    .stream()
-                                    .sorted()
-                                    .map(x -> new TaskInListDto(x.getId(), x.getTitle(), x.getDescription(),
-                                            x.getDeadline(), x.getStatus() == Task.Status.DONE))
-                                    .toList()
-                            );
-                            return projectDto;
-                })
+                .map(p -> new CollaboratorProjectDto(
+                        p.getProject().getId(), p.getProject().getTitle(),
+                        String.valueOf(p.getRoles().stream().findFirst().orElse(null)),
+                        p.getProject().getTasks()
+                                .stream()
+                                .sorted()
+                                .map(x -> new TaskInListDto(
+                                        x.getId(), x.getTitle(), x.getDescription(), x.getDeadline(), x.getStatus() == Task.Status.DONE)
+                                )
+                                .toList()))
                 .toList();
         model.addAttribute("projects", projects);
         model.addAttribute("collaborator", dto);

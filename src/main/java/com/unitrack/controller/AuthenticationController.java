@@ -46,7 +46,7 @@ public class AuthenticationController {
     @PostMapping("/password/reset")
     public String resetPassword(@RequestBody ResetPasswordDto dto, HttpServletRequest request) {
         try {
-            if (!accountService.verifyRecoveryCode(dto.getEmail(), dto.getResetCode())) {
+            if (!accountService.verifyRecoveryCode(dto.email(), dto.resetCode())) {
                 return "redirect:/password/reset?error=true";
             }
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class AuthenticationController {
             return "redirect:/password/reset?error=true";
         }
 
-        accountService.changePassword(dto.getEmail(), dto.getPassword());
+        accountService.changePassword(dto.email(), dto.password());
         return "redirect:/login";
     }
 

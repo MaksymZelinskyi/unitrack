@@ -28,7 +28,7 @@ public class StatisticsService {
     public StatisticsDto getStats(String userEmail) {
         Workspace workspace = workspaceService.getUserWorkspace(userEmail);
         StatisticsDto dto = new StatisticsDto();
-        ProjectStatistics projectStats = new ProjectStatistics();
+        ProjectStatisticsDto projectStats = new ProjectStatisticsDto();
         TaskStatistics taskStats = new TaskStatistics();
 
         projectStats.setDeadlines(
@@ -37,9 +37,9 @@ public class StatisticsService {
                                 LocalDate.now().minusMonths(1), LocalDate.now(), workspace
                         )
         );
-        projectStats.setTotal((int)projectRepository.countByWorkspace(workspace));
+        projectStats.setTotal(projectRepository.countByWorkspace(workspace));
 
-        taskStats.setTotal((int)taskRepository.countByWorkspace(workspace));
+        taskStats.setTotal(taskRepository.countByWorkspace(workspace));
         taskStats.setDeadlines(taskRepository.countByCompletedOnAfterAndWorkspace(LocalDate.now().minusMonths(1), workspace));
 
         dto.setProjects(projectStats);

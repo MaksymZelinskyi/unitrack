@@ -1,9 +1,5 @@
 package com.unitrack.dto.request;
 
-import lombok.Data;
+public record UpdateTaskStatusDto (String newStatus) {
 
-@Data
-public class UpdateTaskStatusDto {
-
-    private String newStatus;
 }

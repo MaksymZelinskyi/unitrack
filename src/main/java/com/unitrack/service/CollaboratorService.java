@@ -70,11 +70,11 @@ public class CollaboratorService {
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new CollaboratorNotFoundException("email", email));
 
         //set data from the DTO
-        collaborator.setEmail(dto.getEmail());
-        collaborator.setFirstName(dto.getFirstName());
-        collaborator.setLastName(dto.getLastName());
-        collaborator.setPassword(passwordEncoder.encode(dto.getPassword()));
-        collaborator.setAvatarUrl(dto.getAvatarUrl());
+        collaborator.setEmail(dto.email());
+        collaborator.setFirstName(dto.firstName());
+        collaborator.setLastName(dto.lastName());
+        collaborator.setPassword(passwordEncoder.encode(dto.password()));
+        collaborator.setAvatarUrl(dto.avatarUrl());
 
         log.info("Collaborator with id {} is being updated", collaborator.getId());
         //persist

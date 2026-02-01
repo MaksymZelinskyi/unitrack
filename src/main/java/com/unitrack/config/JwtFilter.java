@@ -37,4 +37,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest req) {
+        String path = req.getServletPath();
+        return path.startsWith("/login/oauth2") || path.startsWith("/oauth2") || path.startsWith("/login");
+    }
 }

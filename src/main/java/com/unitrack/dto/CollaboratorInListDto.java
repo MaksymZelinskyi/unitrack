@@ -5,12 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class CollaboratorInListDto {
-
     private Long id;
     private String name;
     private String avatarUrl;
-
 }

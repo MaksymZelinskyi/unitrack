@@ -17,7 +17,7 @@
         <div class="project-grid-wrapper">
             <ul class="project-list three-columns">
                 <li th:each="project : ${projects}" class="project-card">
-                    <a th:href="@{/projects/{id}(id=${project.id})}">
+                    <a title="Open project" th:href="@{/projects/{id}(id=${project.id})}">
                         <div class="project-status"
                              th:classappend="|${project.status.toLowerCase()}|"></div>
 
@@ -31,13 +31,8 @@
 
                             <div class="bottom">
                                 <div class="project-meta">
-                                    <span class="meta-label">Start time:</span>
-                                    <span class="meta-value" th:text="${#temporals.format(project.start, 'dd MMM yyyy')}"></span>
-                                </div>
-
-                                <div class="project-meta">
                                     <span class="meta-label">Deadline:</span>
-                                    <span class="meta-value" th:text="${#temporals.format(project.end, 'dd MMM yyyy')}"></span>
+                                    <span class="meta-value" th:text="${#temporals.format(project.deadline, 'dd MMM yyyy')}"></span>
                                 </div>
 
                                 <div class="project-meta">
@@ -63,7 +58,7 @@
             </li>
 
             <li th:each="task : ${tasks}" class="task-card-mini">
-                <a th:href="@{/tasks/{id}(id=${task.id})}">
+                <a title="Open task" th:href="@{/tasks/{id}(id=${task.id})}">
                     <h4 class="task-name" th:text="${task.title}">Task Title</h4>
 
                     <div class="task-info-block">

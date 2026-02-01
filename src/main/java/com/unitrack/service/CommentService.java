@@ -53,7 +53,7 @@ public class CommentService {
     public void updateComment(Long id, UpdateCommentDto dto) {
         Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentNotFoundException("id", id));
 
-        comment.setText(dto.getText());
+        comment.setText(dto.text());
         commentRepository.save(comment);
     }
 

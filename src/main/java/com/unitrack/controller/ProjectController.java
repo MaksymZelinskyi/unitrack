@@ -58,7 +58,7 @@ public class ProjectController extends AuthenticatedController {
         List<ProjectTaskDto> done = new ArrayList<>();
 
         for (ProjectTaskDto task : tasks) {
-            switch (task.getStatus()) {
+            switch (task.status()) {
                 case "TODO":
                     todo.add(task);
                     break;
@@ -93,7 +93,7 @@ public class ProjectController extends AuthenticatedController {
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(x -> new CollaboratorInListDto(x.getId(), x.getFirstName() + " " + x.getLastName(), x.getAvatarUrl()))
-                .sorted(Comparator.comparing(x -> x.getName()))
+                .sorted(Comparator.comparing(CollaboratorInListDto::getName))
                 .toList();
         List<ProjectClientDto> clients = clientService.getAll().stream().map(x -> new ProjectClientDto(x.getId(), x.getName())).toList();
         model.addAttribute("collaborators", collaborators);
@@ -120,9 +120,7 @@ public class ProjectController extends AuthenticatedController {
                 .map(c -> {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);
                     var role = participation != null ? participation.getRoles().stream().findFirst().orElse(null) : null;
-                    return new AssigneeDto(
-                            c.getId(), role != null ? role.name() : null, c.getFullName(), c.getAvatarUrl()
-                    );
+                    return new AssigneeDto(c.getId(), role != null ? role.name() : null, c.getFullName(), c.getAvatarUrl());
                 }).toList();
         List<AssigneeDto> assignees = projectService.getProjectAssignees(project)
                 .stream()

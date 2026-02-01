@@ -28,9 +28,7 @@ public class AssignmentController extends AuthenticatedController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
-    public void deleteAssignment(@Positive @PathVariable Long id,
-                                 @Positive @RequestParam Long projectId,
-                                 Principal principal) {
+    public void deleteAssignment(@Positive @PathVariable Long id, @Positive @RequestParam Long projectId, Principal principal) {
         assignmentService.remove(id);
     }
 }

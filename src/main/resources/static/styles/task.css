@@ -8,20 +8,6 @@
   margin: 0 auto;
 }
 
-.task-form-left,
-.task-form-right {
-  flex: 1;
-}
-
-/* --- Input Form Section --- */
-.task-form-left {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 500px;
-}
-
-
 /* ---------- Task Cards ---------- */
 .task-list {
     display: flex;

@@ -1,7 +1,5 @@
 package com.unitrack.dto.request;
 
-import com.unitrack.dto.ProjectClientDto;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

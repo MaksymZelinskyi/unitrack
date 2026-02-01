@@ -50,11 +50,11 @@
         <button type="submit" class="submit-btn">Submit</button>
     </div>
 
-    <div class="right-panel">
-        <label class="assignees-title">Current Assignees</label>
+    <div class="form-right">
+        <label class="section-title">Current Assignees</label>
 
-        <ul id="assignees-list" class="assignees-list">
-
+        <ul id="selected-list" class="assignees-list">
+            <p th:if="${#lists.isEmpty(assignees)}" id="no-assignees" class="placeholder">No assignees selected yet.</p>
             <li class="assignee"
                  th:each="assignee, iterStat : ${assignees}"
                  th:attr="data-id=${assignee.id}">
@@ -76,6 +76,7 @@
                     <option value="DESIGNER">Designer</option>
                     <option value="PRODUCT_OWNER">Product Owner</option>
                     <option value="INTERN">Intern</option>
+                    <option value="PROJECT_MANAGER">Project Manager</option>
                 </select>
             </li>
         </ul>
@@ -86,7 +87,7 @@
     const collaborators = [[${collaborators}]];
     const assignees = [[${assignees}]];
 </script>
-<script src="/js/new-project.js"></script>
+<script src="/js/project.js"></script>
 
 </body>
 </html>

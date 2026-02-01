@@ -48,6 +48,12 @@ public class Collaborator {
         this.password = password;
     }
 
+    public Collaborator(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     public Collaborator(String firstName, String lastName, String email, String password, Workspace workspace) {
         this(firstName, lastName, email, password);
         this.workspace = workspace;

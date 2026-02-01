@@ -9,6 +9,7 @@ import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ProjectRepository;
 import com.unitrack.repository.TaskRepository;
 import com.unitrack.service.StatisticsService;
+import com.unitrack.service.WorkspaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +32,7 @@ public class StatisticsUnitTest {
     public void init() {
         projectRepository = mock(ProjectRepository.class);
         collaboratorRepository = mock(CollaboratorRepository.class);
-        statisticsService = new StatisticsService(projectRepository, collaboratorRepository, taskRepository, null);
+        statisticsService = new StatisticsService(projectRepository, collaboratorRepository, taskRepository, mock(WorkspaceService.class));
     }
 
     @Test

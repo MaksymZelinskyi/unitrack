@@ -94,12 +94,6 @@
   }
 }
 
-.new-collab-left,
-.new-collab-right {
-  flex: 1;
-}
-
-
 /* Delete icon */
 .collab-delete {
     position: absolute;

@@ -60,7 +60,8 @@
             Current Assignees
         </label>
 
-        <div id="assignees-list" class="assignees-list">
+        <div id="selected-list" class="assignees-list">
+            <p th:if="${#lists.isEmpty(assignees)}" id="no-assignees" class="placeholder">No assignees selected yet.</p>
             <div class="assignee"
                  th:each="assignee, iterStat : ${assignees}"
                  th:attr="data-id=${assignee.id}">

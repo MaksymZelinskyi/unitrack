@@ -30,7 +30,7 @@
         </div>
 
         <div class="kanban-container">
-            <a class="add-card"
+            <a class="add-card" th:if="${canUpdate}"
                th:href="@{/tasks/new?projectId={projectId}(projectId=${project.id})}">
                 <img alt="Add task" class="add-task-icon"
                      src="/icons/plus.png"/>
