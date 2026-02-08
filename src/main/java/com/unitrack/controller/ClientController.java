@@ -52,7 +52,7 @@ public class ClientController extends AuthenticatedController {
     @PutMapping("/{id}")
     @PreAuthorize("@authService.isAdmin(#principal.getName())")
     public String updateProject(@PathVariable Long id, @ModelAttribute("clientForm") @Validated UpdateClientDto clientDto, Principal principal) {
-        clientService.updateById(id, clientDto);
+        clientService.updateById(id, clientDto, principal.getName());
         return "redirect:" + id;
     }
 }

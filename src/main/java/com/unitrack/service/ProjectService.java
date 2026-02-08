@@ -67,9 +67,9 @@ public class ProjectService {
                 .collect(Collectors.toSet());
         project.addAssignees(assignees);
         if (dto.getNewClient() != null && !dto.getNewClient().isBlank()) {
-            project.setClient(clientService.getByNameOrCreate(dto.getNewClient()));
+            project.setClient(clientService.getByNameOrCreate(dto.getNewClient(), userEmail));
         } else  if (dto.getClient() != null && !dto.getClient().isBlank()) {
-            project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+            project.setClient(clientService.getByNameOrCreate(dto.getClient(), userEmail));
         }
 
         projectRepository.save(project); //save
@@ -81,7 +81,7 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
-    public Project update(Long id, UpdateProjectDto dto) {
+    public Project update(Long id, UpdateProjectDto dto, String userEmail) {
         //extract existing
         Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException("id", id));
         log.debug("Project with id {} fetched", id);
@@ -96,9 +96,9 @@ public class ProjectService {
         project.setEnd(dto.getDeadline());
 
         if (dto.getNewClient() != null && !dto.getNewClient().isBlank()) {
-            project.setClient(clientService.getByNameOrCreate(dto.getNewClient()));
+            project.setClient(clientService.getByNameOrCreate(dto.getNewClient(), userEmail));
         } else  if (dto.getClient() != null && !dto.getClient().isBlank()) {
-            project.setClient(clientService.getByNameOrCreate(dto.getClient()));
+            project.setClient(clientService.getByNameOrCreate(dto.getClient(), userEmail));
         }
 
         log.debug("Assignees set for project: {}", dto.getAssignees().size());
