@@ -12,20 +12,50 @@
 <div style="layout">
     <section class="project-section">
 
-        <div class="card">
-            <div class="project-desc">
-                <span class="font-medium">Project description:</span>
-                <span th:text="${project.description}"></span>
+        <div class="content-split">
+
+            <!-- Left: Project -->
+            <div class="task-view">
+
+                <h1 class="task-title" th:text="${project.title}"></h1>
+
+                <section class="detail-block">
+                    <label>Description:</label>
+                    <p th:text="${project.description}"></p>
+                </section>
+
+                <section class="detail-block">
+                    <label>Client:</label>
+                    <span th:text="${project.client.name}"></span>
+                </section>
+
+                <section class="detail-block">
+                    <label>Deadline:</label>
+                    <span th:text="${project.end}"></span>
+                </section>
+
             </div>
-            <div>
-                <span class="time-label">Start date:</span>
-                <span class="date" th:text="${#temporals.format(project.start, 'dd MMM yyyy')}"></span>
-            </div>
-            <div>
-                <span class="time-label">Deadline:</span>
-                <span class="date" th:text="${#temporals.format(project.end, 'dd MMM yyyy')}"></span>
-            </div>
-            <div th:insert="fragments :: client" class="project-desc"></div>
+
+            <!-- Right: Sidebar -->
+            <aside class="task-sidebar">
+                <label class="sidebar-title">Assignees</label>
+                <ul class="assignees-list">
+
+                    <li th:if="${assignees == null || #lists.isEmpty(assignees)}" class="empty-text">
+                        Nobody assigned
+                    </li>
+
+                    <li th:each="assignee : ${assignees}">
+                        <a class="assignee-row" th:href="@{/collaborators/{id}(id=${assignee.id})}">
+                            <img class="avatar" th:src="${#strings.isEmpty(assignee.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}">
+                            <div>
+                                <p class="assignee-name" th:text="${assignee.name}"></p>
+                                <p class="assignee-role" th:text="${assignee.role}"></p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
         </div>
 
         <div class="kanban-container">
