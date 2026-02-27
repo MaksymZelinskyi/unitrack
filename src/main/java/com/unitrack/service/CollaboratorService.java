@@ -1,20 +1,24 @@
 package com.unitrack.service;
 
+import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.dto.request.RegisterDto;
 import com.unitrack.dto.request.UpdateProfileDto;
 import com.unitrack.entity.*;
+import com.unitrack.exception.AuthorizationException;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.DuplicateException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -28,6 +32,7 @@ public class CollaboratorService {
     private final MailService mailService;
     private final GravatarService gravatarService;
     private final WorkspaceService workspaceService;
+    private final AuthorizationService authorizationService;
 
     public void add(CollaboratorDto dto, String currentUserEmail) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
@@ -73,10 +78,15 @@ public class CollaboratorService {
         Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new CollaboratorNotFoundException("email", email));
 
         //set data from the DTO
-        collaborator.setEmail(dto.email());
         collaborator.setFirstName(dto.firstName());
         collaborator.setLastName(dto.lastName());
-        collaborator.setPassword(passwordEncoder.encode(dto.password()));
+        if(dto.password() != null && !dto.password().isBlank()) {
+            if (dto.password().length() < 8 || dto.password().length() > 255){
+                throw new ValidationException("The password length must be between 8 and 255");
+            }
+            collaborator.setPassword(passwordEncoder.encode(dto.password()));
+            collaborator.addAuthProvider(AuthProvider.PASSWORD);
+        }
         collaborator.setAvatarUrl(dto.avatarUrl());
 
         log.info("Collaborator with id {} is being updated", collaborator.getId());
