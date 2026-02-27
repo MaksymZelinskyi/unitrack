@@ -44,6 +44,7 @@ public class TaskController extends AuthenticatedController {
     public String createTask(@RequestParam Long projectId, Model model, Principal principal) {
         model.addAttribute("projectId", projectId);
         Project project = projectService.getById(projectId);
+        model.addAttribute("projectTitle", project.getTitle());
         model.addAttribute("collaborators",
                 collaboratorService.getCollaboratorsByProject(project)
                         .stream()

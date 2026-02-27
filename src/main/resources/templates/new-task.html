@@ -8,7 +8,7 @@
 
 <div th:insert="fragments :: header"></div>
 
-<h1 class="page-title">New Task</h1>
+<h1 class="page-title" th:text="${projectTitle}"></h1>
 
 <form th:action="@{/tasks?projectId={projectId}(projectId=${projectId})}"
       th:object="${taskForm}" method="post" class="task-form-container">

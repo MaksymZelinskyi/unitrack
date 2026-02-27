@@ -26,6 +26,11 @@ public class Task implements Comparable<Task> {
     private Status status;
 
     @ManyToMany
+    @JoinTable(
+            name = "task_assignees",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "assignees_id")
+    )
     private Set<Collaborator> assignees = new HashSet<>();
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
@@ -42,6 +47,9 @@ public class Task implements Comparable<Task> {
         this.project = project;
     }
 
+    public void addAssignee(Collaborator assignee) {
+        this.assignees.add(assignee);
+    }
     public void addAssignees(Collection<Collaborator> assignees) {
         this.assignees.addAll(assignees);
     }

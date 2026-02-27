@@ -23,5 +23,15 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findAllByWorkspace(Workspace workspace);
 
+    //total projects
     int countByWorkspace(Workspace workspace);
+
+    //completed projects
+    int countByCompletedAndWorkspace(boolean completed, Workspace workspace);
+
+    //active projects(if completed is false)
+    int countByCompletedAndStartBeforeAndWorkspace(boolean completed, LocalDate offset, Workspace workspace);
+
+    //projects with upcoming deadlines
+    int countByCompletedAndEndBeforeAndWorkspace(boolean completed, LocalDate end, Workspace workspace);
 }
