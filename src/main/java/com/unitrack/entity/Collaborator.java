@@ -42,7 +42,9 @@ public class Collaborator {
     @CreationTimestamp
     private LocalDate joinDate;
     private boolean isAdmin;
-    
+  
+    @Enumerated(EnumType.STRING)
+    private Set<AuthProvider> authProviders = new HashSet<>();
 
     public Collaborator(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -88,5 +90,9 @@ public class Collaborator {
     public String getFirstNameAndFirstLetter() {
         if(lastName == null) return firstName;
         return firstName + " " + lastName.substring(0, 1);
+    }
+
+    public void addAuthProvider(AuthProvider authProvider) {
+        this.authProviders.add(authProvider);
     }
 }

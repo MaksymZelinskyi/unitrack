@@ -148,7 +148,7 @@ public class ProjectController extends AuthenticatedController {
     @PutMapping("/{id}")
     @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, @ModelAttribute("projectForm") @Validated UpdateProjectDto project, Principal principal) {
-        projectService.update(id, project);
+        projectService.update(id, project, principal.getName());
         return "redirect:" + id;
     }
 

@@ -29,7 +29,7 @@ public class CollaboratorUnitTest {
     public void init() {
         collaboratorRepository = mock(CollaboratorRepository.class);
         passwordEncoder = new BCryptPasswordEncoder();
-        collaboratorService = new CollaboratorService(collaboratorRepository, null, null, passwordEncoder, null, null);
+        collaboratorService = new CollaboratorService(collaboratorRepository, null, null, passwordEncoder, null, null, null);
     }
 
     @Test

@@ -44,10 +44,10 @@ public class ProjectUnitTest {
         }
         Project entity = new Project("title", "description", LocalDate.MIN, LocalDate.MAX);
         when(projectRepository.findById(1L)).thenReturn(Optional.of(entity));
-        when(clientService.getByNameOrCreate("Client")).thenReturn(new Client("Client"));
+        when(clientService.getByNameOrCreate("Client", "")).thenReturn(new Client("Client"));
 
         //act
-        projectService.update(1L, dto);
+        projectService.update(1L, dto, "");
 
         //assert
         assertEquals(dto.getTitle(), entity.getTitle());

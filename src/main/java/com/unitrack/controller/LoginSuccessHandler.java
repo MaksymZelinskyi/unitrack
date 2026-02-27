@@ -27,7 +27,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String username = resolveUsername(authentication);
         authenticationService.defineWorkspace(username);
-        log.debug("Authentication succeeded for user {}", username);
+        log.debug("Password authentication succeeded for user {}", username);
         response.sendRedirect("/home");
     }
 

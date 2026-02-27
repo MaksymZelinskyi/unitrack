@@ -1,5 +1,6 @@
 package com.unitrack.config;
 
+import com.unitrack.entity.AuthProvider;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.exception.AuthenticationException;
 import com.unitrack.exception.EntityNotFoundException;
@@ -24,6 +25,10 @@ public class InDbUserDetailsService implements UserDetailsService {
         Collaborator collaborator = collaboratorRepository
                 .findByEmail(username)
                 .orElseThrow(() -> new AuthenticationException("Collaborator with email " + username + " not found."));
-        return new CustomUserDetails(collaborator.getId(), collaboratorRepository);
+
+        if (!collaborator.getAuthProviders().contains(AuthProvider.PASSWORD))
+            throw new AuthenticationException("Wrong authentication provider.");
+
+    return new CustomUserDetails(collaborator.getId(), collaboratorRepository);
     }
 }
