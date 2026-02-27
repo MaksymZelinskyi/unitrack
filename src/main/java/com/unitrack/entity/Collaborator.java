@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
 
 import java.time.LocalDate;
@@ -33,13 +34,15 @@ public class Collaborator {
     private Set<Skill> skills = new HashSet<>();
     @OneToMany(mappedBy = "collaborator", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Participation> projects = new HashSet<>();
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "assignees")
     private Set<Task> tasks = new HashSet<>();
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Workspace workspace;
 
+    @CreationTimestamp
     private LocalDate joinDate;
     private boolean isAdmin;
+    
 
     public Collaborator(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
@@ -67,6 +70,8 @@ public class Collaborator {
     public void addProject(Participation participation) {
         projects.add(participation);
     }
+
+    public void addTask(Task task) {tasks.add(task);}
 
     public void addSkill(Skill skill) {
         skills.add(skill);
