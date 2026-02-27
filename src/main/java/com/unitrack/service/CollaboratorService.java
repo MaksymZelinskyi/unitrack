@@ -8,6 +8,7 @@ import com.unitrack.entity.*;
 import com.unitrack.exception.AuthorizationException;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.DuplicateException;
+import com.unitrack.exception.RegistrationException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.ParticipationRepository;
 import com.unitrack.repository.SkillRepository;
@@ -49,7 +50,7 @@ public class CollaboratorService {
 
     public void register(RegisterDto dto) {
         if (collaboratorRepository.existsByEmail(dto.email()))
-            throw new DuplicateException("A user with email: " + dto.email() + " already exists");
+            throw new RegistrationException(new DuplicateException("A user with email: " + dto.email() + " already exists"));
 
         Workspace workspace = new Workspace(dto.teamName());
         Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()), workspace);

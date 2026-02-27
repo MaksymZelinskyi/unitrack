@@ -37,6 +37,7 @@ public class SecurityConfig {
         JwtUsernamePasswordAuthFilter authFilter = new JwtUsernamePasswordAuthFilter(authenticationManager(authConfig), jwtService);
         http.authorizeHttpRequests(x -> x
                         .requestMatchers(HttpMethod.GET, "/styles/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/icons/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/collaborators/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/projects/new").hasRole("ADMIN")
@@ -56,14 +57,12 @@ public class SecurityConfig {
                                 .permitAll()
                 )
                 .oauth2Login(oauth -> oauth
-                       // .userInfoEndpoint(userInfo -> userInfo.oidcUserService(oidcUserService))
                         .loginPage("/login")
                         .successHandler(loginSuccessHandler)
                         )
                 .logout(x ->
                         x.logoutSuccessUrl("/login?logout=true")
                         .deleteCookies("JSESSIONID"))
-               // .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilter(authFilter);
 
         return http.build();
