@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -34,11 +35,13 @@ public class TaskService {
 
         //create task entity
         Task task = new Task(dto.getTitle(), dto.getDescription(), dto.getDeadline(), project);
+        task.setWorkspace(project.getWorkspace());
         List<Collaborator> assignees = dto.getAssignees()
                 .stream()
                 .map(x -> collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId())))
                 .toList();
         task.addAssignees(assignees);
+
         //set default status
         task.setStatus(Task.Status.TODO);
 
@@ -72,7 +75,7 @@ public class TaskService {
                     .findById(c.getId())
                     .orElseThrow(() -> new CollaboratorNotFoundException("id", c.getId()));
             if (project.getAssignees().stream().anyMatch(x -> x.getCollaborator().equals(collaborator)))
-                task.getAssignees().add(collaborator);
+                task.addAssignee(collaborator);
             else
                 throw new IllegalArgumentException("Attempted to assign task to a collaborator that is not in the project");
         }
@@ -95,7 +98,11 @@ public class TaskService {
 
     public void setTaskStatus(Long id, String status) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("id", id));
+        if (task.getStatus() != Task.Status.DONE && status.equals("DONE")) {
+            task.setCompletedOn(LocalDate.now());
+        }
         task.setStatus(Task.Status.valueOf(status));
+
         taskRepository.save(task);
         log.info("The status of task {}: \"{}\" changed to {}", id, task.getTitle(), task.getStatus());
     }
