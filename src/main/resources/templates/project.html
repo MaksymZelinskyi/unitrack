@@ -13,9 +13,8 @@
     <section class="project-section">
 
         <div class="card">
-            <h4 class="project-name" th:text="${project.title}"></h4>
             <div class="project-desc">
-                <span class="font-medium">Description:</span>
+                <span class="font-medium">Project description:</span>
                 <span th:text="${project.description}"></span>
             </div>
             <div>
@@ -43,40 +42,26 @@
                     <li th:if="${todo == null || #lists.isEmpty(todo)}">Nothing yet</li>
 
                     <li class="task-wrapper" th:data-id="${task.id}" th:each="task : ${todo}">
-                        <div class="card task-border-todo">
+                        <div class="task-card task-border-todo">
+                            <div class="flex-row">
+                                <a th:if="${canUpdate}"
+                                   th:href="@{/tasks/update/{id}(id=${task.id})}"
+                                   class="task-edit-btn">
+                                    <img src="/icons/pencil.png"/>
+                                </a>
 
-                            <a th:if="${canUpdate}"
-                               th:href="@{/tasks/update/{id}(id=${task.id})}"
-                               class="task-edit-btn">
-                                <img src="/icons/pencil.png"/>
-                            </a>
-
-                            <div class="task-delete-btn" th:if="${canDelete}">
-                                <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
-                                    <input name="_method" type="hidden" value="delete">
-                                    <button type="submit" class="confirm-delete">
-                                        <img src="/icons/trash.png"/>
-                                    </button>
-                                </form>
+                                <div class="task-delete-btn" th:if="${canDelete}">
+                                    <form method="post" th:action="@{/tasks/{id}(id=${task.id})}">
+                                        <input name="_method" type="hidden" value="delete">
+                                        <button type="submit" class="confirm-delete">
+                                            <img src="/icons/trash.png"/>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-
-                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link top">
                                 <h4 class="task-title" th:text="${task.title}"></h4>
                                 <p class="task-desc" th:text="${task.description}"></p>
-
-                                <div class="task-info">
-                                    <span class="task-info-label">Assignees:</span>
-                                    <ul class="assignees-list">
-                                        <li th:each="assignee : ${task.assignees}">
-                                            <p th:text="${assignee}"></p>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="task-info">
-                                    <span class="task-info-label">Deadline:</span>
-                                    <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
-                                </div>
                             </a>
 
                         </div>
@@ -90,7 +75,7 @@
                     <li th:if="${in_progress == null || #lists.isEmpty(in_progress)}">Nothing yet</li>
 
                     <li class="task-wrapper" th:data-id="${task.id}" th:each="task : ${in_progress}">
-                        <div class="card task-border-inprogress">
+                        <div class="task-card task-border-inprogress">
 
                             <a th:if="${canUpdate}"
                                th:href="@{/tasks/update/{id}(id=${task.id})}"
@@ -107,23 +92,9 @@
                                 </form>
                             </div>
 
-                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
+                            <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link top">
                                 <h4 class="task-title" th:text="${task.title}"></h4>
                                 <p class="task-desc" th:text="${task.description}"></p>
-
-                                <div class="task-info">
-                                    <span class="task-info-label">Assignees:</span>
-                                    <ul class="assignees-list">
-                                        <li th:each="assignee : ${task.assignees}">
-                                            <p th:text="${assignee}"></p>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="task-info">
-                                    <span class="task-info-label">Deadline:</span>
-                                    <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
-                                </div>
                             </a>
 
                         </div>
@@ -137,7 +108,7 @@
                     <li th:if="${done == null || #lists.isEmpty(done)}">Nothing yet</li>
 
                     <li class="task-wrapper" th:data-id="${task.id}" th:each="task : ${done}">
-                        <div class="card task-border-done">
+                        <div class="task-card task-border-done">
 
                             <a th:if="${canUpdate}"
                                th:href="@{/tasks/update/{id}(id=${task.id})}"
@@ -157,22 +128,7 @@
                             <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
                                 <h4 class="task-title" th:text="${task.title}"></h4>
                                 <p class="task-desc" th:text="${task.description}"></p>
-
-                                <div class="task-info">
-                                    <span class="task-info-label">Assignees:</span>
-                                    <ul class="assignees-list">
-                                        <li th:each="assignee : ${task.assignees}">
-                                            <p th:text="${assignee}"></p>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="task-info">
-                                    <span class="task-info-label">Deadline:</span>
-                                    <span th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}"></span>
-                                </div>
                             </a>
-
                         </div>
                     </li>
                 </ul>
