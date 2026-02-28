@@ -94,8 +94,11 @@ public class CollaboratorController extends AuthenticatedController {
                                 )
                                 .toList()))
                 .toList();
+        List<String> skills = collaborator.getSkills().stream().map(Skill::getName).toList();
+
         model.addAttribute("projects", projects);
         model.addAttribute("collaborator", dto);
+        model.addAttribute("skills", skills);
         return "collaborator";
     }
 }

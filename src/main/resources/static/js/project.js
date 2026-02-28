@@ -35,7 +35,7 @@ function addAssignee(selectEl) {
           <option value="DESIGNER">Designer</option>
           <option value="PRODUCT_OWNER">Product Owner</option>
           <option value="INTERN">Intern</option>
-          <option value="PROJECT_MANGER">Project Manager</option>
+          <option value="PROJECT_MANaGER">Project Manager</option>
         </select>
       `;
 

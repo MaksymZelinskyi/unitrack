@@ -10,26 +10,43 @@
 
 <main class="profile-main">
 
-    <!-- Profile Card -->
-    <section class="profile-card">
-        <img
-                alt="Profile Picture" class="profile-avatar"
-                th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"
-        />
+    <div class="content-split">
+        <!-- Profile Card -->
+        <section class="profile-card left-panel">
+            <img
+                    alt="Profile Picture" class="profile-avatar"
+                    th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"
+            />
 
-        <h1 class="profile-name" th:text="${collaborator.fullName}">John Doe</h1>
-        <p class="profile-email" th:text="${collaborator.email}">john.doe@example.com</p>
+            <h1 class="profile-name" th:text="${collaborator.fullName}">John Doe</h1>
+            <p class="profile-email" th:text="${collaborator.email}">john.doe@example.com</p>
 
-        <div class="profile-badge-wrapper">
-            <span class="profile-badge">Collaborator Profile</span>
-        </div>
-    </section>
+            <div class="profile-badge-wrapper">
+                <span class="profile-badge">Collaborator Profile</span>
+            </div>
+        </section>
+
+        <!-- Right: Sidebar -->
+        <aside class="right-sidebar">
+            <label class="sidebar-title">Skills</label>
+            <ul class="assignees-list">
+
+                <li th:if="${skills == null || #lists.isEmpty(skills)}" class="empty-text">
+                    No skills yet
+                </li>
+
+                <li th:each="skill : ${skills}">
+                    <h3 th:text="${skill}"></h3>
+                </li>
+            </ul>
+        </aside>
+    </div>
 
     <!-- Projects Section -->
     <section class="projects-section">
         <h2 class="projects-title">Projects & Tasks</h2>
 
-        <ul class="project-list two-columns">
+        <ul class="project-list three-columns">
             <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
                 <a th:href="@{/projects/{id}(id=${project.projectId})}">
                     <div class="project-header">

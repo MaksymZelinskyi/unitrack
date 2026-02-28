@@ -241,8 +241,8 @@
     transform: translateX(23px);
 }
 
-.task-sidebar {
-    width: 320px;
+.right-sidebar {
+    min-width: 350px;
     height: 45vh;
     background: #f8fafc;
     border-radius: 14px;
@@ -475,6 +475,7 @@ h1, h2, h3, h4 {
     font-weight: 600;
     display: block;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .assignee-row {

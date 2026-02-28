@@ -6,7 +6,7 @@
     </head>
     <body>
         <div th:insert="fragments :: header"></div>
-        <div class="container">
+        <div class="container content-split">
             <div class="profile-card">
                 <!-- Title -->
                 <h1 class="page-title">
@@ -64,6 +64,20 @@
                     </button>
                 </form>
             </div>
+            <!-- Right: Sidebar -->
+            <aside class="right-sidebar">
+                <label class="sidebar-title">Skills</label>
+                <ul class="assignees-list">
+
+                    <li th:if="${skills == null || #lists.isEmpty(skills)}" class="empty-text">
+                        No skills yet
+                    </li>
+
+                    <li th:each="skill : ${skills}">
+                        <h3 th:text="${skill}"></h3>
+                    </li>
+                </ul>
+            </aside>
         </div>
     </body>
 </html>

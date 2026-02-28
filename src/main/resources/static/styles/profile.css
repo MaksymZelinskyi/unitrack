@@ -3,7 +3,7 @@
     align-items: center;
     gap: 1rem;
     background: #fff;
-    border-radius: 7px;
+    border-radius: 3px;
     padding: 0.4rem 1rem;
     border: 1px solid #ccc;
     box-shadow: 0 3px 10px rgba(0,0,0,0.12);
@@ -19,15 +19,15 @@
 .avatar-wrapper {
     width: 80px;        /* square dimensions */
     height: 80px;
-    border-radius: 50%; /* full circle */
-    overflow: hidden;   /* crop the image */
     flex-shrink: 0;     /* don’t allow shrinking */
 }
 
 .profile-avatar {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* keeps the circle shape */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    object-fit: cover;
 }
 
 .profile-text h3 {
