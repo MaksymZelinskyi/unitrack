@@ -5,12 +5,11 @@ import com.unitrack.service.SkillService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/skills")
 @RequiredArgsConstructor
 public class SkillController extends AuthenticatedController {
@@ -27,4 +26,8 @@ public class SkillController extends AuthenticatedController {
         skillService.delete(id);
     }
 
+    @GetMapping("/search")
+    public List<Skill> searchSkills(String searchQuery) {
+        return skillService.searchSkill(searchQuery);
+    }
 }

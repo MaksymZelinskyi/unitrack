@@ -7,10 +7,7 @@ import com.unitrack.dto.ProjectTaskDto;
 import com.unitrack.dto.request.AssigneeDto;
 import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
-import com.unitrack.entity.Client;
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Participation;
-import com.unitrack.entity.Project;
+import com.unitrack.entity.*;
 import com.unitrack.service.ClientService;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
@@ -81,9 +78,15 @@ public class ProjectController extends AuthenticatedController {
         model.addAttribute("in_progress", inProgress);
         model.addAttribute("done", done);
 
+        model.addAttribute("assignees", project.getAssignees().stream().map(x -> {
+            Collaborator c = x.getCollaborator();
+            Role role = x.getRoles().stream().findFirst().orElse(null);
+            return new AssigneeDto(c.getId(), c.getFullName(), role != null ? role.name() : "", c.getAvatarUrl());
+        }).toList());
         boolean canUpdateDelete = authService.canUpdateOrDelete(principal.getName(), id);
         model.addAttribute("canUpdate", canUpdateDelete);
         model.addAttribute("canDelete", canUpdateDelete);
+
         return "project";
     }
 

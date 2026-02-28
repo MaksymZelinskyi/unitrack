@@ -5,6 +5,7 @@ import com.unitrack.entity.Skill;
 import com.unitrack.exception.AuthenticationException;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.SkillNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,19 @@ public class SkillService {
         collaborator.deleteSkill(skill);
 
         collaboratorRepository.save(collaborator);
+    }
+
+    public void updateCollaboratorSkills(String email, List<Skill> skills) {
+        Collaborator collaborator = collaboratorRepository.findByEmail(email).orElseThrow(() -> new CollaboratorNotFoundException("email", email));
+        collaborator.getSkills().clear();
+        for (Skill skill : skills) {
+            if(!skillRepository.existsById(skill.getId())) throw new SkillNotFoundException("id", skill.getId());
+
+            collaborator.addSkill(skill);
+        }
+    }
+
+    public List<Skill> searchSkill(String searchQuery) {
+        return skillRepository.findByNameLike("%"+searchQuery+"%");
     }
 }

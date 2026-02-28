@@ -16,17 +16,6 @@
     opacity: 0.9;
 }
 
-/* Profile container */
-.profile-link {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-right: 14px;
-    text-decoration: none;
-    color: inherit;
-    transform: scale(0.92); /* slightly smaller */
-}
-
 /* Text beside avatar */
 .profile-text h3 {
     font-size: 13px;

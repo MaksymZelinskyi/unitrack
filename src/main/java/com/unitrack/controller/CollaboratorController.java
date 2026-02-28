@@ -42,17 +42,6 @@ public class CollaboratorController extends AuthenticatedController {
         return "redirect:/home";
     }
 
-    //todo: Add skill management
-    @PostMapping("/{collaboratorId}/skills")
-    public void addSkillToCollaborator(@PathVariable Long collaboratorId, Skill skill) {
-        skillService.addCollaboratorSkill(collaboratorId, skill);
-    }
-
-    @DeleteMapping("/{collaboratorId}/skills")
-    public void deleteCollaboratorSkill(@PathVariable Long collaboratorId, Skill skill) {
-        skillService.deleteCollaboratorSkill(collaboratorId, skill);
-    }
-
     @GetMapping("/new")
     public String newCollaborator(Model model, Principal principal) {
         List<Skill> skills = skillService.getAll();
@@ -94,8 +83,11 @@ public class CollaboratorController extends AuthenticatedController {
                                 )
                                 .toList()))
                 .toList();
+        List<String> skills = collaborator.getSkills().stream().map(Skill::getName).toList();
+
         model.addAttribute("projects", projects);
         model.addAttribute("collaborator", dto);
+        model.addAttribute("skills", skills);
         return "collaborator";
     }
 }

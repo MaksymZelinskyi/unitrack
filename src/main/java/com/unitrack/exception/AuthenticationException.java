@@ -9,7 +9,7 @@ public class AuthenticationException extends SecurityException {
     }
 
     public AuthenticationException(Throwable cause) {
-        super(cause);
+        super(cause.getMessage(), cause);
     }
 
     public AuthenticationException(String message, Throwable cause) {

@@ -73,4 +73,13 @@ public class AuthorizationService {
                 .orElseThrow(() -> new AuthenticationException("Collaborator with email " + email + " not found."));
         return collaborator;
     }
+
+    public boolean usesOAuth(String email) {
+        return usesOAuth(getUser(email));
+    }
+
+    public boolean usesOAuth(Collaborator collaborator) {
+        Set<AuthProvider> authProviders = collaborator.getAuthProviders();
+        return authProviders.contains(AuthProvider.OIDC_GOOGLE) || authProviders.contains(AuthProvider.OIDC_GITHUB);
+    }
 }

@@ -3,6 +3,7 @@ package com.unitrack.controller;
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.exception.AuthenticationException;
 import com.unitrack.exception.EntityNotFoundException;
+import com.unitrack.exception.RegistrationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -50,14 +51,25 @@ public class ExceptionManager {
     }
 
     @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleRuntimeException(RuntimeException e, Model model, Principal principal) {
         String message = "Something went wrong";
 
-        if(authorizationService.isAdmin(principal.getName()))
+        if(principal != null && authorizationService.isAdmin(principal.getName()))
             message = e.getMessage();
 
         model.addAttribute("message", message);
         model.addAttribute("errorCode", 500);
+        return "error";
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public String handleRegistrationException(RegistrationException e, Model model, Principal principal) {
+        String message = e.getMessage() != null ? e.getMessage() : "An error occurred";
+
+        model.addAttribute("message", message);
+        model.addAttribute("errorCode", 401);
         return "error";
     }
 }

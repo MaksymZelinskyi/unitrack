@@ -9,6 +9,6 @@ public record UpdateProfileDto(@NotBlank @Length(max = 255) String firstName,
                                @NotBlank @Length(max = 255) String lastName,
                                @URL String avatarUrl,
                                @Email String email,
-                               @Length(min = 8, max = 255) String password) {
+                               String password) {
 
 }
