@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -33,6 +30,7 @@ public class ProfileController extends AuthenticatedController {
         Collaborator collaborator = collaboratorService.getByEmail(principal.getName());
         UpdateProfileDto profile = new UpdateProfileDto(collaborator.getFirstName(), collaborator.getLastName(), collaborator.getAvatarUrl(), collaborator.getEmail(), "");
         model.addAttribute("profile", profile);
+        model.addAttribute("skills", collaborator.getSkills().stream().map(Skill::getName));
         return "profile";
     }
 
@@ -49,6 +47,18 @@ public class ProfileController extends AuthenticatedController {
     @PutMapping("/skills")
     public String updateSkillSet(List<Skill> skills, Principal principal) {
         skillService.updateCollaboratorSkills(principal.getName(), skills);
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/skills")
+    public String addSkill(String skill, Principal principal) {
+        skillService.addCollaboratorSkill(principal.getName(), skill);
+        return "redirect:/profile";
+    }
+
+    @DeleteMapping("/skills")
+    public String deleteSkill(String skill, Principal principal) {
+        skillService.deleteCollaboratorSkill(principal.getName(), skill);
         return "redirect:/profile";
     }
 }

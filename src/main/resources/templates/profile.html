@@ -68,14 +68,15 @@
             <!-- Right: Sidebar -->
             <aside class="right-sidebar">
                 <label class="sidebar-title">Skills</label>
-                <ul class="assignees-list">
-                    <!-- Search bar -->
-                    <form>
-                        <label for="searchQuery" class="block mb-1 font-medium text-gray-700">Add a skill</label>
-                        <input name="searchQuery" id="searchQuery" type="text" class="input" autocomplete="off"/>
-                        <ul id="suggestions">
+                <!-- Search bar -->
+                <label for="searchQuery" class="block mb-1 font-medium text-gray-700">Add a skill</label>
+                <input name="searchQuery" id="searchQuery" type="text" class="input" autocomplete="off"/>
 
-                        </ul>
+                <ul id="suggestions"></ul>
+
+                <ul class="assignees-list">
+                    <form th:action="@{/profile/skills" method="post">
+
                     </form>
 
                     <li th:if="${skills == null || #lists.isEmpty(skills)}" class="empty-text">
@@ -86,8 +87,7 @@
                         <h3 th:text="${skill}"></h3>
                     </li>
                     <!-- Submit -->
-                    <button type="submit"
-                            class="submit-btn">
+                    <button type="submit" class="submit-btn">
                         Submit
                     </button>
                 </ul>
