@@ -31,10 +31,10 @@ public class Workspace {
     private String name;
 
     @OneToOne(mappedBy = "workspace", cascade = CascadeType.REMOVE)
-    private Collaborator admin;
+    private CollaboratorWorkspace admin;
 
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private Set<Collaborator> collaborators = new HashSet<>();
+    private Set<CollaboratorWorkspace> collaborators = new HashSet<>();
 
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<Project> projects = new HashSet<>();
