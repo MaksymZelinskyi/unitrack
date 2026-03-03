@@ -1,97 +1,96 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:text="(${currentUser.firstName + ' ' + currentUser.lastName})"></title>
-        <th:block th:insert="fragments :: head"></th:block>
-        <script src="/js/search.js"></script>
-    </head>
-    <body>
-        <div th:insert="fragments :: header"></div>
-        <div class="container content-split">
-            <div class="profile-card">
-                <!-- Title -->
-                <h1 class="page-title">
-                    Update Profile
-                </h1>
+<head>
+    <title th:text="${currentUser.firstName + ' ' + currentUser.lastName}"></title>
+    <th:block th:insert="~{fragments :: head}"></th:block>
+    <script src="/js/search.js"></script>
+</head>
+<body>
+<div th:insert="~{fragments :: header}"></div>
+<div class="container content-split">
+    <div class="profile-card">
+        <!-- Title -->
+        <h1 class="page-title">
+            Update Profile
+        </h1>
 
-                <!-- Profile Picture -->
-                <img alt="Profile Picture" class="avatar" style="width: 90px; height: 90px"
-                     th:src="${#strings.isEmpty(currentUser.avatarUrl) ? '/icons/profile-icon.png' : currentUser.avatarUrl}"/>
+        <!-- Profile Picture -->
+        <img alt="Profile Picture" class="avatar" style="width: 90px; height: 90px"
+             th:src="${#strings.isEmpty(currentUser.avatarUrl) ? '/icons/profile-icon.png' : currentUser.avatarUrl}"/>
 
-                <!-- Form -->
-                <form th:action="@{/profile}"
-                      th:object="${profile}"
-                      method="post">
+        <!-- Form -->
+        <form th:action="@{/profile}"
+              th:object="${profile}"
+              method="post">
 
-                    <input type="hidden" name="_method" value="put"/>
+            <input type="hidden" name="_method" value="put"/>
 
-                    <!-- Avatar URL -->
-                    <div>
-                        <label for="avatarUrl" class="block mb-1 font-medium text-gray-700">Avatar URL</label>
-                        <input th:field="*{avatarUrl}" id="avatarUrl" type="text"
-                               class="input"/>
-                    </div>
-
-                    <!-- First name -->
-                    <div>
-                        <label for="firstName" class="block mb-1 font-medium text-gray-700">First Name</label>
-                        <input th:field="*{firstName}" id="firstName" type="text"
-                               class="input"/>
-                    </div>
-
-                    <!-- Last name -->
-                    <div>
-                        <label for="lastName" class="block mb-1 font-medium text-gray-700">Last Name</label>
-                        <input th:field="*{lastName}" id="lastName" type="text"
-                               class="input"/>
-                    </div>
-
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>
-                        <input th:field="*{email}" id="email" type="text" class="input" disabled/>
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <label for="password" class="block mb-1 font-medium text-gray-700">Password</label>
-                        <input th:field="*{password}" id="password" type="password" class="input" placeholder="password"/>
-                    </div>
-
-                    <!-- Submit -->
-                    <button type="submit"
-                            class="submit-btn">
-                        Update Profile
-                    </button>
-                </form>
+            <!-- Avatar URL -->
+            <div>
+                <label for="avatarUrl" class="block mb-1 font-medium text-gray-700">Avatar URL</label>
+                <input th:field="*{avatarUrl}" id="avatarUrl" type="text"
+                       class="input"/>
             </div>
-            <!-- Right: Sidebar -->
-            <aside class="right-sidebar">
-                <label class="sidebar-title">Skills</label>
-                <ul class="assignees-list">
-                    <!-- Search bar -->
-                    <form>
-                        <label for="searchQuery" class="block mb-1 font-medium text-gray-700">Add a skill</label>
-                        <input name="searchQuery" id="searchQuery" type="text" class="input" autocomplete="off"/>
-                        <ul id="suggestions">
 
-                        </ul>
-                    </form>
+            <!-- First name -->
+            <div>
+                <label for="firstName" class="block mb-1 font-medium text-gray-700">First Name</label>
+                <input th:field="*{firstName}" id="firstName" type="text"
+                       class="input"/>
+            </div>
 
-                    <li th:if="${skills == null || #lists.isEmpty(skills)}" class="empty-text">
-                        No skills yet
-                    </li>
+            <!-- Last name -->
+            <div>
+                <label for="lastName" class="block mb-1 font-medium text-gray-700">Last Name</label>
+                <input th:field="*{lastName}" id="lastName" type="text"
+                       class="input"/>
+            </div>
 
-                    <li th:each="skill : ${skills}">
-                        <h3 th:text="${skill}"></h3>
-                    </li>
-                    <!-- Submit -->
-                    <button type="submit"
-                            class="submit-btn">
-                        Submit
-                    </button>
-                </ul>
-            </aside>
-        </div>
-    </body>
+            <!-- Email -->
+            <div>
+                <label for="email" class="block mb-1 font-medium text-gray-700">Email</label>
+                <input th:field="*{email}" id="email" type="text" class="input" disabled/>
+            </div>
+
+            <!-- Password -->
+            <div>
+                <label for="password" class="block mb-1 font-medium text-gray-700">Password</label>
+                <input th:field="*{password}" id="password" type="password" class="input" placeholder="password"/>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="submit-btn">
+                Update Profile
+            </button>
+        </form>
+    </div>
+    <!-- Right: Sidebar -->
+    <aside class="right-sidebar">
+        <label class="sidebar-title">Skills</label>
+
+        <form th:action="@{/profile/skills}" method="post">
+            <label for="skill" class="block mb-1 font-medium text-gray-700">Add a skill</label>
+            <input name="skill" id="skill" type="text" class="input" autocomplete="off"/>
+            <ul id="suggestions">
+                <!-- Skill suggestions-->
+            </ul>
+            <button type="submit" class="submit-btn">
+                Submit
+            </button>
+        </form>
+
+        <!-- List of existing skills -->
+        <ul class="assignees-list">
+            <li th:if="${skills == null || #lists.isEmpty(skills)}" class="empty-text">
+                No skills yet
+            </li>
+
+            <li th:each="skill : ${skills}">
+                <h3 th:text="${skill}"></h3>
+            </li>
+        </ul>
+    </aside>
+</div>
+</body>
 </html>

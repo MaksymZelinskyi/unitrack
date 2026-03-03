@@ -1,5 +1,6 @@
 package com.unitrack.service;
 
+import com.unitrack.config.AuthorizationService;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Skill;
 import com.unitrack.exception.AuthenticationException;
@@ -22,6 +23,7 @@ public class SkillService {
 
     private final SkillRepository skillRepository;
     private final CollaboratorRepository collaboratorRepository;
+    private final AuthorizationService authorizationService;
 
     public List<Skill> getAll() {
         return skillRepository.findAll();
@@ -37,7 +39,14 @@ public class SkillService {
 
     public void addCollaboratorSkill(Long id, Skill skill) {
         Collaborator collaborator = collaboratorRepository.findById(id).orElseThrow(() -> new CollaboratorNotFoundException("id", id));
-        if(!skillRepository.existsById(skill.getId())) throw new IllegalArgumentException();
+        if(!skillRepository.existsById(skill.getId())) throw new SkillNotFoundException("id", id);
+        collaborator.addSkill(skill);
+        collaboratorRepository.save(collaborator);
+    }
+
+    public void addCollaboratorSkill(String email, String skillName) {
+        Collaborator collaborator = authorizationService.getUser(email);
+        Skill skill = skillRepository.findByName(skillName).orElseThrow(() -> {throw new SkillNotFoundException("name", skillName);});
         collaborator.addSkill(skill);
         collaboratorRepository.save(collaborator);
     }
@@ -47,6 +56,13 @@ public class SkillService {
         if(!skillRepository.existsById(skill.getId())) throw new IllegalArgumentException();
         collaborator.deleteSkill(skill);
 
+        collaboratorRepository.save(collaborator);
+    }
+
+    public void deleteCollaboratorSkill(String email, String skillName) {
+        Collaborator collaborator = authorizationService.getUser(email);
+        Skill skill = skillRepository.findByName(skillName).orElseThrow(() -> {throw new SkillNotFoundException("name", skillName);});
+        collaborator.deleteSkill(skill);
         collaboratorRepository.save(collaborator);
     }
 

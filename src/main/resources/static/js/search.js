@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const searchBox = document.getElementById("searchQuery");
+    const searchBox = document.getElementById("skill");
     const suggestions = document.getElementById("suggestions");
 
     searchBox.addEventListener("input", async () => {
