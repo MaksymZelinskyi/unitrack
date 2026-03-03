@@ -30,7 +30,7 @@ public class ProfileController extends AuthenticatedController {
         Collaborator collaborator = collaboratorService.getByEmail(principal.getName());
         UpdateProfileDto profile = new UpdateProfileDto(collaborator.getFirstName(), collaborator.getLastName(), collaborator.getAvatarUrl(), collaborator.getEmail(), "");
         model.addAttribute("profile", profile);
-        model.addAttribute("skills", collaborator.getSkills().stream().map(Skill::getName));
+        model.addAttribute("skills", collaborator.getSkills().stream().map(Skill::getName).toList());
         return "profile";
     }
 
