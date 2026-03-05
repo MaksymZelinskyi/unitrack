@@ -1,8 +1,6 @@
 package com.unitrack.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -12,11 +10,15 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CollaboratorWorkspace {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     private Collaborator collaborator;
     @ManyToOne
     private Workspace workspace;
 
+    @Column(name = "is_admin")
     private boolean isAdmin;
 }
