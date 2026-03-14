@@ -45,6 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/skills/*").denyAll()
                         .requestMatchers(HttpMethod.POST, "/skills/*").denyAll()
                         .requestMatchers(HttpMethod.GET, "/skills/**").permitAll()
+                        .requestMatchers("/workspaces").authenticated()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/password/**").permitAll()

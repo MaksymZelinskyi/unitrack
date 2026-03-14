@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Component("authService")
@@ -21,6 +22,8 @@ public class AuthorizationService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
+    private final WorkspaceRepository workspaceRepository;
+    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
     public boolean canUpdateOrDelete(String email, Long projectId) {
         log.debug("Authorizing user {} to update or delete project with id {}", email, projectId);
@@ -52,9 +55,10 @@ public class AuthorizationService {
         return isAdmin(email) || canUpdateComment(email, commentId);
     }
 
+    //todo: take the workspace id
     public boolean isAdmin(String email) {
         Collaborator collaborator = getUser(email);
-        return collaborator.isAdmin();
+        return false;
     }
 
     public boolean isEngagedInTask(String email, Task task) {
@@ -81,5 +85,17 @@ public class AuthorizationService {
     public boolean usesOAuth(Collaborator collaborator) {
         Set<AuthProvider> authProviders = collaborator.getAuthProviders();
         return authProviders.contains(AuthProvider.OIDC_GOOGLE) || authProviders.contains(AuthProvider.OIDC_GITHUB);
+    }
+
+    public boolean canDeleteWorkspace(String email, Long workspaceId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("id", workspaceId));
+        Collaborator collaborator = getUser(email);
+        Optional<CollaboratorWorkspace> optional = collaboratorWorkspaceRepository.findByCollaboratorAndWorkspace(collaborator, workspace);
+        if (optional.isEmpty()) {
+            log.debug("Workspace-Collaborator relation with workspace id {} not found and collaborator");
+            throw new WorkspaceException("Workspace-Collaborator relation not found");
+        }
+        CollaboratorWorkspace cw = optional.get();
+        return cw.isAdmin();
     }
 }
