@@ -23,7 +23,9 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        String authority = collaboratorRepository.findById(id).orElseThrow(() -> new AuthenticationException("Collaborator with id " + id + " not found.")).isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
+        String authority = "ROLE_USER";
+                //collaboratorRepository.findById(id)
+                //.orElseThrow(() -> new AuthenticationException("Collaborator with id " + id + " not found.")).isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
         return List.of(new SimpleGrantedAuthority(authority));
     }
 

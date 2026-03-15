@@ -16,6 +16,6 @@ public class WorkspaceService {
     public Workspace getUserWorkspace(String userEmail) {
         Collaborator currentUser = collaboratorRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CollaboratorNotFoundException("email", userEmail));
-        return currentUser.getWorkspace();
+        return null;
     }
 }

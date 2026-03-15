@@ -2,7 +2,6 @@ package com.unitrack.config;
 
 import com.unitrack.entity.*;
 import com.unitrack.exception.*;
-import com.unitrack.exception.SecurityException;
 import com.unitrack.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -92,7 +91,7 @@ public class AuthorizationService {
         Collaborator collaborator = getUser(email);
         Optional<CollaboratorWorkspace> optional = collaboratorWorkspaceRepository.findByCollaboratorAndWorkspace(collaborator, workspace);
         if (optional.isEmpty()) {
-            log.debug("Workspace-Collaborator relation with workspace id {} not found and collaborator");
+            log.debug("Workspace-Collaborator relation with workspace id {} and collaborator {} not found.", workspaceId, email);
             throw new WorkspaceException("Workspace-Collaborator relation not found");
         }
         CollaboratorWorkspace cw = optional.get();
