@@ -29,6 +29,7 @@ public class Workspace {
     private Long id;
 
     private String name;
+    private String description;
 
     @OneToOne(mappedBy = "workspace", cascade = CascadeType.REMOVE)
     private CollaboratorWorkspace admin;
