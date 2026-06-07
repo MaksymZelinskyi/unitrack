@@ -33,6 +33,7 @@ public class ProjectService {
     private final ClientService clientService;
     private final ParticipationRepository participationRepository;
     private final WorkspaceService workspaceService;
+    private final CollaboratorWorkspaceService collaboratorWorkspaceService;
 
     public Project getByTitle(String title) {
         return projectRepository.findByTitle(title).orElse(null);
@@ -102,13 +103,17 @@ public class ProjectService {
         }
 
         log.debug("Assignees set for project: {}", dto.getAssignees().size());
-        log.debug("Assignee id + role: {}", dto.getAssignees().stream().map(x -> "Id: " + x.getId() + "; role: " + x.getRole()).toList());
+        log.debug("Assignee id and role: {}", dto.getAssignees().stream().map(x -> "Id: " + x.getId() + "; role: " + x.getRole()).toList());
+
         Set<Participation> assignees = dto.getAssignees()
                 .stream()
                 .filter(x -> x.getId() != null)
                 .map(x -> {
-                    Collaborator collaborator = collaboratorRepository.findById(x.getId()).orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId()));
-                    if (collaborator.getWorkspace() != project.getWorkspace()) throw new WorkspaceException("Collaborator isn't in the project's workspace");
+                    Collaborator collaborator = collaboratorRepository.findById(x.getId())
+                            .orElseThrow(() -> new CollaboratorNotFoundException("id", x.getId()));
+                    if (!collaboratorWorkspaceService.relationExists(collaborator, project.getWorkspace())) {
+                        throw new WorkspaceException("Collaborator doesn't belong to project's workspace");
+                    }
                     return new Participation(collaborator, project, Role.valueOf(x.getRole().split(",")[0]));
                     }
                 )

@@ -23,4 +23,10 @@ public class CollaboratorWorkspace {
 
     @Column(name = "is_admin")
     private boolean isAdmin;
+
+    public CollaboratorWorkspace(Collaborator collaborator, Workspace workspace, boolean isAdmin) {
+        this.collaborator = collaborator;
+        this.workspace = workspace;
+        this.isAdmin = isAdmin;
+    }
 }

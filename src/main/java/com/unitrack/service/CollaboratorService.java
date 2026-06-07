@@ -33,14 +33,14 @@ public class CollaboratorService {
     private final MailService mailService;
     private final GravatarService gravatarService;
     private final WorkspaceService workspaceService;
-    private final AuthorizationService authorizationService;
 
     public void add(CollaboratorDto dto, String currentUserEmail) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
             throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
 
         Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
-        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        CollaboratorWorkspace cw = new CollaboratorWorkspace(collaborator, workspace, false);
         collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
         collaborator.addAuthProvider(AuthProvider.PASSWORD);
         collaborator = collaboratorRepository.save(collaborator);
@@ -52,9 +52,7 @@ public class CollaboratorService {
         if (collaboratorRepository.existsByEmail(dto.email()))
             throw new RegistrationException(new DuplicateException("A user with email: " + dto.email() + " already exists"));
 
-        Workspace workspace = new Workspace(dto.teamName());
-        Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()), workspace);
-        collaborator.setAdmin(true);
+        Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()));
         collaborator.addAuthProvider(AuthProvider.PASSWORD);
         log.debug("Saving collaborator with email {}", collaborator.getEmail());
         collaborator = collaboratorRepository.save(collaborator);

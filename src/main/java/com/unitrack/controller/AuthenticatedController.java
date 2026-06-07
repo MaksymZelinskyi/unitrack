@@ -34,7 +34,6 @@ public abstract class AuthenticatedController {
             currentUserDto.setLastName(collaborator.getLastName());
             currentUserDto.setEmail(collaborator.getEmail());
             currentUserDto.setAvatarUrl(collaborator.getAvatarUrl());
-            currentUserDto.setStatus(collaborator.isAdmin() ? "Admin" : "User");
         }
         return currentUserDto;
     }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Uni-Track</title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body>
+
+<div th:insert="fragments :: header"></div>
+
+<div class="layout">
+
+    <!-- MAIN SECTION -->
+    <section class="main">
+        <div class="header-row right">
+            <h1 class="section-title centered">My Workspace</h1>
+        </div>
+
+        <div class="project-grid-wrapper">
+
+            <ul class="project-list four-columns">
+                <!-- Left: Add Workspace button -->
+                <a title="New workspace" class="card add-project" th:href="@{/workspaces/new}">
+                    <img src="/icons/plus.png" alt="Create Workspace"/>
+                    <p>Add New Workspace</p>
+                </a>
+                <li th:each="workspace : ${workspaces}">
+                    <a title="Open workspace" th:href="@{/workspaces/{id}(id=${workspace.id})}" class="project-card">
+
+                        <div class="project-content">
+                            <div class="project-header">
+                                <h4 class="project-title" th:text="${workspace.title}">Workspace Name</h4>
+                            </div>
+
+                            <p class="project-desc" th:text="${workspace.description}">Workspace description</p>
+
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- WORKSPACE SEARCH -->
+    <aside class="right-sidebar">
+        <label class="sidebar-title">Global search</label>
+
+        <form th:action="@{/workspaces/search}" method="post">
+            <label for="workspace" class="block mb-1 font-medium text-gray-700">Search a workspace</label>
+            <input name="workspace" id="workspace" type="text" class="input" autocomplete="off"/>
+            <ul id="suggestions">
+                <!-- Workspace suggestions-->
+            </ul>
+        </form>
+        
+    </aside>
+</div>
+
+<div th:insert="fragments :: confirm-modal"></div>
+<script src="/js/confirmation.js"></script>
+</body>
+</html>

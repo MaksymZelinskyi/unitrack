@@ -30,7 +30,7 @@ public class ProjectUnitTest {
         projectRepository = mock(ProjectRepository.class);
         collaboratorRepository = mock(CollaboratorRepository.class);
         clientService = mock(ClientService.class);
-        projectService = new ProjectService(projectRepository, collaboratorRepository, clientService, null, null);
+        projectService = new ProjectService(projectRepository, collaboratorRepository, clientService, null, null, null);
     }
 
     @Test
