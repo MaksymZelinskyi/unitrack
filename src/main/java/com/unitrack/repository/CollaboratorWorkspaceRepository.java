@@ -13,6 +13,8 @@ public interface CollaboratorWorkspaceRepository extends JpaRepository<Collabora
 
     Optional<CollaboratorWorkspace> findByCollaboratorIdAndWorkspaceId(Long collaboratorId, Long workspaceId);
 
+    Optional<CollaboratorWorkspace> findByCollaboratorEmailAndWorkspaceId(String email, Long workspaceId);
+
     boolean existsByCollaboratorAndWorkspace(Collaborator collaborator, Workspace workspace);
 
 }

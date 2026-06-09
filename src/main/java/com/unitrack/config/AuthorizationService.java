@@ -51,13 +51,17 @@ public class AuthorizationService {
     }
 
     public boolean canDeleteComment(String email, Long commentId) {
-        return isAdmin(email) || canUpdateComment(email, commentId);
+        //todo
+        return isAdmin(email, null) || canUpdateComment(email, commentId);
     }
 
-    //todo: take the workspace id
-    public boolean isAdmin(String email) {
-        Collaborator collaborator = getUser(email);
-        return false;
+    public boolean isAdmin(String email, Long workspaceId) {
+        Optional<CollaboratorWorkspace> optional = collaboratorWorkspaceRepository.findByCollaboratorEmailAndWorkspaceId(email, workspaceId);
+        if (optional.isEmpty()) {
+            return false;
+        }
+        CollaboratorWorkspace mapping = optional.get();
+        return mapping.isAdmin();
     }
 
     public boolean isEngagedInTask(String email, Task task) {
