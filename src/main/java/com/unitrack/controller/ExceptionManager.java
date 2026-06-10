@@ -5,6 +5,7 @@ import com.unitrack.exception.AuthenticationException;
 import com.unitrack.exception.EntityNotFoundException;
 import com.unitrack.exception.RegistrationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.security.Principal;
 
+@Slf4j
 @ControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionManager {
@@ -24,11 +26,10 @@ public class ExceptionManager {
     public String handleEntityNotFoundException(EntityNotFoundException e, Model model, Principal principal) {
         String message = "Something went wrong";
 
-        if(authorizationService.isAdmin(principal.getName()))
-            message = e.getMessage();
-
         model.addAttribute("message", message);
         model.addAttribute("errorCode", 404);
+
+        log.error(e.getMessage());
         return "error";
     }
 
@@ -38,6 +39,7 @@ public class ExceptionManager {
         model.addAttribute("message", "An authentication error occurred");
         model.addAttribute("errorCode", 403);
 
+        log.error(e.getMessage());
         return "error";
     }
 
@@ -47,6 +49,7 @@ public class ExceptionManager {
         model.addAttribute("message", "A security error occurred");
         model.addAttribute("errorCode", 403);
 
+        log.error(e.getMessage());
         return "error";
     }
 
@@ -55,11 +58,10 @@ public class ExceptionManager {
     public String handleRuntimeException(RuntimeException e, Model model, Principal principal) {
         String message = "Something went wrong";
 
-        if(principal != null && authorizationService.isAdmin(principal.getName()))
-            message = e.getMessage();
-
         model.addAttribute("message", message);
         model.addAttribute("errorCode", 500);
+
+        log.error(e.getMessage());
         return "error";
     }
 
@@ -70,6 +72,8 @@ public class ExceptionManager {
 
         model.addAttribute("message", message);
         model.addAttribute("errorCode", 401);
+
+        log.error(e.getMessage());
         return "error";
     }
 }
