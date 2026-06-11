@@ -21,3 +21,6 @@ CREATE TABLE IF NOT EXISTS public.collaborator_workspace
 
 ALTER TABLE IF EXISTS public.collaborator_workspace
     OWNER to "unitrack-admin";
+
+ALTER TABLE IF EXISTS public.collaborator
+    DROP COLUMN IF EXISTS is_admin
