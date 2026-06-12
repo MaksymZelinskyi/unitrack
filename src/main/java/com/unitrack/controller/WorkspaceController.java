@@ -31,8 +31,9 @@ public class WorkspaceController {
     private final CollaboratorService collaboratorService;
     private final ProjectService projectService;
 
-    @PostMapping
-    public String newWorkspace(String name, Principal principal) {
+    @PostMapping("/new")
+    public String newWorkspace(WorkspaceDto workspaceDto, Principal principal) {
+        workspaceService.
         return "";
     }
 

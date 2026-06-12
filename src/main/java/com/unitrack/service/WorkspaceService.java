@@ -1,10 +1,13 @@
 package com.unitrack.service;
 
 import com.unitrack.dto.WorkspaceDto;
+import com.unitrack.dto.request.CreateWorkspaceDto;
 import com.unitrack.entity.Collaborator;
+import com.unitrack.entity.CollaboratorWorkspace;
 import com.unitrack.entity.Workspace;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
+import com.unitrack.repository.CollaboratorWorkspaceRepository;
 import com.unitrack.repository.WorkspaceRepository;
 import com.unitrack.util.mapper.WorkspaceMapper;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 @RequiredArgsConstructor
 public class WorkspaceService {
@@ -22,6 +26,7 @@ public class WorkspaceService {
     private final CollaboratorRepository collaboratorRepository;
     private final WorkspaceRepository workspaceRepository;
     private final WorkspaceMapper workspaceMapper;
+    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
 
     public Workspace getUserWorkspace(String userEmail) {
@@ -37,5 +42,10 @@ public class WorkspaceService {
         return new PageImpl<>(dtoList, pageable, dtoList.size());
     }
 
+    public void newWorkspace(CreateWorkspaceDto dto, String userEmail) {
+        Collaborator collaborator = collaboratorRepository.findByEmail(userEmail).orElseThrow(() -> new CollaboratorNotFoundException("email", userEmail));
+        Workspace workspace = new Workspace(dto.name(), dto.description(), collaborator);
 
+        workspaceRepository.save(workspace);
+    }
 }

@@ -31,10 +31,7 @@ public class Workspace {
     private String name;
     private String description;
 
-    @OneToOne(mappedBy = "workspace", cascade = CascadeType.REMOVE)
-    private CollaboratorWorkspace admin;
-
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CollaboratorWorkspace> collaborators = new HashSet<>();
 
     @OneToMany(mappedBy = "workspace", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -48,5 +45,18 @@ public class Workspace {
 
     public Workspace(String name) {
         this.name = name;
+    }
+
+    public Workspace(String name, String description, Collaborator admin) {
+        this.name = name;
+        this.description = description;
+        CollaboratorWorkspace cw = new CollaboratorWorkspace(admin, this);
+        cw.setAdmin(true);
+        this.collaborators.add(cw);
+    }
+
+    public void addCollaborator(Collaborator collaborator) {
+        CollaboratorWorkspace cw = new CollaboratorWorkspace(collaborator, this);
+        this.collaborators.add(cw);
     }
 }

@@ -16,17 +16,16 @@ public class CollaboratorWorkspace {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Collaborator collaborator;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Workspace workspace;
 
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    public CollaboratorWorkspace(Collaborator collaborator, Workspace workspace, boolean isAdmin) {
+    public CollaboratorWorkspace(Collaborator collaborator, Workspace workspace) {
         this.collaborator = collaborator;
         this.workspace = workspace;
-        this.isAdmin = isAdmin;
     }
 }

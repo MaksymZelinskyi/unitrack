@@ -36,7 +36,7 @@ public class Collaborator {
     private Set<Participation> projects = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "assignees")
     private Set<Task> tasks = new HashSet<>();
-    @OneToMany(mappedBy = "collaborator", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "collaborator")
     private Set<CollaboratorWorkspace> workspaces = new HashSet<>();
 
     @CreationTimestamp
