@@ -26,7 +26,6 @@ public class WorkspaceService {
     private final CollaboratorRepository collaboratorRepository;
     private final WorkspaceRepository workspaceRepository;
     private final WorkspaceMapper workspaceMapper;
-    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
 
     public Workspace getUserWorkspace(String userEmail) {
@@ -47,5 +46,9 @@ public class WorkspaceService {
         Workspace workspace = new Workspace(dto.name(), dto.description(), collaborator);
 
         workspaceRepository.save(workspace);
+    }
+
+    public void deleteWorkspace(Long id) {
+        workspaceRepository.deleteById(id);
     }
 }

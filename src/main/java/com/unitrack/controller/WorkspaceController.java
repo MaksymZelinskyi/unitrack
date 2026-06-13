@@ -2,6 +2,7 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.*;
+import com.unitrack.dto.request.CreateWorkspaceDto;
 import com.unitrack.entity.*;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
@@ -32,8 +33,8 @@ public class WorkspaceController {
     private final ProjectService projectService;
 
     @PostMapping("/new")
-    public String newWorkspace(WorkspaceDto workspaceDto, Principal principal) {
-        workspaceService.
+    public String newWorkspace(CreateWorkspaceDto workspaceDto, Principal principal) {
+        workspaceService.newWorkspace(workspaceDto, principal.getName());
         return "";
     }
 
@@ -49,6 +50,7 @@ public class WorkspaceController {
     @DeleteMapping("/{id}")
     @PreAuthorize("@authService.canDeleteWorkspace(#principal.getName(), #id)")
     public String deleteWorkspace(@PathVariable Long id, Principal principal)  {
+        workspaceService.deleteWorkspace(id);
         return "";
     }
 
