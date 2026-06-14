@@ -21,13 +21,13 @@ public class AssignmentController extends AuthenticatedController {
     private final AssignmentService assignmentService;
 
     @PostMapping("/")
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #id)")
     public void addAssignment(@Validated AssignmentDto assignment, Principal principal) {
         assignmentService.add(assignment);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #id)")
     public void deleteAssignment(@Positive @PathVariable Long id, @Positive @RequestParam Long projectId, Principal principal) {
         assignmentService.remove(id);
     }

@@ -40,7 +40,7 @@ public class CollaboratorService {
 
         Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
         Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
-        CollaboratorWorkspace cw = new CollaboratorWorkspace(collaborator, workspace, false);
+        CollaboratorWorkspace cw = new CollaboratorWorkspace(collaborator, workspace);
         collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
         collaborator.addAuthProvider(AuthProvider.PASSWORD);
         collaborator = collaboratorRepository.save(collaborator);

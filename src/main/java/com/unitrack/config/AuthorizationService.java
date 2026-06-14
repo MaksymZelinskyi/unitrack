@@ -24,7 +24,7 @@ public class AuthorizationService {
     private final WorkspaceRepository workspaceRepository;
     private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
-    public boolean canUpdateOrDelete(String email, Long projectId) {
+    public boolean canUpdateOrDeleteProject(String email, Long projectId) {
         log.debug("Authorizing user {} to update or delete project with id {}", email, projectId);
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectNotFoundException("id", projectId));
         Collaborator collaborator = getUser(email);
@@ -39,7 +39,7 @@ public class AuthorizationService {
 
     public boolean canUpdateOrDeleteTask(String email, Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new TaskNotFoundException("id", taskId));
-        return canUpdateOrDelete(email, task.getProject().getId());
+        return canUpdateOrDeleteProject(email, task.getProject().getId());
     }
 
     public boolean canViewTask(String email, Long taskId) {
@@ -95,15 +95,4 @@ public class AuthorizationService {
         return authProviders.contains(AuthProvider.OIDC_GOOGLE) || authProviders.contains(AuthProvider.OIDC_GITHUB);
     }
 
-    public boolean canDeleteWorkspace(String email, Long workspaceId) {
-        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("id", workspaceId));
-        Collaborator collaborator = getUser(email);
-        Optional<CollaboratorWorkspace> optional = collaboratorWorkspaceRepository.findByCollaboratorAndWorkspace(collaborator, workspace);
-        if (optional.isEmpty()) {
-            log.debug("Workspace-Collaborator relation with workspace id {} and collaborator {} not found.", workspaceId, email);
-            throw new WorkspaceException("Workspace-Collaborator relation not found");
-        }
-        CollaboratorWorkspace cw = optional.get();
-        return cw.isAdmin();
-    }
 }

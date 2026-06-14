@@ -42,7 +42,9 @@ public class ClientController extends AuthenticatedController {
         return "client";
     }
 
+
     @GetMapping("/update/{id}")
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
     public String updateClient(@PathVariable Long id, Model model) {
         Client client = clientService.getById(id);
         model.addAttribute("client", new ClientDto(client.getId(), client.getName(), client.getEmail(), client.getPhoneNumber()));
@@ -50,8 +52,8 @@ public class ClientController extends AuthenticatedController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("@authService.isAdmin(#principal.getName())")
-    public String updateProject(@PathVariable Long id, @ModelAttribute("clientForm") @Validated UpdateClientDto clientDto, Principal principal) {
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String updateClient(@PathVariable Long id, @RequestParam Long workspaceId, @ModelAttribute("clientForm") @Validated UpdateClientDto clientDto, Principal principal) {
         clientService.updateById(id, clientDto, principal.getName());
         return "redirect:" + id;
     }
