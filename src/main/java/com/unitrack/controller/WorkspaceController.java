@@ -5,6 +5,7 @@ import com.unitrack.dto.*;
 import com.unitrack.dto.request.CreateWorkspaceDto;
 import com.unitrack.entity.*;
 import com.unitrack.service.CollaboratorService;
+import com.unitrack.service.CollaboratorWorkspaceService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ public class WorkspaceController {
     private final WorkspaceService workspaceService;
     private final CollaboratorService collaboratorService;
     private final ProjectService projectService;
+    private final CollaboratorWorkspaceService collaboratorWorkspaceService;
 
     @PostMapping("/new")
     public String newWorkspace(CreateWorkspaceDto workspaceDto, Principal principal) {
@@ -40,10 +43,13 @@ public class WorkspaceController {
 
     @GetMapping("/{id}")
     public String getWorkspace(Principal principal, Model model, @PathVariable("id") Long workspaceId) {
+        Workspace workspace = workspaceService.getWorkspace(workspaceId);
+        model.addAttribute("workspace", new WorkspaceDto(workspaceId, workspace.getName(), workspace.getDescription()));
+
         if (authorizationService.isAdmin(principal.getName(), workspaceId)) {
-            return getAdminHome(principal, model);
+            return getAdminWorkspace(principal, model, workspace);
         } else {
-            return getUserHome(principal, model);
+            return getUserWorkspace(principal, model, workspace);
         }
     }
 
@@ -61,23 +67,22 @@ public class WorkspaceController {
         return workspaceService.searchWorkspaces(query, Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 
-    public String getUserHome(Principal principal, Model model) {
+    public String getUserWorkspace(Principal principal, Model model, Workspace workspace) {
         Collaborator collaborator = collaboratorService
                 .getByEmail(principal.getName());
-        List<ProjectParticipationDto> projects = collaborator.getProjects()
+        Map<Project, Set<Role>> projectRoleMap = collaboratorWorkspaceService.getProjectsWithRoles(collaborator, workspace);
+
+        List<ProjectParticipationDto> projects = workspace.getProjects()
                 .stream()
-                .sorted(Comparator.comparing(Participation::getProject))
-                .map(x -> {
-                    Project project = x.getProject();
-                    return new ProjectParticipationDto(project.getId(), project.getTitle(), project.getDescription(),
-                            x.getRoles()
+                .sorted()
+                .map(x -> new ProjectParticipationDto(x.getId(), x.getTitle(), x.getDescription(),
+                            projectRoleMap.containsKey(x) ? projectRoleMap.get(x)
                                     .stream()
                                     .map(Role::toString)
-                                    .findFirst().orElse(""),
-                            project.getStatus().name(),
-                            project.getEnd()
-                    );
-                })
+                                    .findFirst().orElse("") : "",
+                            x.getStatus().name(),
+                            x.getEnd()
+                ))
                 .collect(Collectors.toList());
         log.debug("{} projects extracted for collaborator {}", projects.size(), collaborator.getFirstName());
 
@@ -89,17 +94,19 @@ public class WorkspaceController {
                 .map(x -> new CollaboratorTaskDto(x.getId(), x.getTitle(), x.getDescription(), x.getProject().getTitle(), x.getDeadline()))
                 .collect(Collectors.toSet());
         log.debug("{} tasks extracted for collaborator {}", tasks.size(), collaborator.getFirstName());
+
         model.addAttribute("tasks", tasks);
         return "home";
     }
 
-    public String getAdminHome(Principal principal, Model model) {
-        List<Project> projects = projectService.getAllSorted(principal.getName());
+    public String getAdminWorkspace(Principal principal, Model model, Workspace workspace) {
+        Set<Project> projects = workspace.getProjects();
         List<Collaborator> collaborators = collaboratorService.getAll(principal.getName());
         model.addAttribute(
                 "projects",
                 projects
                         .stream()
+                        .sorted()
                         .map(x -> new ProjectDto(x.getId(), x.getTitle(), x.getDescription(),
                                 x.getClient() != null ? new ProjectClientDto(x.getClient().getId(), x.getClient().getName()) : null,
                                 x.getStart(), x.getEnd(), x.getStatus().name()))

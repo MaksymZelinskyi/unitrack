@@ -6,6 +6,7 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.CollaboratorWorkspace;
 import com.unitrack.entity.Workspace;
 import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.WorkspaceNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.CollaboratorWorkspaceRepository;
 import com.unitrack.repository.WorkspaceRepository;
@@ -50,5 +51,9 @@ public class WorkspaceService {
 
     public void deleteWorkspace(Long id) {
         workspaceRepository.deleteById(id);
+    }
+
+    public Workspace getWorkspace(Long id) {
+        return workspaceRepository.findById(id).orElseThrow(() -> new WorkspaceNotFoundException("id", id));
     }
 }
