@@ -41,6 +41,11 @@ public class WorkspaceController {
         return "";
     }
 
+    @GetMapping("/new")
+    public String newWorkspace() {
+        return "new-workspace";
+    }
+
     @GetMapping("/{id}")
     public String getWorkspace(Principal principal, Model model, @PathVariable("id") Long workspaceId) {
         Workspace workspace = workspaceService.getWorkspace(workspaceId);
