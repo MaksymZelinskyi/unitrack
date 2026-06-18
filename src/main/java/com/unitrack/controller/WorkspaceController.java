@@ -25,7 +25,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Controller("/workspaces")
+@Controller
+@RequestMapping("/workspaces")
 @RequiredArgsConstructor
 public class WorkspaceController {
 
