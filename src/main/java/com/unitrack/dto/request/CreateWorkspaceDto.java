@@ -1,4 +1,7 @@
 package com.unitrack.dto.request;
 
-public record CreateWorkspaceDto(String name, String description) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CreateWorkspaceDto(
+        @NotBlank String name, @NotBlank String description) {
 }

@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/workspaces")
 @RequiredArgsConstructor
-public class WorkspaceController {
+public class WorkspaceController extends AuthenticatedController {
 
     private final AuthorizationService authorizationService;
     private final WorkspaceService workspaceService;
@@ -39,11 +39,12 @@ public class WorkspaceController {
     @PostMapping("/new")
     public String newWorkspace(CreateWorkspaceDto workspaceDto, Principal principal) {
         workspaceService.newWorkspace(workspaceDto, principal.getName());
-        return "";
+        return "redirect:/home";
     }
 
     @GetMapping("/new")
-    public String newWorkspace() {
+    public String newWorkspace(Model model) {
+        model.addAttribute("workspaceForm", new CreateWorkspaceDto("", ""));
         return "new-workspace";
     }
 
@@ -63,7 +64,7 @@ public class WorkspaceController {
     @PreAuthorize("@authService.canDeleteWorkspace(#principal.getName(), #id)")
     public String deleteWorkspace(@PathVariable Long id, Principal principal)  {
         workspaceService.deleteWorkspace(id);
-        return "";
+        return "redirect:/";
     }
 
     @GetMapping("/search")
