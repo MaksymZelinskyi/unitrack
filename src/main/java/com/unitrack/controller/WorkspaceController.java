@@ -67,12 +67,6 @@ public class WorkspaceController extends AuthenticatedController {
         return "redirect:/";
     }
 
-    @GetMapping("/search")
-    public Page<WorkspaceDto> searchWorkspace(@RequestParam String query,
-                                              @RequestParam(name = "pagenumber", defaultValue = "0") int pageNumber,
-                                              @RequestParam(name = "pagesize", defaultValue = "1") int pageSize)  {
-        return workspaceService.searchWorkspaces(query, Pageable.ofSize(pageSize).withPage(pageNumber));
-    }
 
     public String getUserWorkspace(Principal principal, Model model, Workspace workspace) {
         Collaborator collaborator = collaboratorService

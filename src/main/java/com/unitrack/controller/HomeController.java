@@ -4,8 +4,10 @@ import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.*;
 import com.unitrack.entity.*;
 import com.unitrack.exception.AuthenticationException;
+import com.unitrack.service.CollaboratorWorkspaceService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.CollaboratorService;
+import com.unitrack.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,8 +30,7 @@ import java.util.stream.Collectors;
 public class HomeController extends AuthenticatedController {
 
     private final AuthorizationService authorizationService;
-    private final CollaboratorService collaboratorService;
-    private final ProjectService projectService;
+    private final CollaboratorWorkspaceService collaboratorWorkspaceService;
 
     @GetMapping
     public String root() {
@@ -37,10 +38,10 @@ public class HomeController extends AuthenticatedController {
     }
 
     @GetMapping("/home")
-    public String home(Model model) {
-
+    public String home(Model model, Principal principal) {
+        List<WorkspaceDto> workspaces = collaboratorWorkspaceService.getWorkspaces(principal.getName());
+        model.addAttribute("workspaces", workspaces);
         return "home";
     }
-
 
 }

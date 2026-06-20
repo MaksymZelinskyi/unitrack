@@ -3,6 +3,7 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
+    <script src="/js/search.js"></script>
 </head>
 <body>
 
@@ -13,7 +14,7 @@
     <!-- MAIN SECTION -->
     <section class="main">
         <div class="header-row right">
-            <h1 class="section-title centered">My Workspace</h1>
+            <h1 class="section-title centered">My Workspaces</h1>
         </div>
 
         <div class="project-grid-wrapper">
@@ -29,7 +30,7 @@
 
                         <div class="project-content">
                             <div class="project-header">
-                                <h4 class="project-title" th:text="${workspace.title}">Workspace Name</h4>
+                                <h4 class="project-title" th:text="${workspace.name}">Workspace Name</h4>
                             </div>
 
                             <p class="project-desc" th:text="${workspace.description}">Workspace description</p>
@@ -45,12 +46,14 @@
     <aside class="right-sidebar">
         <label class="sidebar-title">Global search</label>
 
-        <form th:action="@{/workspaces/search}" method="post">
-            <label for="workspace" class="block mb-1 font-medium text-gray-700">Search a workspace</label>
-            <input name="workspace" id="workspace" type="text" class="input" autocomplete="off"/>
-            <ul id="suggestions">
-                <!-- Workspace suggestions-->
-            </ul>
+        <form th:action="@{/workspaces/search}" method="get">
+            <label for="workspaceSearch" class="block mb-1 font-medium text-gray-700">Search a workspace</label>
+            <input
+                    type="text"
+                    id="workspaceSearch"
+                    name="workspaceSearch"
+            />
+
         </form>
         
     </aside>

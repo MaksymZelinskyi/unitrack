@@ -70,14 +70,20 @@
         <label class="sidebar-title">Skills</label>
 
         <form th:action="@{/profile/skills}" method="post">
-            <label for="skill" class="block mb-1 font-medium text-gray-700">Add a skill</label>
-            <input name="skill" id="skill" type="text" class="input" autocomplete="off"/>
-            <ul id="suggestions">
-                <!-- Skill suggestions-->
-            </ul>
-            <button type="submit" class="submit-btn">
-                Submit
-            </button>
+            <label for="skillQuery" class="block mb-1 font-medium text-gray-700">Add a skill</label>
+            <input
+                    type="text"
+                    id="skillQuery"
+                    name="skill"
+                    class="autocomplete-input"
+                    data-endpoint="/skills/search"
+                    data-suggestions="skillSuggestions"
+                    data-label-field="name"
+                    data-min-length="1"
+            />
+            <div id="skillSuggestions" class="suggestions"></div>
+
+            <button type="submit" class="submit-btn">Submit</button>
         </form>
 
         <!-- List of existing skills -->

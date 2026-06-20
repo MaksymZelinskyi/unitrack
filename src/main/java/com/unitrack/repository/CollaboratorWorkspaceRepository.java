@@ -5,6 +5,7 @@ import com.unitrack.entity.CollaboratorWorkspace;
 import com.unitrack.entity.Workspace;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CollaboratorWorkspaceRepository extends JpaRepository<CollaboratorWorkspace, Long> {
@@ -17,4 +18,5 @@ public interface CollaboratorWorkspaceRepository extends JpaRepository<Collabora
 
     boolean existsByCollaboratorAndWorkspace(Collaborator collaborator, Workspace workspace);
 
+    List<CollaboratorWorkspace> findAllByCollaboratorEmail(String email);
 }
