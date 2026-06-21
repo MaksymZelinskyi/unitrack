@@ -91,12 +91,12 @@ document.addEventListener("DOMContentLoaded", () => {
             debounceMs: parseInt(input.dataset.debounce, 10) || 300,
             renderItem: (workspace) => {
                 const card = document.createElement("a");
-                card.className = "project-card";
+                card.className = "workspace-card";
                 card.href = `/workspaces/${workspace.id}`;
 
                 card.innerHTML = `
-                    <h3>${workspace.name}</h3>
-                    <p>${workspace.description ?? ""}</p>
+                    <h3 class="workspace-title">${workspace.name}</h3>
+                    <p class="workspace-desc">${workspace.description ?? ""}</p>
                    <!-- <span class="meta">${workspace.memberCount ?? 0} members</span> -->
                 `;
                 return card;

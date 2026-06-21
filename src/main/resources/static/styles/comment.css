@@ -27,11 +27,20 @@
     transform: translateY(-2px);
 }
 
-/* Author name */
-.collab-name {
+/* Comment author information */
+.author-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.author-name {
     font-size: 1rem;
     font-weight: 600;
     color: #1f2937;
+    margin: 0;
 }
 
 /* Comment text */

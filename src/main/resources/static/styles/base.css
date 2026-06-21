@@ -157,29 +157,6 @@
     height: 100vh;          /* Full viewport height */
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.form-group input,
-.form-group select {
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  padding: 0.5rem;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-}
-
-.form-group input:focus,
-
-.form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
 .sidebar {
     width: 300px;             /* fixed width */
     height: 85vh;            /* fixed height */
@@ -360,12 +337,6 @@ ul {
   font-size: 1.1rem;
   color: #374151;
   margin-bottom: 0.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
 }
 
 /* Container */

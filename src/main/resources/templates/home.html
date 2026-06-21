@@ -17,23 +17,23 @@
             <h1 class="section-title centered">My Workspaces</h1>
         </div>
 
-        <div class="project-grid-wrapper">
+        <div class="workspace-grid-wrapper">
 
-            <ul class="project-list four-columns">
+            <ul class="workspace-list four-columns">
                 <!-- Left: Add Workspace button -->
-                <a title="New workspace" class="card add-project" th:href="@{/workspaces/new}">
+                <a title="New workspace" class="card add-workspace" th:href="@{/workspaces/new}">
                     <img src="/icons/plus.png" alt="Create Workspace"/>
                     <p>Add New Workspace</p>
                 </a>
                 <li th:each="workspace : ${workspaces}">
-                    <a title="Open workspace" th:href="@{/workspaces/{id}(id=${workspace.id})}" class="project-card">
+                    <a title="Open workspace" th:href="@{/workspaces/{id}(id=${workspace.id})}" class="workspace-card">
 
-                        <div class="project-content">
-                            <div class="project-header">
-                                <h4 class="project-title" th:text="${workspace.name}">Workspace Name</h4>
+                        <div class="workspace-content">
+                            <div class="workspace-header">
+                                <h4 class="workspace-title" th:text="${workspace.name}">Workspace Name</h4>
                             </div>
 
-                            <p class="project-desc" th:text="${workspace.description}">Workspace description</p>
+                            <p class="workspace-desc" th:text="${workspace.description}">Workspace description</p>
 
                         </div>
                     </a>

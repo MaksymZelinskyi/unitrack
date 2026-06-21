@@ -7,7 +7,7 @@
 <body>
 <div th:insert="fragments :: header"></div>
 
-<form class="project-form" method="post" th:action="@{/workspaces/new}" th:object="${workspaceForm}" id="workspaceForm">
+<form class="workspace-form" method="post" th:action="@{/workspaces/new}" th:object="${workspaceForm}" id="workspaceForm">
     
     <div class="form-left">
         <h1 class="page-title">Create an empty workspace</h1>
