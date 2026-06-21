@@ -3,7 +3,7 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
-    <script src="/js/search.js"></script>
+    <script src="/js/workspace-search.js"></script>
 </head>
 <body>
 
@@ -42,21 +42,33 @@
         </div>
     </section>
 
-    <!-- WORKSPACE SEARCH -->
-    <aside class="right-sidebar">
-        <label class="sidebar-title">Global search</label>
+    <div class="page-layout">
+        <!-- Main content area: now doubles as the search results panel -->
+        <main class="main-content">
+            <section id="workspaceResultsPanel" class="workspace-results-panel">
+                <p class="empty-text">Start typing to search workspaces…</p>
+            </section>
+        </main>
 
-        <form th:action="@{/workspaces/search}" method="get">
-            <label for="workspaceSearch" class="block mb-1 font-medium text-gray-700">Search a workspace</label>
-            <input
-                    type="text"
-                    id="workspaceSearch"
-                    name="workspaceSearch"
-            />
+        <!-- Right: Sidebar -->
+        <aside class="right-sidebar">
+            <label class="sidebar-title">Global search</label>
 
-        </form>
-        
-    </aside>
+            <form id="workspaceSearchForm" th:action="@{/workspaces/search}" method="get">
+                <label for="workspaceQuery" class="block mb-1 font-medium text-gray-700">Search a workspace</label>
+                <input
+                        type="text"
+                        id="workspaceQuery"
+                        name="query"
+                        class="live-search-input"
+                        data-endpoint="/workspaces/search"
+                        data-results="workspaceResultsPanel"
+                        data-min-length="2"
+                        data-debounce="300"
+                />
+            </form>
+        </aside>
+    </div>
 </div>
 
 <div th:insert="fragments :: confirm-modal"></div>
