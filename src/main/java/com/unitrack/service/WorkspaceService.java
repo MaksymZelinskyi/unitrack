@@ -36,7 +36,7 @@ public class WorkspaceService {
     }
 
     public Page<WorkspaceDto> searchWorkspaces(String query, Pageable pageable) {
-        Page<Workspace> workspaces = workspaceRepository.findByNameContainingOrDescriptionContaining(query, pageable);
+        Page<Workspace> workspaces = workspaceRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, pageable);
         List<WorkspaceDto> dtoList = workspaces.stream().map(workspaceMapper::workspaceToDto).toList();
 
         return new PageImpl<>(dtoList, pageable, dtoList.size());
