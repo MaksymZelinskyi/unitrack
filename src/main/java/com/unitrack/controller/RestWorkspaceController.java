@@ -20,7 +20,7 @@ public class RestWorkspaceController {
     @GetMapping("/search")
     public Page<WorkspaceDto> searchWorkspace(String query,
                                               @RequestParam(name = "pagenumber", defaultValue = "0") int pageNumber,
-                                              @RequestParam(name = "pagesize", defaultValue = "1") int pageSize)  {
+                                              @RequestParam(name = "pagesize", defaultValue = "5") int pageSize)  {
         return workspaceService.searchWorkspaces(query, Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 

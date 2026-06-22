@@ -48,7 +48,7 @@ function setupLiveSearchPanel({
 
         try {
             const response = await fetch(
-                `${endpoint}?query=${encodeURIComponent(query)}`,
+                `${endpoint}?query=${encodeURIComponent(query)}&pageSize=5`,
                 { signal: currentController.signal }
             );
             if (!response.ok) throw new Error("Network error");
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
             debounceMs: parseInt(input.dataset.debounce, 10) || 300,
             renderItem: (workspace) => {
                 const card = document.createElement("a");
-                card.className = "workspace-card";
+                card.className = "workspace-in-list";
                 card.href = `/workspaces/${workspace.id}`;
 
                 card.innerHTML = `

@@ -19,7 +19,7 @@
 
         <div class="workspace-grid-wrapper">
 
-            <ul class="workspace-list four-columns">
+            <ul class="workspace-list three-columns">
                 <!-- Left: Add Workspace button -->
                 <a title="New workspace" class="card add-workspace" th:href="@{/workspaces/new}">
                     <img src="/icons/plus.png" alt="Create Workspace"/>
@@ -43,15 +43,9 @@
     </section>
 
     <div class="page-layout">
-        <!-- Main content area: now doubles as the search results panel -->
-        <main class="main-content">
-            <section id="workspaceResultsPanel" class="workspace-results-panel">
-                <p class="empty-text">Start typing to search workspaces…</p>
-            </section>
-        </main>
 
         <!-- Right: Sidebar -->
-        <aside class="right-sidebar">
+        <aside class="right-sidebar workspace-search-sidebar">
             <label class="sidebar-title">Global search</label>
 
             <form id="workspaceSearchForm" th:action="@{/workspaces/search}" method="get">
@@ -67,6 +61,10 @@
                         data-debounce="300"
                 />
             </form>
+
+            <section id="workspaceResultsPanel" class="workspace-results-panel">
+                <p class="empty-text">Start typing to search workspaces…</p>
+            </section>
         </aside>
     </div>
 </div>
