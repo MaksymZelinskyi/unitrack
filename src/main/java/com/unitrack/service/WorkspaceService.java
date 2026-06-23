@@ -12,6 +12,9 @@ import com.unitrack.repository.CollaboratorWorkspaceRepository;
 import com.unitrack.repository.WorkspaceRepository;
 import com.unitrack.util.mapper.WorkspaceMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +24,7 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class WorkspaceService {
 
@@ -28,7 +32,7 @@ public class WorkspaceService {
     private final WorkspaceRepository workspaceRepository;
     private final WorkspaceMapper workspaceMapper;
 
-
+    @Deprecated
     public Workspace getUserWorkspace(String userEmail) {
         Collaborator currentUser = collaboratorRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CollaboratorNotFoundException("email", userEmail));
@@ -37,7 +41,12 @@ public class WorkspaceService {
 
     public Page<WorkspaceDto> searchWorkspaces(String query, Pageable pageable) {
         Page<Workspace> workspaces = workspaceRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(query, query, pageable);
-        List<WorkspaceDto> dtoList = workspaces.stream().map(workspaceMapper::workspaceToDto).toList();
+
+        List<WorkspaceDto> dtoList = workspaces.stream().map(x -> {
+            WorkspaceDto dto = workspaceMapper.workspaceToDto(x);
+            dto.setId(x.getId());
+            return dto;
+        }).toList();
 
         return new PageImpl<>(dtoList, pageable, dtoList.size());
     }
