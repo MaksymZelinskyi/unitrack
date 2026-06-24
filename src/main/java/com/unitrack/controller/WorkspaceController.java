@@ -8,6 +8,7 @@ import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.CollaboratorWorkspaceService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.WorkspaceService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -97,7 +98,7 @@ public class WorkspaceController extends AuthenticatedController {
         log.debug("{} tasks extracted for collaborator {}", tasks.size(), collaborator.getFirstName());
 
         model.addAttribute("tasks", tasks);
-        return "home";
+        return "workspace";
     }
 
     public String getAdminWorkspace(Principal principal, Model model, Workspace workspace) {
@@ -128,4 +129,13 @@ public class WorkspaceController extends AuthenticatedController {
                 .toList());
         return "admin-page";
     }
+
+    @PostMapping("/{id}/join")
+    public String join(@PathVariable("id") Long workspaceId, Principal principal, HttpServletRequest request) {
+        collaboratorWorkspaceService.addCollaboratorWorkspace(principal.getName(), workspaceId);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
+
 }

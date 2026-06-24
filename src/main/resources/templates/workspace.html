@@ -13,7 +13,7 @@
 
     <!-- Main Section: Projects -->
     <section class="main">
-        <h1 class="section-title" th:value="${workspace.name}">My Workspace</h1>
+        <h1 class="section-title" th:text="${workspace.name}">My Workspace</h1>
         <div class="project-grid-wrapper">
             <ul class="project-list three-columns">
                 <li th:each="project : ${projects}" class="project-card">
@@ -46,6 +46,7 @@
             </ul>
         </div>
     </section>
+
 
     <!-- Sidebar: Tasks -->
     <aside class="right-sidebar">
@@ -83,7 +84,11 @@
         </ul>
     </aside>
 
-
+    <div class="join-request-fab">
+        <form th:action="@{/workspaces/{id}/join(id=${workspace.id})}" method="post">
+            <button type="submit" class="join-request-btn">Request to join</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>
