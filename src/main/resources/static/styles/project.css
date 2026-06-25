@@ -404,3 +404,11 @@
     font-weight: 700;
     color: #1f2937;
 }
+
+.project-empty-text {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #6b7280;
+    margin-left: 5rem;
+    margin-top: 3rem;
+}

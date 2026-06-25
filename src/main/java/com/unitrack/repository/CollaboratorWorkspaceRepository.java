@@ -19,4 +19,6 @@ public interface CollaboratorWorkspaceRepository extends JpaRepository<Collabora
     boolean existsByCollaboratorAndWorkspace(Collaborator collaborator, Workspace workspace);
 
     List<CollaboratorWorkspace> findAllByCollaboratorEmail(String email);
+
+    void deleteByCollaboratorEmailAndWorkspaceId(String email, Long workspaceId);
 }

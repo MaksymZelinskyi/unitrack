@@ -11,8 +11,6 @@ import com.unitrack.service.WorkspaceService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,8 +68,7 @@ public class WorkspaceController extends AuthenticatedController {
 
 
     public String getUserWorkspace(Principal principal, Model model, Workspace workspace) {
-        Collaborator collaborator = collaboratorService
-                .getByEmail(principal.getName());
+        Collaborator collaborator = collaboratorService.getByEmail(principal.getName());
         Map<Project, Set<Role>> projectRoleMap = collaboratorWorkspaceService.getProjectsWithRoles(collaborator, workspace);
 
         List<ProjectParticipationDto> projects = workspace.getProjects()
@@ -98,6 +95,7 @@ public class WorkspaceController extends AuthenticatedController {
         log.debug("{} tasks extracted for collaborator {}", tasks.size(), collaborator.getFirstName());
 
         model.addAttribute("tasks", tasks);
+        model.addAttribute("isMember", collaboratorWorkspaceService.relationExists(collaborator, workspace));
         return "workspace";
     }
 
@@ -138,4 +136,11 @@ public class WorkspaceController extends AuthenticatedController {
         return "redirect:" + (referer != null ? referer : "/");
     }
 
+    @PostMapping("/{id}/quit")
+    public String quit(@PathVariable("id") Long workspaceId, Principal principal, HttpServletRequest request) {
+        collaboratorWorkspaceService.deleteCollaboratorWorkspace(principal.getName(), workspaceId);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
 }

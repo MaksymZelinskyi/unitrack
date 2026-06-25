@@ -11,6 +11,7 @@ import com.unitrack.repository.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -63,5 +64,11 @@ public class CollaboratorWorkspaceService {
         } else {
             log.warn("Collaborator {} is already member of workspace {}", email, workspaceId);
         }
+    }
+
+    @Transactional
+    public void deleteCollaboratorWorkspace(String email, Long workspaceId) {
+        collaboratorWorkspaceRepository.deleteByCollaboratorEmailAndWorkspaceId(email, workspaceId);
+        log.debug("Deleted collaborator-workspace relation. Workspace {}; Collaborator {}", workspaceId, email);
     }
 }

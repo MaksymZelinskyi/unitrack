@@ -15,6 +15,10 @@
     <section class="main">
         <h1 class="section-title" th:text="${workspace.name}">My Workspace</h1>
         <div class="project-grid-wrapper">
+            <p th:if="${projects == null || #lists.isEmpty(projects)}" class="project-empty-text">
+                No projects yet
+            </p>
+
             <ul class="project-list three-columns">
                 <li th:each="project : ${projects}" class="project-card">
                     <a title="Open project" th:href="@{/projects/{id}(id=${project.id})}">
@@ -49,7 +53,7 @@
 
 
     <!-- Sidebar: Tasks -->
-    <aside class="right-sidebar">
+    <aside class="right-sidebar" th:if="${isMember}">
         <h1 class="task-section-title">Current Tasks</h1>
 
         <ul class="task-list-vertical">
@@ -84,9 +88,15 @@
         </ul>
     </aside>
 
-    <div class="join-request-fab">
+    <div class="join-request-fab" th:unless="${isMember}">
         <form th:action="@{/workspaces/{id}/join(id=${workspace.id})}" method="post">
             <button type="submit" class="join-request-btn">Request to join</button>
+        </form>
+    </div>
+
+    <div class="quit-request-fab" th:if="${isMember}">
+        <form th:action="@{/workspaces/{id}/quit(id=${workspace.id})}" method="post">
+            <button type="submit" class="quit-btn">Quit</button>
         </form>
     </div>
 </div>
