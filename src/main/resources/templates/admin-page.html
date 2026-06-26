@@ -17,7 +17,7 @@
                 View Stats
             </a>
 
-            <h1 class="section-title centered" th:value="${workspace.name}">My workspace</h1>
+            <h1 class="section-title centered" th:text="${workspace.name}">My workspace</h1>
         </div>
 
         <div class="project-grid-wrapper">
@@ -101,6 +101,30 @@
         </ul>
 
     </aside>
+
+</div>
+
+<div class="project-actions">
+
+    <form method="post" th:action="@{/workspaces/{id}(id=${workspace.id})}">
+        <input name="_method" type="hidden" value="delete">
+
+        <button class="btn btn-danger confirm-delete" type="submit">
+            <img alt="Delete"
+                 class="icon"
+                 src="/icons/trash.png"/>
+            <span>Delete Workspace</span>
+        </button>
+    </form>
+
+    <form method="get" th:action="@{/workspaces/update/{id}(id=${workspace.id})}">
+        <button class="btn btn-primary" type="submit">
+            <img alt="Modify"
+                 class="icon"
+                 src="/icons/pencil.png"/>
+            <span>Modify</span>
+        </button>
+    </form>
 </div>
 
 <div th:insert="fragments :: confirm-modal"></div>

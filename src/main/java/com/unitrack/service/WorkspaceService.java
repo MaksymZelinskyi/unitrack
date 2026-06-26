@@ -2,6 +2,7 @@ package com.unitrack.service;
 
 import com.unitrack.dto.WorkspaceDto;
 import com.unitrack.dto.request.CreateWorkspaceDto;
+import com.unitrack.dto.request.UpdateWorkspaceDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.CollaboratorWorkspace;
 import com.unitrack.entity.Workspace;
@@ -52,7 +53,8 @@ public class WorkspaceService {
     }
 
     public void newWorkspace(CreateWorkspaceDto dto, String userEmail) {
-        Collaborator collaborator = collaboratorRepository.findByEmail(userEmail).orElseThrow(() -> new CollaboratorNotFoundException("email", userEmail));
+        Collaborator collaborator = collaboratorRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CollaboratorNotFoundException("email", userEmail));
         Workspace workspace = new Workspace(dto.name(), dto.description(), collaborator);
 
         workspaceRepository.save(workspace);
@@ -64,5 +66,13 @@ public class WorkspaceService {
 
     public Workspace getWorkspace(Long id) {
         return workspaceRepository.findById(id).orElseThrow(() -> new WorkspaceNotFoundException("id", id));
+    }
+
+    public void updateWorkspace(Long id, UpdateWorkspaceDto dto) {
+        Workspace workspace = workspaceRepository.findById(id).orElseThrow(() -> new WorkspaceNotFoundException("id", id));
+        workspace.setName(dto.getName());
+        workspace.setDescription(dto.getDescription());
+
+        workspaceRepository.save(workspace);
     }
 }

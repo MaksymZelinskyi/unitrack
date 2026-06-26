@@ -3,6 +3,7 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
+    <script src="/js/confirmation.js"></script>
 </head>
 
 <body>
@@ -13,7 +14,7 @@
 
     <!-- Main Section: Projects -->
     <section class="main">
-        <h1 class="section-title" th:text="${workspace.name}">My Workspace</h1>
+        <h1 class="section-title" th:text="${isAdmin}"></h1>
         <div class="project-grid-wrapper">
             <p th:if="${projects == null || #lists.isEmpty(projects)}" class="project-empty-text">
                 No projects yet
@@ -50,6 +51,10 @@
             </ul>
         </div>
     </section>
+
+    <div>
+        <p th:text="${isAdmin}"></p>
+    </div>
 
 
     <!-- Sidebar: Tasks -->
@@ -99,6 +104,9 @@
             <button type="submit" class="quit-btn">Quit</button>
         </form>
     </div>
+
 </div>
+
+<div th:insert="fragments :: confirm-modal"></div>
 </body>
 </html>

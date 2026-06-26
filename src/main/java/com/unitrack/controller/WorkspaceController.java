@@ -3,6 +3,7 @@ package com.unitrack.controller;
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.*;
 import com.unitrack.dto.request.CreateWorkspaceDto;
+import com.unitrack.dto.request.UpdateWorkspaceDto;
 import com.unitrack.entity.*;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.CollaboratorWorkspaceService;
@@ -60,14 +61,31 @@ public class WorkspaceController extends AuthenticatedController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("@authService.canDeleteWorkspace(#principal.getName(), #id)")
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #id)")
     public String deleteWorkspace(@PathVariable Long id, Principal principal)  {
         workspaceService.deleteWorkspace(id);
         return "redirect:/";
     }
 
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable("id") Long workspaceId, Model model) {
+        Workspace workspace = workspaceService.getWorkspace(workspaceId);
+        UpdateWorkspaceDto updateWorkspaceDto
+                = new UpdateWorkspaceDto(workspace.getId(), workspace.getName(), workspace.getDescription());
+        model.addAttribute("workspace", updateWorkspaceDto);
 
-    public String getUserWorkspace(Principal principal, Model model, Workspace workspace) {
+        return "update-workspace";
+    }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String update(@PathVariable("id") Long workspaceId, Principal principal, UpdateWorkspaceDto body) {
+        workspaceService.updateWorkspace(workspaceId, body);
+
+        return "redirect:/workspaces/" + workspaceId;
+    }
+
+    private String getUserWorkspace(Principal principal, Model model, Workspace workspace) {
         Collaborator collaborator = collaboratorService.getByEmail(principal.getName());
         Map<Project, Set<Role>> projectRoleMap = collaboratorWorkspaceService.getProjectsWithRoles(collaborator, workspace);
 
@@ -99,7 +117,7 @@ public class WorkspaceController extends AuthenticatedController {
         return "workspace";
     }
 
-    public String getAdminWorkspace(Principal principal, Model model, Workspace workspace) {
+    private String getAdminWorkspace(Principal principal, Model model, Workspace workspace) {
         Set<Project> projects = workspace.getProjects();
         List<Collaborator> collaborators = collaboratorService.getAll(principal.getName());
         model.addAttribute(
@@ -143,4 +161,5 @@ public class WorkspaceController extends AuthenticatedController {
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }
+
 }
