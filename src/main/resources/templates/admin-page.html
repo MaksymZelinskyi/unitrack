@@ -24,7 +24,7 @@
 
             <ul class="project-list four-columns">
                 <!-- Left: Add Project button -->
-                <a title="New project" class="card add-project" th:href="@{/projects/new}">
+                <a title="New project" class="card add-project" th:href="@{/projects/new?workspaceId={workspaceId}(workspaceId=${workspace.id})}">
                     <img src="/icons/plus.png" alt="Add Project"/>
                     <p>Add New Project</p>
                 </a>
@@ -65,41 +65,30 @@
     </section>
 
 
-    <!-- ASIDE SECTION -->
-    <aside class="sidebar">
+    <!-- Right: Sidebar -->
+    <aside class="right-sidebar workspace-search-sidebar">
+        <label class="sidebar-title">Global search</label>
 
-        <h1 class="section-title">My Team</h1>
+        <div class="search-field-wrapper">
+            <input
+                    type="text"
+                    id="collaboratorQuery"
+                    name="collaborator"
+                    class="autocomplete-input"
+                    data-endpoint="/collaborators/search"
+                    data-suggestions="collaboratorSuggestions"
+                    data-min-length="1"
+                    data-debounce="300"
+                    autocomplete="off"
+            />
+            <ul id="collaboratorSuggestions" class="suggestions-dropdown"></ul>
 
-        <!-- Add member -->
-        <a title="New collaborator" class="collab-card add-collab" th:href="@{/collaborators/new}">
-            <img src="/icons/plus.png" alt="Add Member"/>
-            <p>Add New Member</p>
-        </a>
-
-        <ul class="vertical-list">
-            <li th:each="collaborator : ${collaborators}" class="collab-card">
-
-                <a title="View profile" th:href="@{/collaborators/{id}(id=${collaborator.id})}">
-                    <div class="collab-info">
-                        <img class="avatar" th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"/>
-                        <h4 class="collab-name" th:text="${collaborator.name}"></h4>
-                    </div>
-
-                </a>
-
-                <!-- delete button -->
-                <div class="collab-delete" th:if="${collaborator.id != currentUser.id}">
-                    <form method="post" th:action="@{/collaborators/{id}(id=${collaborator.id})}">
-                        <input type="hidden" name="_method" value="delete"/>
-                        <button type="submit" class="confirm-delete">
-                            <img src="/icons/trash.png" alt="Delete"/>
-                        </button>
-                    </form>
-                </div>
-
-            </li>
-        </ul>
-
+            <!-- holds the selected collaborator's id for form submission -->
+            <input type="hidden" id="collaboratorId" name="collaboratorId" />
+        </div>
+        <section id="collabResultsPanel" class="workspace-results-panel">
+            <p class="empty-text">Start typing to search collaborators…</p>
+        </section>
     </aside>
 
 </div>
