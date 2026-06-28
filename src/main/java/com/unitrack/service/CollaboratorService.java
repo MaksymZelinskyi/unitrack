@@ -1,11 +1,10 @@
 package com.unitrack.service;
 
-import com.unitrack.config.AuthorizationService;
+import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.dto.request.RegisterDto;
 import com.unitrack.dto.request.UpdateProfileDto;
 import com.unitrack.entity.*;
-import com.unitrack.exception.AuthorizationException;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.DuplicateException;
 import com.unitrack.exception.RegistrationException;
@@ -15,11 +14,13 @@ import com.unitrack.repository.SkillRepository;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -134,5 +135,18 @@ public class CollaboratorService {
         log.debug("Number of collaborators fetched: {}", participations != null ? participations.size() : 0);
         assert participations != null;
         return participations.stream().map(Participation::getCollaborator).toList();
+    }
+
+    public Page<CollaboratorInListDto> searchCollab(String query, Pageable pageable) {
+        Page<Collaborator> collaborators
+                = collaboratorRepository.findByFirstNameContainingIgnoreCase(
+                        query, pageable
+        );
+
+        List<CollaboratorInListDto> dtoList = collaborators.stream().map(x ->
+             new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl())
+        ).toList();
+
+        return new PageImpl<>(dtoList, pageable, dtoList.size());
     }
 }

@@ -90,4 +90,5 @@ public class CollaboratorController extends AuthenticatedController {
         model.addAttribute("skills", skills);
         return "collaborator";
     }
+
 }

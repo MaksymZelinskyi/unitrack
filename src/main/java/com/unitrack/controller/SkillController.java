@@ -26,8 +26,4 @@ public class SkillController extends AuthenticatedController {
         skillService.delete(id);
     }
 
-    @GetMapping("/search")
-    public List<Skill> searchSkills(String searchQuery) {
-        return skillService.searchSkill(searchQuery);
-    }
 }

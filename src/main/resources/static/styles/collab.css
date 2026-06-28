@@ -121,3 +121,30 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+.suggestions-dropdown li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    cursor: pointer;
+}
+
+.suggestions-dropdown li:hover {
+    background: #f4f4f5;
+}
+
+.suggestion-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: #e2e2e2;
+}
+
+.suggestion-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

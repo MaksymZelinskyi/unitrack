@@ -3,6 +3,8 @@ package com.unitrack.repository;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Skill;
 import com.unitrack.entity.Workspace;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -19,4 +21,8 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Long
 
     @Query("select cw.collaborator from CollaboratorWorkspace cw where cw.workspace = :workspace")
     List<Collaborator> findAllByWorkspace(Workspace workspace);
+
+    Page<Collaborator> findByFirstNameContainingIgnoreCase(
+            String firstname, Pageable pageable
+    );
 }

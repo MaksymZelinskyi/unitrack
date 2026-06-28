@@ -3,6 +3,8 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
+    <script th:src="@{/js/autocomplete.js}"></script>
+    <script th:src="@{/js/pages/collaborator-search.js}"></script>
 </head>
 <body>
 
@@ -66,8 +68,8 @@
 
 
     <!-- Right: Sidebar -->
-    <aside class="right-sidebar workspace-search-sidebar">
-        <label class="sidebar-title">Global search</label>
+    <aside class="right-sidebar workspace-search-sidebar">  
+        <label class="sidebar-title">Collaborator search</label>
 
         <div class="search-field-wrapper">
             <input
@@ -75,20 +77,20 @@
                     id="collaboratorQuery"
                     name="collaborator"
                     class="autocomplete-input"
-                    data-endpoint="/collaborators/search"
+                    data-endpoint="/search/collaborator"
                     data-suggestions="collaboratorSuggestions"
                     data-min-length="1"
                     data-debounce="300"
                     autocomplete="off"
             />
-            <ul id="collaboratorSuggestions" class="suggestions-dropdown"></ul>
+            <ul id="collaboratorSuggestions" class="suggestions-dropdown">
+                <p class="empty-text">Start typing to search collaborators…</p>
+            </ul>
 
             <!-- holds the selected collaborator's id for form submission -->
             <input type="hidden" id="collaboratorId" name="collaboratorId" />
         </div>
-        <section id="collabResultsPanel" class="workspace-results-panel">
-            <p class="empty-text">Start typing to search collaborators…</p>
-        </section>
+
     </aside>
 
 </div>
