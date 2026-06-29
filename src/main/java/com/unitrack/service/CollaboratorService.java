@@ -139,7 +139,7 @@ public class CollaboratorService {
 
     public Page<CollaboratorInListDto> searchCollab(String query, Pageable pageable) {
         Page<Collaborator> collaborators
-                = collaboratorRepository.findByFirstNameContainingIgnoreCase(
+                = collaboratorRepository.findByFirstNameAndLastNameContainingIgnoreCase(
                         query, pageable
         );
 
