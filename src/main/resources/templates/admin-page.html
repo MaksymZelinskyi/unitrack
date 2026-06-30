@@ -3,7 +3,7 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
-    <script th:src="@{/js/autocomplete.js}"></script>
+    <script th:src="@{/js/live-search-panel.js}"></script>
     <script th:src="@{/js/pages/collaborator-search.js}"></script>
 </head>
 <body>
@@ -76,14 +76,14 @@
                     type="text"
                     id="collaboratorQuery"
                     name="collaborator"
-                    class="autocomplete-input"
+                    class="live-search-input"
                     data-endpoint="/search/collaborator"
-                    data-suggestions="collaboratorSuggestions"
+                    data-results="collaboratorResultsPanel"
                     data-min-length="1"
                     data-debounce="300"
                     autocomplete="off"
             />
-            <ul id="collaboratorSuggestions" class="suggestions-dropdown">
+            <ul id="collaboratorResultsPanel" class="suggestions-dropdown">
                 <p class="empty-text">Start typing to search collaborators…</p>
             </ul>
 

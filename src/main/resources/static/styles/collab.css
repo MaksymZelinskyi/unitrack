@@ -134,17 +134,26 @@
     background: #f4f4f5;
 }
 
-.suggestion-avatar {
-    width: 28px;
-    height: 28px;
+.collaborator-card {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem; /* tighter than workspace-card's 1rem */
+}
+
+.collaborator-card .suggestion-avatar {
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    background: #e2e2e2;
 }
 
-.suggestion-label {
+.collaborator-card h3 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
 }
