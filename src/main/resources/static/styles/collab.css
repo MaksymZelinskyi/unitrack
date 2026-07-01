@@ -157,3 +157,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+#collaboratorResultsPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#collaboratorResultsPanel .empty-text, #workspaceResultsPanel .empty-text {
+    margin-top: 1.5rem;
+}
