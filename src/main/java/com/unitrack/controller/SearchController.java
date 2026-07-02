@@ -1,6 +1,7 @@
 package com.unitrack.controller;
 
 import com.unitrack.dto.CollaboratorInListDto;
+import com.unitrack.dto.SkillDto;
 import com.unitrack.dto.WorkspaceDto;
 import com.unitrack.entity.Skill;
 import com.unitrack.service.CollaboratorService;
@@ -36,12 +37,17 @@ public class SearchController {
     public Page<CollaboratorInListDto> searchCollaborator(String query,
                                                        @RequestParam(name = "pagenumber", defaultValue = "0") int pageNumber,
                                                        @RequestParam(name = "pagesize", defaultValue = "5") int pageSize) {
-        return collaboratorService.searchCollab(query, Pageable.ofSize(pageSize).withPage(pageNumber));
+        return collaboratorService.searchCollab(
+                query,
+                Pageable.ofSize(pageSize).withPage(pageNumber)
+        );
     }
 
 
     @GetMapping("/skill")
-    public List<Skill> searchSkills(String searchQuery) {
-        return skillService.searchSkill(searchQuery);
+    public Page<SkillDto> searchSkills(String searchQuery,
+                                       @RequestParam(name = "pagenumber", defaultValue = "0") int pageNumber,
+                                       @RequestParam(name = "pagesize", defaultValue = "8") int pageSize) {
+        return skillService.searchSkill(searchQuery, Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 }

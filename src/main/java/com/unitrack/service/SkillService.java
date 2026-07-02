@@ -1,6 +1,7 @@
 package com.unitrack.service;
 
 import com.unitrack.config.AuthorizationService;
+import com.unitrack.dto.SkillDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Skill;
 import com.unitrack.exception.AuthenticationException;
@@ -10,6 +11,8 @@ import com.unitrack.exception.SkillNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -76,7 +79,7 @@ public class SkillService {
         }
     }
 
-    public List<Skill> searchSkill(String searchQuery) {
-        return skillRepository.findByNameLike("%"+searchQuery+"%");
+    public Page<SkillDto> searchSkill(String searchQuery, Pageable pageable) {
+        return skillRepository.findByNameLike(searchQuery, pageable);
     }
 }
