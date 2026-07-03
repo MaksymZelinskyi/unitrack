@@ -10,6 +10,7 @@ import com.unitrack.service.WorkspaceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,7 +46,7 @@ public class SearchController {
 
 
     @GetMapping("/skill")
-    public Page<SkillDto> searchSkills(String searchQuery,
+    public Page<SkillDto> searchSkills(@RequestParam(name = "query") String searchQuery,
                                        @RequestParam(name = "pagenumber", defaultValue = "0") int pageNumber,
                                        @RequestParam(name = "pagesize", defaultValue = "8") int pageSize) {
         return skillService.searchSkill(searchQuery, Pageable.ofSize(pageSize).withPage(pageNumber));
