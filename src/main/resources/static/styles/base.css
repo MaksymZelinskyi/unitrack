@@ -498,31 +498,3 @@ small { font-size: .85rem; color: #666;}
 .card-top {
 
 }
-
-.results-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.live-search-input {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #e2e2e2;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    color: #1a1a1a;
-    background: #fff;
-    outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.live-search-input:focus {
-    border-color: #a0a0a0;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
-}
-
-.live-search-input::placeholder {
-    color: #aaa;
-}

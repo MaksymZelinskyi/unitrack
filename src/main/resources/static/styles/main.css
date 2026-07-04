@@ -13,6 +13,7 @@
 @import "assignment.css";
 @import "input.css";
 @import "oidc.css";
+@import "search.css";
 
 .error-page {
     min-height: 100vh;
