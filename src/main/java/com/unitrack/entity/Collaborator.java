@@ -38,6 +38,8 @@ public class Collaborator {
     private Set<Task> tasks = new HashSet<>();
     @OneToMany(mappedBy = "collaborator")
     private Set<CollaboratorWorkspace> workspaces = new HashSet<>();
+    @OneToMany(mappedBy = "collaborator")
+    private Set<Invitation> invitations = new HashSet<>();
 
     @CreationTimestamp
     private LocalDate joinDate;
