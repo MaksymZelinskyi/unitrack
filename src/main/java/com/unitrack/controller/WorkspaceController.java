@@ -5,10 +5,7 @@ import com.unitrack.dto.*;
 import com.unitrack.dto.request.CreateWorkspaceDto;
 import com.unitrack.dto.request.UpdateWorkspaceDto;
 import com.unitrack.entity.*;
-import com.unitrack.service.CollaboratorService;
-import com.unitrack.service.CollaboratorWorkspaceService;
-import com.unitrack.service.ProjectService;
-import com.unitrack.service.WorkspaceService;
+import com.unitrack.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +32,7 @@ public class WorkspaceController extends AuthenticatedController {
     private final CollaboratorService collaboratorService;
     private final ProjectService projectService;
     private final CollaboratorWorkspaceService collaboratorWorkspaceService;
+    private final InvitationService invitationService;
 
     @PostMapping("/new")
     public String newWorkspace(CreateWorkspaceDto workspaceDto, Principal principal) {
@@ -162,4 +160,12 @@ public class WorkspaceController extends AuthenticatedController {
         return "redirect:" + (referer != null ? referer : "/");
     }
 
+    @PostMapping("/{id}/invite")
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String invite(@PathVariable("id") Long workspaceId, @RequestParam("collaboratorId") Long collaboratorId, Principal principal, HttpServletRequest request) {
+        invitationService.inviteCollaborator(collaboratorId, workspaceId, principal.getName());
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
 }
