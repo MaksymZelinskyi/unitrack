@@ -51,9 +51,10 @@ function inviteCollaborator(collaborator, buttonEl) {
     buttonEl.disabled = true;
     buttonEl.textContent = "Inviting…";
 
-    fetch(`/collaborators/${collaborator.id}/invite`, {
+    fetch(`/workspaces/${workspace.id}/invite`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
+        parameters: {"collaboratorId": collaborator.id}
     })
         .then((res) => {
             if (!res.ok) throw new Error("Invite failed");

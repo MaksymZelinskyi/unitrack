@@ -4,11 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "invitation")
+@Data
 public class Invitation {
 
     @Id
@@ -24,4 +26,10 @@ public class Invitation {
     private Collaborator invitedBy;
 
     private LocalDateTime expiresAt;
+
+    public Invitation(Collaborator collaborator, Workspace workspace, Collaborator invitedBy) {
+        this.collaborator = collaborator;
+        this.workspace = workspace;
+        this.invitedBy = invitedBy;
+    }
 }
