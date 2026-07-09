@@ -4,6 +4,7 @@ import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Invitation;
 import com.unitrack.entity.Workspace;
 import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.EntityAlreadyExistsException;
 import com.unitrack.exception.WorkspaceNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.CollaboratorWorkspaceRepository;
@@ -20,8 +21,8 @@ public class InvitationService {
 
     private final CollaboratorRepository collaboratorRepository;
     private final WorkspaceRepository workspaceRepository;
-    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
     private final InvitationRepository invitationRepository;
+    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
     public void inviteCollaborator(Long workspaceId, Long collaboratorId, String currentUserEmail) {
         Collaborator collaborator = collaboratorRepository.findById(collaboratorId)
@@ -31,11 +32,16 @@ public class InvitationService {
         Collaborator invitedBy = collaboratorRepository.findByEmail(currentUserEmail)
                 .orElseThrow(() -> new CollaboratorNotFoundException("id", collaboratorId));
 
-        workspace.addCollaborator(collaborator);
+        if (collaboratorWorkspaceRepository.existsByCollaboratorAndWorkspace(collaborator, workspace)) {
+            throw new EntityAlreadyExistsException("Collaborator-Workspace relation already exists!");
+        }
+
+        if (invitationRepository.existsByWorkspaceAndCollaborator(workspace, collaborator)) {
+            invitationRepository.deleteByWorkspaceAndCollaborator(workspace, collaborator);
+        }
         Invitation invitation = new Invitation(collaborator, workspace, invitedBy);
         invitation.setExpiresAt(LocalDateTime.now().plusMonths(1));
 
-        //add relation already exists check
         invitationRepository.save(invitation);
     }
 }
