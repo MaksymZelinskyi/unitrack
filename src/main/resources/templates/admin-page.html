@@ -118,6 +118,9 @@
     </form>
 </div>
 
+<script th:inline="javascript">
+    const workspace = [[${workspace}]]
+</script>
 <div th:insert="fragments :: confirm-modal"></div>
 <script src="/js/confirmation.js"></script>
 </body>
