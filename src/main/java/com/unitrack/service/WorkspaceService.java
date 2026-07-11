@@ -4,7 +4,6 @@ import com.unitrack.dto.WorkspaceDto;
 import com.unitrack.dto.request.CreateWorkspaceDto;
 import com.unitrack.dto.request.UpdateWorkspaceDto;
 import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.CollaboratorWorkspace;
 import com.unitrack.entity.Workspace;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.WorkspaceNotFoundException;
@@ -14,8 +13,6 @@ import com.unitrack.repository.WorkspaceRepository;
 import com.unitrack.util.mapper.WorkspaceMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +29,7 @@ public class WorkspaceService {
     private final CollaboratorRepository collaboratorRepository;
     private final WorkspaceRepository workspaceRepository;
     private final WorkspaceMapper workspaceMapper;
+    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
     @Deprecated
     public Workspace getUserWorkspace(String userEmail) {
@@ -46,6 +44,7 @@ public class WorkspaceService {
         List<WorkspaceDto> dtoList = workspaces.stream().map(x -> {
             WorkspaceDto dto = workspaceMapper.workspaceToDto(x);
             dto.setId(x.getId());
+            dto.setCollaboratorCount(collaboratorWorkspaceRepository.countByWorkspace(x));
             return dto;
         }).toList();
 
