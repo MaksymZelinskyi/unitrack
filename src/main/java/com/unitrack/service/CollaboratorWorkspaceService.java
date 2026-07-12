@@ -48,7 +48,7 @@ public class CollaboratorWorkspaceService {
 
         return collaboratorWorkspaceRepository.findAllByCollaboratorEmail(email)
                 .stream().map(CollaboratorWorkspace::getWorkspace)
-                .map(x -> new WorkspaceDto(x.getId(), x.getName(), x.getDescription()))
+                .map(x -> new WorkspaceDto(x.getId(), x.getName(), x.getDescription(), collaboratorWorkspaceRepository.countByWorkspace(x)))
                 .toList();
     }
 

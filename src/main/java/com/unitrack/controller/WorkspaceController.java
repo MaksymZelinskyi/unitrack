@@ -5,6 +5,7 @@ import com.unitrack.dto.*;
 import com.unitrack.dto.request.CreateWorkspaceDto;
 import com.unitrack.dto.request.UpdateWorkspaceDto;
 import com.unitrack.entity.*;
+import com.unitrack.repository.CollaboratorWorkspaceRepository;
 import com.unitrack.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class WorkspaceController extends AuthenticatedController {
     private final AuthorizationService authorizationService;
     private final WorkspaceService workspaceService;
     private final CollaboratorService collaboratorService;
-    private final ProjectService projectService;
+    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
     private final CollaboratorWorkspaceService collaboratorWorkspaceService;
     private final InvitationService invitationService;
 
@@ -49,7 +50,11 @@ public class WorkspaceController extends AuthenticatedController {
     @GetMapping("/{id}")
     public String getWorkspace(Principal principal, Model model, @PathVariable("id") Long workspaceId) {
         Workspace workspace = workspaceService.getWorkspace(workspaceId);
-        model.addAttribute("workspace", new WorkspaceDto(workspaceId, workspace.getName(), workspace.getDescription()));
+        model.addAttribute(
+                "workspace", new WorkspaceDto(
+                        workspaceId, workspace.getName(), workspace.getDescription(), collaboratorWorkspaceRepository.countByWorkspace(workspace)
+                )
+        );
 
         if (authorizationService.isAdmin(principal.getName(), workspaceId)) {
             return getAdminWorkspace(principal, model, workspace);
