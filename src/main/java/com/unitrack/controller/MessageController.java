@@ -2,7 +2,8 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorInListDto;
-import com.unitrack.dto.MessageDto;
+import com.unitrack.dto.ReceivedMessageDto;
+import com.unitrack.dto.SentMessageDto;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.service.MessageService;
 import com.unitrack.util.mapper.MessageMapper;
@@ -26,12 +27,26 @@ public class MessageController  {
 
     @GetMapping("/received")
     public String getReceivedMessages(Principal principal, Model model) {
-        List<MessageDto> messages = messageService.getMessagesByRecipient(authorizationService.getUser(principal.getName()))
+        List<ReceivedMessageDto> messages = messageService.getMessagesByRecipient(authorizationService.getUser(principal.getName()))
                 .stream()
                 .map(x -> {
-                    MessageDto dto = messageMapper.messageToDto(x);
+                    ReceivedMessageDto dto = messageMapper.messageToReceivedMessageDto(x);
                     Collaborator s = x.getSender();
                     dto.setSender(new CollaboratorInListDto(s.getId(), s.getFullName(), s.getAvatarUrl()));
+                    return dto;
+                }).toList();
+        model.addAttribute("messages", messages);
+        return "messages";
+    }
+
+    @GetMapping("/sent")
+    public String getSentMessages(Principal principal, Model model) {
+        List<SentMessageDto> messages = messageService.getMessagesBySender(authorizationService.getUser(principal.getName()))
+                .stream()
+                .map(x -> {
+                    SentMessageDto dto = messageMapper.messageToSentMessageDto(x);
+                    Collaborator s = x.getRecipient();
+                    dto.setRecipient(new CollaboratorInListDto(s.getId(), s.getFullName(), s.getAvatarUrl()));
                     return dto;
                 }).toList();
         model.addAttribute("messages", messages);
