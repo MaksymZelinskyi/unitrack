@@ -2,6 +2,7 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.exception.AuthenticationException;
+import com.unitrack.exception.EntityAlreadyExistsException;
 import com.unitrack.exception.EntityNotFoundException;
 import com.unitrack.exception.RegistrationException;
 import lombok.RequiredArgsConstructor;
@@ -65,13 +66,14 @@ public class ExceptionManager {
         return "error";
     }
 
-    @ExceptionHandler(RegistrationException.class)
+
+    @ExceptionHandler(EntityAlreadyExistsException.class)
     @ResponseStatus(code = HttpStatus.CONFLICT)
-    public String handleRegistrationException(RegistrationException e, Model model, Principal principal) {
+    public String handleAlreadyExistsException(EntityAlreadyExistsException e, Model model, Principal principal) {
         String message = e.getMessage() != null ? e.getMessage() : "An error occurred";
 
         model.addAttribute("message", message);
-        model.addAttribute("errorCode", 401);
+        model.addAttribute("errorCode", 409);
 
         log.error(e.getMessage());
         return "error";
