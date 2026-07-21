@@ -5,10 +5,7 @@ import com.unitrack.dto.request.ProjectDto;
 import com.unitrack.dto.request.UpdateProjectDto;
 import com.unitrack.entity.*;
 import com.unitrack.exception.*;
-import com.unitrack.repository.ClientRepository;
-import com.unitrack.repository.CollaboratorRepository;
-import com.unitrack.repository.ParticipationRepository;
-import com.unitrack.repository.ProjectRepository;
+import com.unitrack.repository.*;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -34,6 +31,7 @@ public class ProjectService {
     private final ParticipationRepository participationRepository;
     private final WorkspaceService workspaceService;
     private final CollaboratorWorkspaceService collaboratorWorkspaceService;
+    private final WorkspaceRepository workspaceRepository;
 
     public Project getByTitle(String title) {
         return projectRepository.findByTitle(title).orElse(null);
@@ -47,11 +45,12 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public void add(ProjectDto dto, String userEmail) {
+    public void add(ProjectDto dto, Long workspaceId, String userEmail) {
         if (dto.getStart().isAfter(dto.getDeadline()))
             throw new ValidationException("Project start time must precede the deadline");
 
-        Workspace workspace = workspaceService.getUserWorkspace(userEmail);
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new WorkspaceNotFoundException("id", workspaceId));
 
         //create project entity with dto data
         Project project = new Project(dto.getTitle(), dto.getDescription(), dto.getStart(), dto.getDeadline(), workspace);

@@ -92,7 +92,7 @@ public class ProjectController extends AuthenticatedController {
 
     @GetMapping("/new")
     @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
-    public String newProject(@RequestParam Long workspaceId, Model model, Principal principal) {
+    public String newProject(@RequestParam("workspaceId") Long workspaceId, Model model, Principal principal) {
         ProjectDto projectForm = new ProjectDto();
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
@@ -100,6 +100,8 @@ public class ProjectController extends AuthenticatedController {
                 .sorted(Comparator.comparing(CollaboratorInListDto::getName))
                 .toList();
         List<ProjectClientDto> clients = clientService.getAll().stream().map(x -> new ProjectClientDto(x.getId(), x.getName())).toList();
+
+        model.addAttribute("workspaceId", workspaceId);
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
@@ -109,9 +111,9 @@ public class ProjectController extends AuthenticatedController {
 
     @PostMapping("/new")
     @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
-    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto, Principal principal) {
+    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto, @RequestParam("workspaceId") Long workspaceId, Principal principal) {
         log.debug("The assignees of project being created: {}", dto.getAssignees());
-        projectService.add(dto, principal.getName());
+        projectService.add(dto, workspaceId, principal.getName());
         return "redirect:/home";
     }
 

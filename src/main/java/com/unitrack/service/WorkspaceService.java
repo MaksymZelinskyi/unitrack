@@ -31,7 +31,7 @@ public class WorkspaceService {
     private final WorkspaceMapper workspaceMapper;
     private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public Workspace getUserWorkspace(String userEmail) {
         Collaborator currentUser = collaboratorRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CollaboratorNotFoundException("email", userEmail));
