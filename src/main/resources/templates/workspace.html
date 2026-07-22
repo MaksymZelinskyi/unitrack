@@ -40,7 +40,7 @@
                                     <span class="meta-value" th:text="${#temporals.format(project.deadline, 'dd MMM yyyy')}"></span>
                                 </div>
 
-                                <div class="project-meta">
+                                <div th:if="${isMember}" class="project-meta">
                                     <span class="meta-label">Role:</span>
                                     <span class="meta-value" th:text="${project.role}">Developer</span>
                                 </div>

@@ -52,7 +52,7 @@ public class WorkspaceController extends AuthenticatedController {
         Workspace workspace = workspaceService.getWorkspace(workspaceId);
         model.addAttribute(
                 "workspace", new WorkspaceDto(
-                        workspaceId, workspace.getName(), workspace.getDescription(), collaboratorWorkspaceRepository.countByWorkspace(workspace)
+                        workspace.getId(), workspace.getName(), workspace.getDescription(), collaboratorWorkspaceRepository.countByWorkspace(workspace)
                 )
         );
 

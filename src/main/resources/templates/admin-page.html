@@ -56,7 +56,8 @@
 
                                 <div class="project-meta">
                                     <span class="meta-label">Client:</span>
-                                    <span class="meta-value" th:text="${project.client.name}">Client</span>
+                                    <span class="meta-value" th:unless="project.client != null" th:text="${project.client.name}">Client</span>
+                                    <span class="meta-value" th:if="project.client != null">None</span>
                                 </div>
                             </div>
                         </div>
