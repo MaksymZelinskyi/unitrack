@@ -26,7 +26,8 @@
 
                 <section class="detail-block">
                     <label>Client:</label>
-                    <span th:text="${project.client.name}"></span>
+                    <span th:unless="${project.client == null}" th:text="${project.client.name}"></span>
+                    <span th:if="${project.client == null}">None</span>
                 </section>
 
                 <section class="detail-block">
