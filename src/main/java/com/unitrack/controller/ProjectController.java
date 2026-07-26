@@ -139,7 +139,7 @@ public class ProjectController extends AuthenticatedController {
                         }
                 ).toList();
         model.addAttribute("project",
-                new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),
+                new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient() != null ? project.getClient().getName() : "",
                         "", project.getStart(), project.getEnd(), assignees));
         List<ProjectClientDto> clients = clientService.getAll()
                 .stream()
