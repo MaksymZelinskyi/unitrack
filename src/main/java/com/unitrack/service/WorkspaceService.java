@@ -44,7 +44,7 @@ public class WorkspaceService {
         List<WorkspaceDto> dtoList = workspaces.stream().map(x -> {
             WorkspaceDto dto = workspaceMapper.workspaceToDto(x);
             dto.setId(x.getId());
-            dto.setCollaboratorCount(collaboratorWorkspaceRepository.countByWorkspace(x));
+            dto.setMemberCount(collaboratorWorkspaceRepository.countByWorkspace(x));
             return dto;
         }).toList();
 
