@@ -3,6 +3,7 @@ package com.unitrack.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Table(name = "collaborator_workspace")
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"collaborator", "workspace"})
 public class CollaboratorWorkspace {
 
     @Id
