@@ -42,17 +42,17 @@
         </aside>
     </div>
 
-    <!-- Projects Section -->
-    <section class="projects-section">
-        <h2 class="projects-title">Workspaces</h2>
+    <!-- Workspace Section -->
+    <section class="workspace-section">
+        <h2 class="workspaces-title">Workspaces</h2>
 
-        <ul class="project-list three-columns">
-            <li th:each="workspace : ${workspaces}" class="project-card" style="width: 90vw; height: 70vh;">
+        <ul class="workspace-list three-columns">
+            <li th:each="workspace : ${workspaces}" class="workspace-card" style="width: 25vw; height: 35vh;">
                 <a th:href="@{/workspaces/{id}(id=${workspace.workspaceId})}">
-                    <div class="project-header">
-                        <h3 class="project-name" th:text="${workspace.workspaceName}">Workspace Name</h3>
+                    <div class="workspace-header">
+                        <h3 class="workspace-title" th:text="${workspace.workspaceName}">Workspace Name</h3>
                     </div>
-                    <h3 class="project-desc" th:text="${workspace.workspaceDescription}">Workspace Description</h3>
+                    <h3 class="workspace-desc" th:text="${workspace.workspaceDescription}">Workspace Description</h3>
                 </a>
             </li>
         </ul>
