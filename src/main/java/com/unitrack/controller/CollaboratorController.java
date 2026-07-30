@@ -1,20 +1,16 @@
 package com.unitrack.controller;
 
-import com.unitrack.dto.CollaboratorProjectDto;
-import com.unitrack.dto.DisplayCollaboratorDto;
-import com.unitrack.dto.ProjectInListDto;
-import com.unitrack.dto.TaskInListDto;
+import com.unitrack.dto.*;
 import com.unitrack.dto.request.CollaboratorDto;
-import com.unitrack.entity.Collaborator;
-import com.unitrack.entity.Participation;
-import com.unitrack.entity.Skill;
-import com.unitrack.entity.Task;
+import com.unitrack.entity.*;
 import com.unitrack.service.CollaboratorService;
 import com.unitrack.service.ProjectService;
 import com.unitrack.service.SkillService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CollaboratorController extends AuthenticatedController {
 
+    private static final Logger log = LoggerFactory.getLogger(CollaboratorController.class);
     private final CollaboratorService collaboratorService;
     private final SkillService skillService;
     private final ProjectService projectService;
@@ -69,25 +66,23 @@ public class CollaboratorController extends AuthenticatedController {
 
         DisplayCollaboratorDto dto = new DisplayCollaboratorDto(collaborator.getFullName(), collaborator.getEmail(), collaborator.getAvatarUrl());
 
-        List<CollaboratorProjectDto> projects = collaborator.getProjects()
+        List<CollaboratorWorkspaceDto> workspaces = collaborator.getWorkspaces()
                 .stream()
-                .sorted(Comparator.comparing(Participation::getProject))
-                .map(p -> new CollaboratorProjectDto(
-                        p.getProject().getId(), p.getProject().getTitle(),
-                        String.valueOf(p.getRoles().stream().findFirst().orElse(null)),
-                        p.getProject().getTasks()
-                                .stream()
-                                .sorted()
-                                .map(x -> new TaskInListDto(
-                                        x.getId(), x.getTitle(), x.getDescription(), x.getDeadline(), x.getStatus() == Task.Status.DONE)
-                                )
-                                .toList()))
+                .map(cw -> {
+                    Workspace workspace = cw.getWorkspace();
+                    return new CollaboratorWorkspaceDto(
+                            workspace.getId(), workspace.getName(), workspace.getDescription()
+                    );
+                })
                 .toList();
         List<String> skills = collaborator.getSkills().stream().map(Skill::getName).toList();
 
-        model.addAttribute("projects", projects);
+        log.debug("Workspaces fetched for collaborator {}: {}", collaborator.getFullName(), workspaces.size());
+
+        model.addAttribute("workspaces", workspaces);
         model.addAttribute("collaborator", dto);
         model.addAttribute("skills", skills);
         return "collaborator";
     }
+
 }

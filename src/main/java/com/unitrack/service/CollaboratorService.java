@@ -1,11 +1,10 @@
 package com.unitrack.service;
 
-import com.unitrack.config.AuthorizationService;
+import com.unitrack.dto.CollaboratorInListDto;
 import com.unitrack.dto.request.CollaboratorDto;
 import com.unitrack.dto.request.RegisterDto;
 import com.unitrack.dto.request.UpdateProfileDto;
 import com.unitrack.entity.*;
-import com.unitrack.exception.AuthorizationException;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.DuplicateException;
 import com.unitrack.exception.RegistrationException;
@@ -15,11 +14,13 @@ import com.unitrack.repository.SkillRepository;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -33,14 +34,14 @@ public class CollaboratorService {
     private final MailService mailService;
     private final GravatarService gravatarService;
     private final WorkspaceService workspaceService;
-    private final AuthorizationService authorizationService;
 
     public void add(CollaboratorDto dto, String currentUserEmail) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
             throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
 
         Workspace workspace = workspaceService.getUserWorkspace(currentUserEmail);
-        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()), workspace);
+        Collaborator collaborator = new Collaborator(dto.getFirstName(), dto.getLastName(), dto.getEmail(), passwordEncoder.encode(dto.getPassword()));
+        CollaboratorWorkspace cw = new CollaboratorWorkspace(collaborator, workspace);
         collaborator.setAvatarUrl(gravatarService.getGravatarUrl(dto.getEmail(), 128));
         collaborator.addAuthProvider(AuthProvider.PASSWORD);
         collaborator = collaboratorRepository.save(collaborator);
@@ -52,9 +53,7 @@ public class CollaboratorService {
         if (collaboratorRepository.existsByEmail(dto.email()))
             throw new RegistrationException(new DuplicateException("A user with email: " + dto.email() + " already exists"));
 
-        Workspace workspace = new Workspace(dto.teamName());
-        Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()), workspace);
-        collaborator.setAdmin(true);
+        Collaborator collaborator = new Collaborator(dto.firstName(), dto.lastName(), dto.email(), passwordEncoder.encode(dto.password()));
         collaborator.addAuthProvider(AuthProvider.PASSWORD);
         log.debug("Saving collaborator with email {}", collaborator.getEmail());
         collaborator = collaboratorRepository.save(collaborator);
@@ -136,5 +135,18 @@ public class CollaboratorService {
         log.debug("Number of collaborators fetched: {}", participations != null ? participations.size() : 0);
         assert participations != null;
         return participations.stream().map(Participation::getCollaborator).toList();
+    }
+
+    public Page<CollaboratorInListDto> searchCollab(String query, Pageable pageable) {
+        Page<Collaborator> collaborators
+                = collaboratorRepository.findByFirstNameAndLastNameContainingIgnoreCase(
+                        query, pageable
+        );
+
+        List<CollaboratorInListDto> dtoList = collaborators.stream().map(x ->
+             new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl())
+        ).toList();
+
+        return new PageImpl<>(dtoList, pageable, dtoList.size());
     }
 }

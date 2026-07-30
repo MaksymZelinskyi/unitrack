@@ -2,6 +2,7 @@
 @import "collab.css";
 @import "login.css";
 @import "project.css";
+@import "workspace.css";
 @import "task.css";
 @import "comment.css";
 @import "header.css";
@@ -12,6 +13,7 @@
 @import "assignment.css";
 @import "input.css";
 @import "oidc.css";
+@import "search.css";
 
 .error-page {
     min-height: 100vh;

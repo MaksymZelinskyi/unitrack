@@ -42,15 +42,14 @@ public class  CollaboratorOidcUserService
 
         if (optional.isEmpty()) {
             collaborator = new Collaborator(user.getGivenName(), user.getFamilyName(), user.getEmail());
-            collaborator.setAdmin(true);
         } else {
             collaborator = optional.get();
         }
         collaborator.addAuthProvider(AuthProvider.OIDC_GOOGLE);
 
-        if (collaborator.isAdmin()) {
+       /* if (collaborator.isAdmin()) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        }
+        }*/
 
         collaboratorRepository.save(collaborator);
         log.debug("OIDC authentication succeeded for user {}", user.getEmail());
@@ -74,7 +73,6 @@ public class  CollaboratorOidcUserService
         user.setFirstName(firstLastName[0]);
         user.setLastName(firstLastName[1]);
         user.setAvatarUrl(picture);
-        user.setAdmin(true);
 
         return collaboratorRepository.save(user);
     }

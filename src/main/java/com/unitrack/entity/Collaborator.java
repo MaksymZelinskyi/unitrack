@@ -36,14 +36,15 @@ public class Collaborator {
     private Set<Participation> projects = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "assignees")
     private Set<Task> tasks = new HashSet<>();
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Workspace workspace;
+    @OneToMany(mappedBy = "collaborator")
+    private Set<CollaboratorWorkspace> workspaces = new HashSet<>();
+    @OneToMany(mappedBy = "collaborator")
+    private Set<Invitation> invitations = new HashSet<>();
 
     @CreationTimestamp
     private LocalDate joinDate;
-    private boolean isAdmin;
   
-    @Enumerated(EnumType.STRING)
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<AuthProvider> authProviders = new HashSet<>();
 
     public Collaborator(String firstName, String lastName, String email, String password) {
@@ -59,9 +60,9 @@ public class Collaborator {
         this.email = email;
     }
 
-    public Collaborator(String firstName, String lastName, String email, String password, Workspace workspace) {
+    public Collaborator(String firstName, String lastName, String email, String password, CollaboratorWorkspace workspace) {
         this(firstName, lastName, email, password);
-        this.workspace = workspace;
+        this.workspaces.add(workspace);
     }
 
     public void addProject(Project project, Role role) {

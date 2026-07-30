@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Workspace</title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body>
+<div th:insert="fragments :: header"></div>
+
+<form class="workspace-form" method="post" th:action="@{/workspaces/update/{id}(id=${workspace.id})}" th:object="${workspace}" id="workspaceForm">
+
+    <input type="hidden" name="_method" value="put"/>
+
+     <div class="form-left">
+        <h1 class="page-title">Update workspace</h1>
+
+        <label>Workspace name</label>
+        <input class="input" th:field="*{name}" type="text" required maxlength="255"/>
+
+        <label>Workspace description</label>
+        <input class="input" th:field="*{description}" type="text" maxlength="255"/>
+
+
+        <button class="submit-btn" type="submit">Submit</button>
+    </div>
+
+</form>
+
+</body>
+</html>

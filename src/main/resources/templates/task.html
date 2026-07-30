@@ -39,11 +39,11 @@
 
                 <form method="post" th:action="@{/tasks/{id}(id=${task.id})}" th:if="${canDelete}">
                     <input type="hidden" name="_method" value="delete"/>
-                    <button class="btn danger confirm-delete">Delete</button>
+                    <button class="btn danger delete-btn">Delete</button>
                 </form>
 
                 <form method="get" th:action="@{/tasks/update/{id}(id=${task.id})}" th:if="${canUpdate}">
-                    <button class="btn primary">Modify</button>
+                    <button class="btn primary edit-btn">Modify</button>
                 </form>
                 <form method="post" th:action="@{/tasks/complete/{id}(id=${task.id})}" th:if="${engaged}" class="right">
                     <label class="toggle-label" for="completed">
@@ -102,7 +102,7 @@
           th:action="@{/tasks/comments?taskId={taskId}(taskId=${task.id})}"
           th:object="${commentForm}">
         <input class="input comment-input" th:field="*{text}" placeholder="Write a comment…" maxlength="255" required>
-        <button class="btn submit" type="submit">Post</button>
+        <button class="btn submit-btn" type="submit">Post</button>
     </form>
 
     <ul class="comment-list">

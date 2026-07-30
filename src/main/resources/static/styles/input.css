@@ -7,6 +7,7 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
+  transition: border-color 0.2s ease;
 }
 
 .role-select {
@@ -25,11 +26,40 @@
   border-color: #16a34a;
 }
 
+/* Form group container */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-group input,
+.form-group select {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #16a34a;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
 /* Right section */
 .form-left,
 .form-right {
   flex: 1;
 }
+
 .form-right {
   margin-left: 30px;
   text-align: center;

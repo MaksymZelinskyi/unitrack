@@ -21,7 +21,7 @@
 
 /* Buttons */
 .submit-btn {
-  background-color: #2563eb;
+  background-color: #00cc00;
   color: white;
   border: none;
   padding: 0.7rem 1rem;
@@ -155,29 +155,6 @@
     justify-content: center; /* Centers horizontally */
     align-items: center;    /* Centers vertically */
     height: 100vh;          /* Full viewport height */
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.form-group input,
-.form-group select {
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  padding: 0.5rem;
-  font-size: 1rem;
-  transition: border-color 0.2s ease;
-}
-
-.form-group input:focus,
-
-.form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
 }
 
 .sidebar {
@@ -360,12 +337,6 @@ ul {
   font-size: 1.1rem;
   color: #374151;
   margin-bottom: 0.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
 }
 
 /* Container */

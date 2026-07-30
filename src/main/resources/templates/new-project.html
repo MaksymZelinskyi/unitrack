@@ -12,6 +12,8 @@
     <div class="form-left">
         <h1 class="page-title">New Project</h1>
 
+        <input type="hidden" name="workspaceId" th:value="${workspaceId}"/>
+
         <label>Project title</label>
         <input class="input" placeholder="Title" th:field="*{title}" type="text" required maxlength="255"/>
 
