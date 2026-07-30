@@ -26,7 +26,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
 
         String username = resolveUsername(authentication);
-        authenticationService.defineWorkspace(username);
         log.debug("Password authentication succeeded for user {}", username);
         response.sendRedirect("/home");
     }
@@ -46,4 +45,3 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         throw new IllegalStateException("Illegal principal type: " + (principal == null ? "None" : principal.getClass()));
     }
 }
-

@@ -3,43 +3,39 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
+    <script th:src="@{/js/live-search-panel.js}"></script>
+    <script th:src="@{/js/search-pages/workspace-search.js}"></script>
 </head>
-
 <body>
 
 <div th:insert="fragments :: header"></div>
 
 <div class="layout">
 
-    <!-- Main Section: Projects -->
+    <!-- MAIN SECTION -->
     <section class="main">
-        <h1 class="section-title">My Projects</h1>
-        <div class="project-grid-wrapper">
-            <ul class="project-list three-columns">
-                <li th:each="project : ${projects}" class="project-card">
-                    <a title="Open project" th:href="@{/projects/{id}(id=${project.id})}">
-                        <div class="project-status"
-                             th:classappend="|${project.status.toLowerCase()}|"></div>
+        <div class="header-row right">
+            <h1 class="section-title centered">My Workspaces</h1>
+        </div>
 
-                        <div class="project-content">
-                            <div class="project-header">
-                                <h4 class="project-title" th:text="${project.title}">Project Name</h4>
-                                <span class="project-status-label" th:text="${project.status}">ACTIVE</span>
+        <div class="workspace-grid-wrapper">
+
+            <ul class="workspace-list three-columns">
+                <!-- Left: Add Workspace button -->
+                <a title="New workspace" class="card add-workspace" th:href="@{/workspaces/new}">
+                    <img src="/icons/plus.png" alt="Create Workspace"/>
+                    <p>Add New Workspace</p>
+                </a>
+                <li th:each="workspace : ${workspaces}">
+                    <a title="Open workspace" th:href="@{/workspaces/{id}(id=${workspace.id})}" class="workspace-card">
+
+                        <div class="workspace-content">
+                            <div class="workspace-header">
+                                <h4 class="workspace-title" th:text="${workspace.name}">Workspace Name</h4>
                             </div>
 
-                            <p class="project-desc" th:text="${project.description}">Project description</p>
+                            <p class="workspace-desc" th:text="${workspace.description}">Workspace description</p>
 
-                            <div class="bottom">
-                                <div class="project-meta">
-                                    <span class="meta-label">Deadline:</span>
-                                    <span class="meta-value" th:text="${#temporals.format(project.deadline, 'dd MMM yyyy')}"></span>
-                                </div>
-
-                                <div class="project-meta">
-                                    <span class="meta-label">Role:</span>
-                                    <span class="meta-value" th:text="${project.role}">Developer</span>
-                                </div>
-                            </div>
                         </div>
                     </a>
                 </li>
@@ -47,43 +43,33 @@
         </div>
     </section>
 
-    <!-- Sidebar: Tasks -->
-    <aside class="right-sidebar">
-        <h1 class="task-section-title">Current Tasks</h1>
+    <!-- Right: Sidebar -->
+    <aside class="right-sidebar workspace-search-sidebar">
+        <label class="sidebar-title">Workspace search</label>
 
-        <ul class="task-list-vertical">
+        <div id="workspaceSearchForm" class="search-field-wrapper">
+            <input
+                    type="text"
+                    id="workspaceQuery"
+                    name="query"
+                    class="live-search-input"
+                    data-endpoint="/search/workspace"
+                    data-results="workspaceResultsPanel"
+                    data-min-length="2"
+                    data-debounce="300"
+                    autocomplete="off"
+            />
+        </div>
 
-            <li th:if="${tasks == null || #lists.isEmpty(tasks)}" class="task-empty-text">
-                No tasks yet
-            </li>
+            <section id="workspaceResultsPanel" class="suggestions-dropdown">
+                <p class="empty-text">Start typing to search workspaces…</p>
+            </section>
 
-            <li th:each="task : ${tasks}" class="task-card-mini">
-                <a title="Open task" th:href="@{/tasks/{id}(id=${task.id})}">
-                    <h4 class="task-name" th:text="${task.title}">Task Title</h4>
-
-                    <div class="task-info-block">
-                        <h5 class="task-info-label">Project</h5>
-                        <p class="task-info-text" th:text="${task.project}">Project Name</p>
-                    </div>
-
-                    <div class="task-info-block">
-                        <h5 class="task-info-label">Description</h5>
-                        <p class="task-info-text" th:text="${task.description}">Task description</p>
-                    </div>
-
-                    <div class="task-info-block">
-                        <h5 class="task-info-label">Deadline</h5>
-                        <span class="task-info-date"
-                              th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">
-                          01/01/2025
-                        </span>
-                    </div>
-                </a>
-            </li>
-        </ul>
     </aside>
 
-
 </div>
+
+<div th:insert="fragments :: confirm-modal"></div>
+<script src="/js/confirmation.js"></script>
 </body>
 </html>

@@ -83,7 +83,7 @@ public class ProjectController extends AuthenticatedController {
             Role role = x.getRoles().stream().findFirst().orElse(null);
             return new AssigneeDto(c.getId(), c.getFullName(), role != null ? role.name() : "", c.getAvatarUrl());
         }).toList());
-        boolean canUpdateDelete = authService.canUpdateOrDelete(principal.getName(), id);
+        boolean canUpdateDelete = authService.canUpdateOrDeleteProject(principal.getName(), id);
         model.addAttribute("canUpdate", canUpdateDelete);
         model.addAttribute("canDelete", canUpdateDelete);
 
@@ -91,7 +91,8 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @GetMapping("/new")
-    public String newProject(Model model, Principal principal) {
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String newProject(@RequestParam("workspaceId") Long workspaceId, Model model, Principal principal) {
         ProjectDto projectForm = new ProjectDto();
         List<CollaboratorInListDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
@@ -99,6 +100,8 @@ public class ProjectController extends AuthenticatedController {
                 .sorted(Comparator.comparing(CollaboratorInListDto::getName))
                 .toList();
         List<ProjectClientDto> clients = clientService.getAll().stream().map(x -> new ProjectClientDto(x.getId(), x.getName())).toList();
+
+        model.addAttribute("workspaceId", workspaceId);
         model.addAttribute("collaborators", collaborators);
         model.addAttribute("assignees", new ArrayList<>());
         model.addAttribute("projectForm", projectForm);
@@ -107,14 +110,15 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @PostMapping("/new")
-    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto, Principal principal) {
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String newProject(@Validated @ModelAttribute("projectForm") ProjectDto dto, @RequestParam("workspaceId") Long workspaceId, Principal principal) {
         log.debug("The assignees of project being created: {}", dto.getAssignees());
-        projectService.add(dto, principal.getName());
+        projectService.add(dto, workspaceId, principal.getName());
         return "redirect:/home";
     }
 
     @GetMapping("/update/{id}")
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
 
@@ -135,7 +139,7 @@ public class ProjectController extends AuthenticatedController {
                         }
                 ).toList();
         model.addAttribute("project",
-                new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient().getName(),
+                new UpdateProjectDto(project.getId(), project.getTitle(), project.getDescription(), project.getClient() != null ? project.getClient().getName() : "",
                         "", project.getStart(), project.getEnd(), assignees));
         List<ProjectClientDto> clients = clientService.getAll()
                 .stream()
@@ -149,22 +153,22 @@ public class ProjectController extends AuthenticatedController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, @ModelAttribute("projectForm") @Validated UpdateProjectDto project, Principal principal) {
         projectService.update(id, project, principal.getName());
         return "redirect:" + id;
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #id)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #id)")
     public String deleteProject(@PathVariable Long id, Principal principal) {
         projectService.delete(id);
         return "redirect:/home";
     }
 
     @PostMapping("/complete/{id}")
-    @PreAuthorize("@authService.isAdmin(#principal.getName())")
-    public String markAsCompleted(@PathVariable Long id, @RequestParam(required = false) boolean completed, Principal principal, HttpServletRequest req) {
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String markAsCompleted(@PathVariable Long id, @RequestParam Long workspaceId, @RequestParam(required = false) boolean completed, Principal principal, HttpServletRequest req) {
         log.debug("mark as completed invoked");
         projectService.markAsCompleted(id, completed);
         return "redirect:" + req.getHeader("Referer");

@@ -3,6 +3,8 @@
 <head>
     <title>Uni-Track</title>
     <th:block th:insert="fragments :: head"></th:block>
+    <script th:src="@{/js/live-search-panel.js}"></script>
+    <script th:src="@{/js/search-pages/collaborator-search.js}"></script>
 </head>
 <body>
 
@@ -17,14 +19,14 @@
                 View Stats
             </a>
 
-            <h1 class="section-title centered">My Projects</h1>
+            <h1 class="section-title centered" th:text="${workspace.name}">My workspace</h1>
         </div>
 
         <div class="project-grid-wrapper">
 
             <ul class="project-list four-columns">
                 <!-- Left: Add Project button -->
-                <a title="New project" class="card add-project" th:href="@{/projects/new}">
+                <a title="New project" class="card add-project" th:href="@{/projects/new?workspaceId={workspaceId}(workspaceId=${workspace.id})}">
                     <img src="/icons/plus.png" alt="Add Project"/>
                     <p>Add New Project</p>
                 </a>
@@ -54,7 +56,8 @@
 
                                 <div class="project-meta">
                                     <span class="meta-label">Client:</span>
-                                    <span class="meta-value" th:text="${project.client.name}">Client</span>
+                                    <span class="meta-value" th:unless="project.client != null" th:text="${project.client.name}">Client</span>
+                                    <span class="meta-value" th:if="project.client != null">None</span>
                                 </div>
                             </div>
                         </div>
@@ -65,44 +68,60 @@
     </section>
 
 
-    <!-- ASIDE SECTION -->
-    <aside class="sidebar">
+    <!-- Right: Sidebar -->
+    <aside class="right-sidebar workspace-search-sidebar">
+        <label class="sidebar-title">Collaborator search</label>
 
-        <h1 class="section-title">My Team</h1>
+        <div class="search-field-wrapper">
+            <input
+                    type="text"
+                    id="collaboratorQuery"
+                    name="collaborator"
+                    class="live-search-input"
+                    data-endpoint="/search/collaborator"
+                    data-results="collaboratorResultsPanel"
+                    data-min-length="1"
+                    data-debounce="300"
+                    autocomplete="off"
+            />
+            <ul id="collaboratorResultsPanel" class="suggestions-dropdown">
+                <p class="empty-text">Start typing to search collaborators…</p>
+            </ul>
 
-        <!-- Add member -->
-        <a title="New collaborator" class="collab-card add-collab" th:href="@{/collaborators/new}">
-            <img src="/icons/plus.png" alt="Add Member"/>
-            <p>Add New Member</p>
-        </a>
-
-        <ul class="vertical-list">
-            <li th:each="collaborator : ${collaborators}" class="collab-card">
-
-                <a title="View profile" th:href="@{/collaborators/{id}(id=${collaborator.id})}">
-                    <div class="collab-info">
-                        <img class="avatar" th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"/>
-                        <h4 class="collab-name" th:text="${collaborator.name}"></h4>
-                    </div>
-
-                </a>
-
-                <!-- delete button -->
-                <div class="collab-delete" th:if="${collaborator.id != currentUser.id}">
-                    <form method="post" th:action="@{/collaborators/{id}(id=${collaborator.id})}">
-                        <input type="hidden" name="_method" value="delete"/>
-                        <button type="submit" class="confirm-delete">
-                            <img src="/icons/trash.png" alt="Delete"/>
-                        </button>
-                    </form>
-                </div>
-
-            </li>
-        </ul>
+            <!-- holds the selected collaborator's id for form submission -->
+            <input type="hidden" id="collaboratorId" name="collaboratorId" />
+        </div>
 
     </aside>
+
 </div>
 
+<div class="project-actions">
+
+    <form method="post" th:action="@{/workspaces/{id}(id=${workspace.id})}">
+        <input name="_method" type="hidden" value="delete">
+
+        <button class="btn btn-danger confirm-delete" type="submit">
+            <img alt="Delete"
+                 class="icon"
+                 src="/icons/trash.png"/>
+            <span>Delete Workspace</span>
+        </button>
+    </form>
+
+    <form method="get" th:action="@{/workspaces/update/{id}(id=${workspace.id})}">
+        <button class="btn btn-primary" type="submit">
+            <img alt="Modify"
+                 class="icon"
+                 src="/icons/pencil.png"/>
+            <span>Modify</span>
+        </button>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    const workspace = [[${workspace}]]
+</script>
 <div th:insert="fragments :: confirm-modal"></div>
 <script src="/js/confirmation.js"></script>
 </body>

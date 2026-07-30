@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Workspace</title>
+    <th:block th:insert="fragments :: head"></th:block>
+</head>
+<body>
+<div th:insert="fragments :: header"></div>
+
+<form class="workspace-form" method="post" th:action="@{/workspaces/new}" th:object="${workspaceForm}" id="workspaceForm">
+    
+    <div class="form-left">
+        <h1 class="page-title">Create an empty workspace</h1>
+
+        <label>Workspace name</label>
+        <input class="input" placeholder="Name" th:field="*{name}" type="text" required maxlength="255"/>
+
+        <label>Workspace description</label>
+        <input class="input" placeholder="Description" th:field="*{description}" type="text" maxlength="255"/>
+
+
+        <button class="submit-btn" type="submit">Submit</button>
+    </div>
+    
+</form>
+
+</body>
+</html>

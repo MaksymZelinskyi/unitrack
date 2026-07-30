@@ -1,6 +1,7 @@
-/* ----------------------------------------------------------
-   PROJECT GRID
----------------------------------------------------------- */
+/* ==========================================================
+   LAYOUTS & GRIDS
+   ========================================================== */
+
 .project-grid {
     display: flex;
     flex-direction: column;
@@ -9,60 +10,39 @@
     margin: 0 auto;
 }
 
-/* Project status strip */
-
-/* indicator bar */
-.project-status {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 100%;
+.project-grid-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 2000px;
+    margin-left: auto;
+    align-items: start;
 }
 
-.project-status-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    background: #f3f4f6;
-    padding: .3rem .5rem;
-    border-radius: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.project-section {
+    margin-bottom: 1.75rem;
+    width: 100%;
+    flex-grow: 1;
+    border-right-width: 4px;
+    background-color: rgb(249, 250, 251);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
-.project-status.done {
-    background: #22c55e;
-}
-.project-status.active {
-    background: #2563eb;
-}
-.project-status.planned {
-    background: #cbd5e0;
-}
-/* Project text */
-
-.project-desc {
-    margin: .6rem 0 1rem;
-    color: #4b5563;
-    font-size: .95rem;
-    line-height: 1.4;
+@media (min-width: 768px) {
+    .project-form {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 }
 
-.project-meta {
-    display: flex;
-    gap: .4rem;
-    font-size: .9rem;
-    color: #374151;
-    margin-bottom: .8rem;
-}
-
-.meta-label {
-    font-weight: 600;
-    color: #111827;
-}
-
-
-/* ---------- Projects Section ---------- */
+/* ==========================================================
+   SECTIONS & TITLES
+   ========================================================== */
 
 .projects-section {
     width: 100%;
@@ -77,51 +57,14 @@
     margin-bottom: 2.5rem;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-}
-
-.project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Project rows */
-.project-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 0.75rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-.project-row:hover {
-  background: #f3f4f6;
-}
-
-.project-name {
-  font-weight: 500;
-  color: #1f2937;
-}
-
-/* Colors */
-.todo-title { color: #d9534f; }
-.inprogress-title { color: #f0ad4e; }
-.done-title { color: #5cb85c; }
-
-.project-wrapper {
-    min-width: 18rem;
-}
+/* ==========================================================
+   PROJECT CARDS
+   ========================================================== */
 
 .project-card {
     background: white;
     border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     border: 1px solid #d1d5db;
     transition: transform 0.15s ease, box-shadow 0.2s ease;
     display: flex;
@@ -131,6 +74,210 @@
     min-width: 280px;
     max-width: 320px;
     position: relative;
+    padding: clamp(1rem, 2vw, 2rem);
+}
+
+.project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.project-card .project-title {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+}
+
+.project-card .project-desc {
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.add-project {
+    text-align: center;
+    justify-content: center;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    margin: 2rem;
+    border-radius: 14px;
+    background: white;
+    border: 1px solid #d1d5db;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    height: 70%;
+    width: auto;
+}
+
+.add-project img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+}
+
+.add-project p {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   PROJECT LISTS
+   ========================================================== */
+
+.project-list {
+    display: grid;
+    gap: 2rem;
+    margin-left: 3rem;
+}
+
+.project-list li.card {
+    width: 100%;
+    background: white;
+    padding: 1rem;
+    border-radius: 14px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d1d5db;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.project-list li.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.project-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.75rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.project-row:hover {
+    background: #f3f4f6;
+}
+
+.project-wrapper {
+    min-width: 18rem;
+}
+
+/* ==========================================================
+   PROJECT CONTENT & METADATA
+   ========================================================== */
+
+.project-content {
+    color: inherit;
+    text-decoration: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.project-name {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.project-desc {
+    margin: 0.6rem 0 1rem;
+    color: #4b5563;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.project-meta {
+    display: flex;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    color: #374151;
+    margin-bottom: 0.8rem;
+}
+
+.meta-label {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* ==========================================================
+   PROJECT STATUS
+   ========================================================== */
+
+.project-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+}
+
+.project-status.done {
+    background: #22c55e;
+}
+
+.project-status.active {
+    background: #2563eb;
+}
+
+.project-status.planned {
+    background: #cbd5e0;
+}
+
+.project-status-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: #f3f4f6;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.todo-title {
+    color: #d9534f;
+}
+
+.inprogress-title {
+    color: #f0ad4e;
+}
+
+.done-title {
+    color: #5cb85c;
+}
+
+/* ==========================================================
+   PROJECT ACTIONS
+   ========================================================== */
+
+.project-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    border-top: 1px solid #d1d1d1;
+    padding-top: 1rem;
+}
     padding: clamp(1rem, 2vw, 2rem);
 }
 
@@ -187,41 +334,6 @@
     font-weight: 600;
 }
 
-.project-list {
-    display: grid;
-    gap: 2rem;
-    margin-left: 3rem;
-}
-
-.project-list li.card {
-    width: 100%;
-    background: white;
-    padding: 1rem;
-    border-radius: 14px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    border: 1px solid #d1d5db;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.project-list li.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
-}
-
-
-.project-section {
-    margin-bottom: 1.75rem;
-    width: 100%;
-    flex-grow: 1;
-    border-right-width: 4px;
-    background-color: rgb(249,250,251);
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-}
-
 @media (min-width: 768px) {
   .project-form {
       display: flex;
@@ -256,4 +368,12 @@
     font-size: 1.2rem;
     font-weight: 700;
     color: #1f2937;
+}
+
+.project-empty-text {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #6b7280;
+    margin-left: 5rem;
+    margin-top: 3rem;
 }

@@ -42,37 +42,17 @@
         </aside>
     </div>
 
-    <!-- Projects Section -->
-    <section class="projects-section">
-        <h2 class="projects-title">Projects & Tasks</h2>
+    <!-- Workspace Section -->
+    <section class="workspace-section">
+        <h2 class="workspaces-title">Workspaces</h2>
 
-        <ul class="project-list three-columns">
-            <li th:each="project : ${projects}" class="project-card" style="width: 90vw; height: 70vh;">
-                <a th:href="@{/projects/{id}(id=${project.projectId})}">
-                    <div class="project-header">
-                        <h3 class="project-name" th:text="${project.title}">Project Name</h3>
-                        <span class="project-meta" th:text="'Role: ' + ${project.role}">Role</span>
-                        <span class="project-meta" th:text="'Tasks: ' + ${#lists.size(project.tasks)}">Tasks count</span>
+        <ul class="workspace-list three-columns">
+            <li th:each="workspace : ${workspaces}" class="workspace-card" style="width: 25vw; height: 35vh;">
+                <a th:href="@{/workspaces/{id}(id=${workspace.workspaceId})}">
+                    <div class="workspace-header">
+                        <h3 class="workspace-title" th:text="${workspace.workspaceName}">Workspace Name</h3>
                     </div>
-
-                    <aside class="sidebar" style="height: 90%; width: 90%;">
-                        <ul class="task-list">
-                            <li th:each="task : ${project.tasks}"
-                                class="task-card flex-col" style="width: 90%;"
-                                th:classappend="${task.completed ? 'task-completed' : ''}">
-                                <a th:href="@{/tasks/{id}(id=${task.id})}">
-                                    <h4 class="task-title task-info-label" th:text="${task.title}">Task Title</h4>
-                                    <div class="task-info">
-                                        <p class="task-desc" th:text="${task.description}">Task description</p>
-                                    </div>
-                                    <div class="task-deadline">
-                                        <span class="time-label">Deadline:</span>
-                                        <span class="date" th:text="${#temporals.format(task.deadline, 'dd MMM yyyy HH:mm')}">2025-10-15</span>
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
-                    </aside>
+                    <h3 class="workspace-desc" th:text="${workspace.workspaceDescription}">Workspace Description</h3>
                 </a>
             </li>
         </ul>

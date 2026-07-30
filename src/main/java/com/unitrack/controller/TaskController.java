@@ -31,7 +31,7 @@ public class TaskController extends AuthenticatedController {
     private final AuthorizationService authService;
 
     @PostMapping
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #projectId)")
     public String createTask(TaskDto task, @RequestParam Long projectId,
                            Principal principal) {
         task.setProjectId(projectId);
@@ -40,7 +40,7 @@ public class TaskController extends AuthenticatedController {
     }
 
     @GetMapping("/new")
-    @PreAuthorize("@authService.canUpdateOrDelete(#principal.getName(), #projectId)")
+    @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #projectId)")
     public String createTask(@RequestParam Long projectId, Model model, Principal principal) {
         model.addAttribute("projectId", projectId);
         Project project = projectService.getById(projectId);

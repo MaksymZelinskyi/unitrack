@@ -1,7 +1,6 @@
 package com.unitrack.exception;
 
-public class RegistrationException extends AuthenticationException {
-
+public class RegistrationException extends EntityAlreadyExistsException {
 
     public RegistrationException(String message, Throwable cause) {
         super(message, cause);
