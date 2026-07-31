@@ -104,10 +104,11 @@
    ========================================================== */
 
 .task-title {
-    font-size: 1.1rem;
     font-weight: 600;
     color: #2563eb;
     text-align: center;
+    font-size: 0.9rem;
+    margin-top: 26px;
 }
 
 .task-desc {

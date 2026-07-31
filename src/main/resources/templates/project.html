@@ -17,8 +17,6 @@
             <!-- Left: Project -->
             <div class="task-view">
 
-                <h1 class="task-title" th:text="${project.title}"></h1>
-
                 <section class="detail-block">
                     <label>Description:</label>
                     <p th:text="${project.description}"></p>
@@ -92,7 +90,6 @@
                             </div>
                             <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link top">
                                 <h4 class="task-title" th:text="${task.title}"></h4>
-                                <p class="task-desc" th:text="${task.description}"></p>
                             </a>
 
                         </div>
@@ -125,7 +122,6 @@
 
                             <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link top">
                                 <h4 class="task-title" th:text="${task.title}"></h4>
-                                <p class="task-desc" th:text="${task.description}"></p>
                             </a>
 
                         </div>
@@ -158,7 +154,6 @@
 
                             <a th:href="@{/tasks/{id}(id=${task.id})}" class="task-link">
                                 <h4 class="task-title" th:text="${task.title}"></h4>
-                                <p class="task-desc" th:text="${task.description}"></p>
                             </a>
                         </div>
                     </li>
