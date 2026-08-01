@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Uni-Track</title>
+    <th:block th:insert="fragments :: head"></th:block>
 </head>
 <body>
 
+<div th:insert="fragments :: header"></div>
+
+<h1 class="page-title">My messages</h1>
+
+<div class="page-container">
+    <ul class="column">
+        <li th:if="${#lists.isEmpty(messages)}">No messages yet</li>
+
+        <li class="message-wrapper" th:data-id="${message.id}" th:each="message : ${messages}">
+            <div class="message-card">
+
+                <div class="message-delete-btn">
+                    <form method="post" th:action="@{/messages/{id}(id=${message.id})}">
+                        <input name="_method" type="hidden" value="delete">
+                        <button type="submit" class="confirm-delete">
+                            <img src="/icons/trash.png"/>
+                        </button>
+                    </form>
+                </div>
+
+                <a th:href="@{/messages/{id}(id=${message.id})}" class="message-link top">
+                    <h4 class="message-title" th:text="${message.sender.name}"></h4>
+                    <p class="message-desc" th:text="${message.text}"></p>
+                </a>
+
+            </div>
+        </li>
+    </ul>
+</div>
 </body>
 </html>

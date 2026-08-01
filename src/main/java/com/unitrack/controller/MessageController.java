@@ -19,7 +19,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/messages")
 @RequiredArgsConstructor
-public class MessageController  {
+public class MessageController extends AuthenticatedController {
 
     private final MessageService messageService;
     private final AuthorizationService authorizationService;

@@ -1,0 +1,47 @@
+.message-wrapper {
+    margin-top: 15px;
+    min-height: 50px;
+    max-height: 150px;
+    min-width: 18rem;
+}
+
+.message-card {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    color: #444;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+    min-height: 70px;
+    max-height: 150px;
+}
+
+.message-edit-btn,
+.message-delete-btn {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 8px;
+}
+
+.message-link {
+    display: block;
+    margin-top: 2px;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+.message-title {
+    font-weight: 600;
+    color: #2563eb;
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 26px;
+}
+
+.message-desc {
+    color: #4b5563;
+    font-size: 0.9rem;
+    margin-top: auto;
+}

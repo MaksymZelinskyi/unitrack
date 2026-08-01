@@ -14,6 +14,7 @@
 @import "input.css";
 @import "oidc.css";
 @import "search.css";
+@import "messages.css";
 
 .error-page {
     min-height: 100vh;
