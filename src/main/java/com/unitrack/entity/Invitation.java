@@ -1,9 +1,6 @@
 package com.unitrack.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -11,10 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "invitation")
 @Data
-public class Invitation {
-
-    @Id
-    private Long id;
+public class Invitation extends Message {
 
     @ManyToOne
     private Collaborator collaborator;
@@ -31,5 +25,7 @@ public class Invitation {
         this.collaborator = collaborator;
         this.workspace = workspace;
         this.invitedBy = invitedBy;
+        this.recipient = collaborator;
+        this.sender = invitedBy;
     }
 }

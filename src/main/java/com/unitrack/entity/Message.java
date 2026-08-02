@@ -9,23 +9,25 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "message_seq")
+    @SequenceGenerator(name = "message_seq", sequenceName = "message_seq", allocationSize = 1)
+    protected Long id;
 
-    private String text;
-
-    @ManyToOne
-    private Collaborator sender;
+    protected String text;
 
     @ManyToOne
-    private Collaborator recipient;
+    protected Collaborator sender;
 
-    private LocalDateTime sentAt;
+    @ManyToOne
+    protected Collaborator recipient;
+
+    protected LocalDateTime sentAt;
 
 }
