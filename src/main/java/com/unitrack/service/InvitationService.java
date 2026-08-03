@@ -40,6 +40,7 @@ public class InvitationService {
             invitationRepository.deleteByWorkspaceAndCollaborator(workspace, collaborator);
         }
         Invitation invitation = new Invitation(collaborator, workspace, invitedBy);
+        invitation.setText(String.format("%t invited you to join %t", invitedBy.getFullName(), workspace.getName()));
         invitation.setExpiresAt(LocalDateTime.now().plusMonths(1));
 
         invitationRepository.save(invitation);

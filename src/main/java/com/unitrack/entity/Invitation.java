@@ -2,12 +2,14 @@ package com.unitrack.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "invitation")
 @Data
+@NoArgsConstructor
 public class Invitation extends Message {
 
     @ManyToOne

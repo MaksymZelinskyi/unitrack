@@ -21,4 +21,8 @@ public class MessageService {
     public List<Message> getMessagesBySender(Collaborator collaborator) {
         return messageRepository.findBySenderOrderBySentAtDesc(collaborator);
     }
+
+    public void deleteById(Long id) {
+        messageRepository.deleteById(id);
+    }
 }

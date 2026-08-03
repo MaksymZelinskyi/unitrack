@@ -21,7 +21,7 @@ public class AuthorizationService {
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
-    private final WorkspaceRepository workspaceRepository;
+    private final MessageRepository messageRepository;
     private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
     public boolean canUpdateOrDeleteProject(String email, Long projectId) {
@@ -93,6 +93,12 @@ public class AuthorizationService {
     public boolean usesOAuth(Collaborator collaborator) {
         Set<AuthProvider> authProviders = collaborator.getAuthProviders();
         return authProviders.contains(AuthProvider.OIDC_GOOGLE) || authProviders.contains(AuthProvider.OIDC_GITHUB);
+    }
+
+    public boolean isMessageSenderOrRecipient(String email, Long messageId) {
+        Message message = messageRepository.findById(messageId).orElseThrow();
+        Collaborator collaborator = getUser(email);
+        return collaborator.equals(message.getRecipient()) || collaborator.equals(message.getSender());
     }
 
 }
