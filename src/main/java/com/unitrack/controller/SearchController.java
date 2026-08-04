@@ -36,12 +36,14 @@ public class SearchController {
 
     @GetMapping("/collaborator")
     public Page<CollaboratorInListDto> searchCollaborator(String query,
+                                                       @RequestParam(name = "workspaceId") Long workspaceId,
                                                        @RequestParam(name = "pagenumber", defaultValue = "0") int pageNumber,
-                                                       @RequestParam(name = "pagesize", defaultValue = "5") int pageSize) {
-        return collaboratorService.searchCollab(
-                query,
-                Pageable.ofSize(pageSize).withPage(pageNumber)
-        );
+                                                       @RequestParam(name = "pagesize", defaultValue = "5") int pageSize
+    ) {
+        if (workspaceId == null) {
+            return collaboratorService.searchCollab(query, Pageable.ofSize(pageSize).withPage(pageNumber));
+        }
+        return collaboratorService.searchCollab(workspaceId, query, Pageable.ofSize(pageSize).withPage(pageNumber));
     }
 
 

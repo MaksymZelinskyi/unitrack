@@ -167,7 +167,9 @@ public class WorkspaceController extends AuthenticatedController {
 
     @PostMapping("/{id}/invite")
     @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
-    public void invite(@PathVariable("id") Long workspaceId, @RequestParam("collaboratorId") Long collaboratorId, Principal principal, HttpServletRequest request) {
+    public String invite(@PathVariable("id") Long workspaceId, @RequestParam("collaboratorId") Long collaboratorId, Principal principal, HttpServletRequest request) {
         invitationService.inviteCollaborator(collaboratorId, workspaceId, principal.getName());
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
     }
 }

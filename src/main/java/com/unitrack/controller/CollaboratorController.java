@@ -54,6 +54,7 @@ public class CollaboratorController extends AuthenticatedController {
         return "new-collaborator";
     }
 
+    @Deprecated
     @PostMapping("/new")
     public String newCollaborator(@Validated CollaboratorDto dto, Principal principal) {
         collaboratorService.add(dto, principal.getName());

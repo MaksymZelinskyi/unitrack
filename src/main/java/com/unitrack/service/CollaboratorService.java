@@ -8,9 +8,8 @@ import com.unitrack.entity.*;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.DuplicateException;
 import com.unitrack.exception.RegistrationException;
-import com.unitrack.repository.CollaboratorRepository;
-import com.unitrack.repository.ParticipationRepository;
-import com.unitrack.repository.SkillRepository;
+import com.unitrack.exception.WorkspaceNotFoundException;
+import com.unitrack.repository.*;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +29,14 @@ public class CollaboratorService {
     private final CollaboratorRepository collaboratorRepository;
     private final SkillRepository skillRepository;
     private final ParticipationRepository participationRepository;
+    private final WorkspaceRepository workspaceRepository;
+    private final InvitationRepository invitationRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final GravatarService gravatarService;
     private final WorkspaceService workspaceService;
 
+    @Deprecated
     public void add(CollaboratorDto dto, String currentUserEmail) {
         if (collaboratorRepository.existsByEmail(dto.getEmail()))
             throw new DuplicateException("A collaborator with email: " + dto.getEmail() + " already exists");
@@ -145,6 +147,21 @@ public class CollaboratorService {
 
         List<CollaboratorInListDto> dtoList = collaborators.stream().map(x ->
              new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl())
+        ).toList();
+
+        return new PageImpl<>(dtoList, pageable, dtoList.size());
+    }
+
+    public Page<CollaboratorInListDto> searchCollab(Long workspaceId, String query, Pageable pageable) {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("id", workspaceId));
+
+        Page<Collaborator> collaborators
+                = collaboratorRepository.findByFirstNameAndLastNameContainingIgnoreCase(
+                query, pageable
+        );
+
+        List<CollaboratorInListDto> dtoList = collaborators.stream().map(x ->
+                new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl(), invitationRepository.existsByWorkspaceAndCollaborator(workspace, x))
         ).toList();
 
         return new PageImpl<>(dtoList, pageable, dtoList.size());

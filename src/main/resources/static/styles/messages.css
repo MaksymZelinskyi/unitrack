@@ -4,7 +4,6 @@
     max-height: 150px;
     min-width: 18rem;
 }
-
 .message-card {
     position: relative;
     background: white;
@@ -14,6 +13,7 @@
     transition: box-shadow 0.2s ease;
     min-height: 70px;
     max-height: 150px;
+    padding: 12px;
 }
 
 .message-edit-btn,
@@ -22,6 +22,27 @@
     width: 20px;
     height: 20px;
     top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
+}
+
+.message-edit-btn:hover,
+.message-delete-btn:hover {
+    opacity: 1;
+}
+
+.message-delete-btn {
+    right: 8px;
+}
+
+.message-edit-btn {
+    right: 32px; /* 20px width + 12px gap */
 }
 
 .message-link {
