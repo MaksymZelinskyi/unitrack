@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const inviteBtn = document.createElement("button");
             inviteBtn.type = "button";
-            inviteBtn.className = "invite-button invite-button-small";
+            inviteBtn.className = "invite-button-small";
+            inviteBtn.disabled = !collaborator.isInvited;
             inviteBtn.textContent = "Invite";
             inviteBtn.addEventListener("click", (event) => {
                 event.preventDefault();

@@ -75,8 +75,11 @@ function setupLiveSearchPanel({
         resultsContainer.classList.add("is-loading");
 
         try {
+            const extraParams = inputEl.params
+                ? `&${inputEl.params}`
+                : "";
             const response = await fetch(
-                `${endpoint}?query=${encodeURIComponent(query)}&page=${page}`,
+                `${endpoint}?query=${encodeURIComponent(query)}&page=${page}${extraParams}`,
                 { signal: currentController.signal }
             );
             if (!response.ok) throw new Error("Network error");

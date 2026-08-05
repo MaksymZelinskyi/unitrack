@@ -79,6 +79,7 @@
                     name="collaborator"
                     class="live-search-input"
                     data-endpoint="/search/collaborator"
+                    th:data-params="|workspaceId=${workspace.id}|"
                     data-results="collaboratorResultsPanel"
                     data-min-length="1"
                     data-debounce="300"
