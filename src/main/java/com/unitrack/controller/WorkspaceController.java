@@ -34,6 +34,7 @@ public class WorkspaceController extends AuthenticatedController {
     private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
     private final CollaboratorWorkspaceService collaboratorWorkspaceService;
     private final InvitationService invitationService;
+    private final JoinRequestService joinRequestService;
 
     @PostMapping("/new")
     public String newWorkspace(CreateWorkspaceDto workspaceDto, Principal principal) {
@@ -151,7 +152,7 @@ public class WorkspaceController extends AuthenticatedController {
 
     @PostMapping("/{id}/join")
     public String join(@PathVariable("id") Long workspaceId, Principal principal, HttpServletRequest request) {
-        collaboratorWorkspaceService.addCollaboratorWorkspace(principal.getName(), workspaceId);
+        joinRequestService.sendJoinRequest(workspaceId, principal.getName());
 
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
@@ -172,4 +173,5 @@ public class WorkspaceController extends AuthenticatedController {
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }
+
 }
