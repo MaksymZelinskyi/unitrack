@@ -1,68 +1,76 @@
 .message-wrapper {
-    margin-top: 15px;
-    min-height: 50px;
-    max-height: 150px;
-    min-width: 18rem;
+    width: 100%;
 }
+
 .message-card {
     position: relative;
-    background: white;
-    border-radius: 16px;
-    color: #444;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s ease;
-    min-height: 70px;
-    max-height: 150px;
-    padding: 12px;
+    background-color: #f2f2f2;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    padding: 14px 48px 14px 16px;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.message-edit-btn,
-.message-delete-btn {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    opacity: 0.6;
-    transition: opacity 0.15s ease;
+.message-card:hover {
+    background-color: #ececec;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
-.message-edit-btn:hover,
-.message-delete-btn:hover {
-    opacity: 1;
-}
-
-.message-delete-btn {
-    right: 8px;
-}
-
-.message-edit-btn {
-    right: 32px; /* 20px width + 12px gap */
-}
-
-.message-link {
+.message-link.top {
     display: block;
-    margin-top: 2px;
     text-decoration: none;
-    text-align: center;
+    color: inherit;
 }
-
 
 .message-title {
+    margin: 0 0 4px 0;
+    font-size: 15px;
     font-weight: 600;
-    color: #2563eb;
-    text-align: center;
-    font-size: 0.9rem;
-    margin-top: 26px;
+    color: #1a1a1a;
 }
 
 .message-desc {
-    color: #4b5563;
-    font-size: 0.9rem;
-    margin-top: auto;
+    margin: 0;
+    font-size: 14px;
+    color: #555555;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.message-delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+.message-delete-btn form {
+    margin: 0;
+}
+
+.confirm-delete {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease;
+}
+
+.confirm-delete:hover {
+    background-color: #e0e0e0;
+}
+
+.confirm-delete img {
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+}
+
+.confirm-delete:hover img {
+    opacity: 1;
 }
