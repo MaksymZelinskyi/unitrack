@@ -5,6 +5,7 @@ import com.unitrack.entity.Invitation;
 import com.unitrack.entity.Workspace;
 import com.unitrack.exception.CollaboratorNotFoundException;
 import com.unitrack.exception.EntityAlreadyExistsException;
+import com.unitrack.exception.InvitationNotFoundException;
 import com.unitrack.exception.WorkspaceNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.CollaboratorWorkspaceRepository;
@@ -44,5 +45,16 @@ public class InvitationService {
         invitation.setExpiresAt(LocalDateTime.now().plusMonths(1));
 
         invitationRepository.save(invitation);
+    }
+
+    public void acceptInvitation(Long invitationId) {
+        Invitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(() -> new InvitationNotFoundException("id", invitationId));
+        Workspace workspace = invitation.getWorkspace();
+        Collaborator collaborator = invitation.getCollaborator();
+
+        workspace.addCollaborator(collaborator);
+        workspaceRepository.save(workspace);
+        invitationRepository.deleteById(invitationId);
     }
 }

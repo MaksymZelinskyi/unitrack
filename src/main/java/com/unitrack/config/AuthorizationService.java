@@ -23,6 +23,8 @@ public class AuthorizationService {
     private final CommentRepository commentRepository;
     private final MessageRepository messageRepository;
     private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
+    private final JoinRequestRepository joinRequestRepository;
+    private final InvitationRepository invitationRepository;
 
     public boolean canUpdateOrDeleteProject(String email, Long projectId) {
         log.debug("Authorizing user {} to update or delete project with id {}", email, projectId);
@@ -101,4 +103,17 @@ public class AuthorizationService {
         return collaborator.equals(message.getRecipient()) || collaborator.equals(message.getSender());
     }
 
+    public boolean canAcceptJoinRequest(Long requestId, String email) {
+        JoinRequest joinRequest = joinRequestRepository.findById(requestId)
+                .orElseThrow(() -> new JoinRequestNotFoundException("id", requestId));
+        Collaborator collaborator = getUser(email);
+        return collaborator.equals(joinRequest.getRecipient());
+    }
+
+    public boolean canAcceptInvitation(Long invitationId, String email) {
+        Invitation invitation = invitationRepository.findById(invitationId)
+                .orElseThrow(() -> new InvitationNotFoundException("id", invitationId));
+        Collaborator collaborator = getUser(email);
+        return collaborator.equals(invitation.getCollaborator());
+    }
 }

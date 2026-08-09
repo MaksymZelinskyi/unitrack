@@ -150,26 +150,10 @@ public class WorkspaceController extends AuthenticatedController {
         return "admin-page";
     }
 
-    @PostMapping("/{id}/join")
-    public String join(@PathVariable("id") Long workspaceId, Principal principal, HttpServletRequest request) {
-        joinRequestService.sendJoinRequest(workspaceId, principal.getName());
-
-        String referer = request.getHeader("Referer");
-        return "redirect:" + (referer != null ? referer : "/");
-    }
-
     @PostMapping("/{id}/quit")
     public String quit(@PathVariable("id") Long workspaceId, Principal principal, HttpServletRequest request) {
         collaboratorWorkspaceService.deleteCollaboratorWorkspace(principal.getName(), workspaceId);
 
-        String referer = request.getHeader("Referer");
-        return "redirect:" + (referer != null ? referer : "/");
-    }
-
-    @PostMapping("/{id}/invite")
-    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
-    public String invite(@PathVariable("id") Long workspaceId, @RequestParam("collaboratorId") Long collaboratorId, Principal principal, HttpServletRequest request) {
-        invitationService.inviteCollaborator(collaboratorId, workspaceId, principal.getName());
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }

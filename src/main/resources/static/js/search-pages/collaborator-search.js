@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const inviteBtn = document.createElement("button");
             inviteBtn.type = "button";
             inviteBtn.className = "invite-button-small";
-            inviteBtn.disabled = !collaborator.isInvited;
+            inviteBtn.disabled = collaborator.isInvited;
             inviteBtn.textContent = "Invite";
             inviteBtn.addEventListener("click", (event) => {
                 event.preventDefault();
@@ -52,7 +52,7 @@ function inviteCollaborator(collaborator, buttonEl) {
     buttonEl.disabled = true;
     buttonEl.textContent = "Inviting…";
 
-    fetch(`/workspaces/${workspace.id}/invite?collaboratorId=${collaborator.id}`, {
+    fetch(`/invitations/new?workspaceId=${workspace.id}&collaboratorId=${collaborator.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" }
     })

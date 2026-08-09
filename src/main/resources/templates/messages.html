@@ -20,16 +20,16 @@
                 <div class="message-delete-btn">
                     <form method="post" th:action="@{/messages/{id}(id=${message.id})}">
                         <input name="_method" type="hidden" value="delete">
-                        <button type="submit" class="confirm-delete">
+                        <button type="submit" class="delete-message">
                             <img src="/icons/trash.png"/>
                         </button>
                     </form>
                 </div>
 
-                <a th:href="@{/messages/{id}(id=${message.id})}" class="message-link top">
+                <p class="message-box top">
                     <h4 class="message-title" th:text="${message.sender.name}"></h4>
                     <p class="message-desc" th:text="${message.text}"></p>
-                </a>
+                </p>
 
             </div>
         </li>

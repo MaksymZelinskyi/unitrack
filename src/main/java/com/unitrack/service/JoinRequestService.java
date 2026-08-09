@@ -5,6 +5,8 @@ import com.unitrack.entity.CollaboratorWorkspace;
 import com.unitrack.entity.JoinRequest;
 import com.unitrack.entity.Workspace;
 import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.ExpirationException;
+import com.unitrack.exception.JoinRequestNotFoundException;
 import com.unitrack.exception.WorkspaceNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.CollaboratorWorkspaceRepository;
@@ -12,6 +14,7 @@ import com.unitrack.repository.JoinRequestRepository;
 import com.unitrack.repository.WorkspaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.mapping.Join;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,6 +43,19 @@ public class JoinRequestService {
             joinRequest.setExpiresAt(LocalDateTime.now().plusWeeks(1));
             joinRequestRepository.save(joinRequest);
         }
+    }
+
+    public void acceptRequest(Long requestId) {
+        JoinRequest joinRequest = joinRequestRepository.findById(requestId).orElseThrow(() -> new JoinRequestNotFoundException("id", requestId));
+        if (joinRequest.getExpiresAt().isAfter(LocalDateTime.now())) {
+            Workspace workspace = joinRequest.getWorkspace();
+            Collaborator collaborator = joinRequest.getCollaborator();
+            workspace.addCollaborator(collaborator);
+            workspaceRepository.save(workspace);
+        } else {
+            throw new ExpirationException("Request expired");
+        }
+        joinRequestRepository.delete(joinRequest);
     }
 
     private Collaborator findWorkspaceAdmin(Workspace workspace) {
