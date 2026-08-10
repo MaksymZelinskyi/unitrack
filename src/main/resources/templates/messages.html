@@ -17,10 +17,17 @@
         <li class="message-wrapper" th:data-id="${message.id}" th:each="message : ${messages}">
             <div class="message-card">
 
-                <div class="message-delete-btn">
+                <div class="message-actions">
+                    <form method="post" th:if="${message.type == T(com.unitrack.dto.MessageType).INVITATION}" th:action="@{/invitations/{id}/accept(id=${message.id})}">
+                        <button type="submit" class="message-action-btn message-accept-btn">Accept</button>
+                    </form>
+
+                    <form method="post" th:if="${message.type == T(com.unitrack.dto.MessageType).JOIN_REQUEST}" th:action="@{/join-requests/{id}/accept(id=${message.id})}">
+                        <button type="submit" class="message-action-btn message-accept-btn">Accept</button>
+                    </form>
                     <form method="post" th:action="@{/messages/{id}(id=${message.id})}">
                         <input name="_method" type="hidden" value="delete">
-                        <button type="submit" class="delete-message">
+                        <button type="submit" class="message-action-btn message-confirm-delete" title="Delete">
                             <img src="/icons/trash.png"/>
                         </button>
                     </form>

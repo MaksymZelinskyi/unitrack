@@ -2,9 +2,12 @@ package com.unitrack.controller;
 
 import com.unitrack.config.AuthorizationService;
 import com.unitrack.dto.CollaboratorInListDto;
+import com.unitrack.dto.MessageType;
 import com.unitrack.dto.ReceivedMessageDto;
 import com.unitrack.dto.SentMessageDto;
 import com.unitrack.entity.Collaborator;
+import com.unitrack.entity.Invitation;
+import com.unitrack.entity.JoinRequest;
 import com.unitrack.service.MessageService;
 import com.unitrack.util.mapper.MessageMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +40,11 @@ public class MessageController extends AuthenticatedController {
                     ReceivedMessageDto dto = messageMapper.messageToReceivedMessageDto(x);
                     Collaborator s = x.getSender();
                     dto.setSender(new CollaboratorInListDto(s.getId(), s.getFullName(), s.getAvatarUrl()));
+                    if (x instanceof Invitation) {
+                        dto.setType(MessageType.INVITATION);
+                    } else if (x instanceof JoinRequest) {
+                        dto.setType(MessageType.JOIN_REQUEST);
+                    }
                     return dto;
                 }).toList();
         model.addAttribute("messages", messages);

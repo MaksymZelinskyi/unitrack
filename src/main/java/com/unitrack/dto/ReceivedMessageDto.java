@@ -12,4 +12,5 @@ public class ReceivedMessageDto {
     private String text;
     private LocalDateTime sentAt;
     private CollaboratorInListDto sender;
+    private MessageType type;
 }

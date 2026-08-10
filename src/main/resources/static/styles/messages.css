@@ -1,13 +1,9 @@
-.message-wrapper {
-    width: 90%;
-}
-
 .message-card {
     position: relative;
     background-color: #f2f2f2;
     border: 1px solid #e6e6e6;
     border-radius: 10px;
-    padding: 14px 48px 14px 16px;
+    padding: 16px 16px 56px 16px; /* extra bottom padding so text isn't covered by the action row */
     transition: background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -16,61 +12,65 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 
-.message-box.top {
-    display: block;
-    text-decoration: none;
-    color: inherit;
+.message-actions {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.message-title {
-    margin: 0 0 4px 0;
+.message-actions form {
+    margin: 0;
+}
+
+.message-action-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.message-action-btn:active {
+    transform: scale(0.96);
+}
+
+.message-accept-btn {
+    background-color: #4caf50;
+    color: #ffffff;
     font-size: 15px;
     font-weight: 600;
-    color: #1a1a1a;
-}
-
-.message-desc {
-    margin: 0;
-    font-size: 14px;
-    color: #555555;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 10px 22px;
+    line-height: 1.2;
     white-space: nowrap;
 }
 
-.message-delete-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
+.message-accept-btn:hover {
+    background-color: #43a047;
 }
 
-.message-delete-btn form {
-    margin: 0;
-}
-
-.delete-message {
+.message-confirm-delete {
     background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    border-radius: 6px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.15s ease;
 }
 
-.delete-message:hover {
-    background-color: #e0e0e0;
+.message-confirm-delete:hover {
+    background-color: #f2d9d9;
 }
 
-.delete-message img {
-    width: 16px;
-    height: 16px;
-    opacity: 0.6;
+.message-confirm-delete img {
+    width: 22px;
+    height: 22px;
+    opacity: 0.65;
+    transition: opacity 0.15s ease;
 }
 
-.delete-message:hover img {
+.message-confirm-delete:hover img {
     opacity: 1;
+    filter: invert(30%) sepia(70%) saturate(1500%) hue-rotate(320deg);
 }
