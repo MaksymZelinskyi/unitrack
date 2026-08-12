@@ -10,4 +10,6 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     boolean existsByWorkspaceAndCollaborator(Workspace workspace, Collaborator collaborator);
 
     void deleteByWorkspaceAndCollaborator(Workspace workspace, Collaborator collaborator);
+
+    void deleteAllByWorkspaceAndCollaborator(Workspace workspace, Collaborator collaborator);
 }

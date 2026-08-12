@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface JoinRequestRepository extends JpaRepository<JoinRequest, Long> {
 
     boolean existsByWorkspaceAndCollaborator(Workspace workspace, Collaborator collaborator);
+
+    void deleteAllByWorkspaceAndCollaborator(Workspace workspace, Collaborator collaborator);
 }

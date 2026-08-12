@@ -3,10 +3,7 @@ package com.unitrack.service;
 import com.unitrack.entity.Collaborator;
 import com.unitrack.entity.Invitation;
 import com.unitrack.entity.Workspace;
-import com.unitrack.exception.CollaboratorNotFoundException;
-import com.unitrack.exception.EntityAlreadyExistsException;
-import com.unitrack.exception.InvitationNotFoundException;
-import com.unitrack.exception.WorkspaceNotFoundException;
+import com.unitrack.exception.*;
 import com.unitrack.repository.CollaboratorRepository;
 import com.unitrack.repository.CollaboratorWorkspaceRepository;
 import com.unitrack.repository.InvitationRepository;
@@ -42,7 +39,7 @@ public class InvitationService {
         }
         Invitation invitation = new Invitation(collaborator, workspace, invitedBy);
         invitation.setText(String.format("%s invited you to join %s", invitedBy.getFullName(), workspace.getName()));
-        invitation.setExpiresAt(LocalDateTime.now().plusMonths(1));
+        invitation.setExpiresAt(LocalDateTime.now().plusWeeks(2));
 
         invitationRepository.save(invitation);
     }
@@ -52,9 +49,13 @@ public class InvitationService {
                 .orElseThrow(() -> new InvitationNotFoundException("id", invitationId));
         Workspace workspace = invitation.getWorkspace();
         Collaborator collaborator = invitation.getCollaborator();
+        invitationRepository.deleteAllByWorkspaceAndCollaborator(workspace, collaborator);
 
-        workspace.addCollaborator(collaborator);
-        workspaceRepository.save(workspace);
-        invitationRepository.deleteById(invitationId);
+        if (invitation.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new ExpirationException("Invitation expired!");
+        } else {
+            workspace.addCollaborator(collaborator);
+            workspaceRepository.save(workspace);
+        }
     }
 }

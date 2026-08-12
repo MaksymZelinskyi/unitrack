@@ -47,15 +47,15 @@ public class JoinRequestService {
 
     public void acceptRequest(Long requestId) {
         JoinRequest joinRequest = joinRequestRepository.findById(requestId).orElseThrow(() -> new JoinRequestNotFoundException("id", requestId));
+        Workspace workspace = joinRequest.getWorkspace();
+        Collaborator collaborator = joinRequest.getCollaborator();
+        joinRequestRepository.deleteAllByWorkspaceAndCollaborator(workspace, collaborator);
         if (joinRequest.getExpiresAt().isAfter(LocalDateTime.now())) {
-            Workspace workspace = joinRequest.getWorkspace();
-            Collaborator collaborator = joinRequest.getCollaborator();
             workspace.addCollaborator(collaborator);
             workspaceRepository.save(workspace);
         } else {
-            throw new ExpirationException("Request expired");
+            throw new ExpirationException("Request expired!");
         }
-        joinRequestRepository.delete(joinRequest);
     }
 
     private Collaborator findWorkspaceAdmin(Workspace workspace) {
