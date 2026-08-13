@@ -75,8 +75,8 @@ function setupLiveSearchPanel({
         resultsContainer.classList.add("is-loading");
 
         try {
-            const extraParams = inputEl.params
-                ? `&${inputEl.params}`
+            const extraParams = inputEl.dataset.params
+                ? `&${inputEl.dataset.params}`
                 : "";
             const response = await fetch(
                 `${endpoint}?query=${encodeURIComponent(query)}&page=${page}${extraParams}`,

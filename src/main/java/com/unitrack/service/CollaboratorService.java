@@ -35,6 +35,7 @@ public class CollaboratorService {
     private final MailService mailService;
     private final GravatarService gravatarService;
     private final WorkspaceService workspaceService;
+    private final CollaboratorWorkspaceRepository collaboratorWorkspaceRepository;
 
     @Deprecated
     public void add(CollaboratorDto dto, String currentUserEmail) {
@@ -156,12 +157,13 @@ public class CollaboratorService {
         Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("id", workspaceId));
 
         Page<Collaborator> collaborators
-                = collaboratorRepository.findByFirstNameAndLastNameContainingIgnoreCase(
-                query, pageable
-        );
+                = collaboratorRepository.findByFirstNameAndLastNameContainingIgnoreCase(query, pageable);
 
-        List<CollaboratorInListDto> dtoList = collaborators.stream().map(x ->
-                new CollaboratorInListDto(x.getId(), x.getFullName(), x.getAvatarUrl(), invitationRepository.existsByWorkspaceAndCollaborator(workspace, x))
+        List<CollaboratorInListDto> dtoList = collaborators.stream()
+                .filter(x -> !collaboratorWorkspaceRepository.existsByCollaboratorAndWorkspace(x, workspace))
+                .map(x -> new CollaboratorInListDto(
+                        x.getId(), x.getFullName(), x.getAvatarUrl(), invitationRepository.existsByWorkspaceAndCollaborator(workspace, x)
+                )
         ).toList();
 
         return new PageImpl<>(dtoList, pageable, dtoList.size());
