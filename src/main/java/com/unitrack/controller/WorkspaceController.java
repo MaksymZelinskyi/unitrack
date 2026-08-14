@@ -118,6 +118,7 @@ public class WorkspaceController extends AuthenticatedController {
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("isMember", collaboratorWorkspaceService.relationExists(collaborator, workspace));
+        model.addAttribute("requested", joinRequestService.requestExists(workspace, collaborator));
         return "workspace";
     }
 

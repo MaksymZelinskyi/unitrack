@@ -64,4 +64,8 @@ public class JoinRequestService {
         }
         return null;
     }
+
+    public boolean requestExists(Workspace workspace, Collaborator collaborator) {
+        return joinRequestRepository.existsByWorkspaceAndCollaborator(workspace, collaborator);
+    }
 }

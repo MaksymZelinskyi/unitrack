@@ -96,7 +96,10 @@
     <div class="join-request-fab" th:unless="${isMember}">
         <form th:action="@{/join-requests/new}" method="post">
             <input name="workspaceId" th:value="${workspace.id}" type="hidden"/>
-            <button type="submit" class="join-request-btn">Request to join</button>
+            <button type="submit" class="join-request-btn" th:disabled="${requested}">
+                <p th:unless="${requested}">Request to join</p>
+                <p th:if="${requested}">Requested</p>
+            </button>
         </form>
     </div>
 
