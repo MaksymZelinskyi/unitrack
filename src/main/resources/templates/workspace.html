@@ -98,7 +98,7 @@
             <input name="workspaceId" th:value="${workspace.id}" type="hidden"/>
             <button type="submit" class="join-request-btn" th:disabled="${requested}">
                 <p th:unless="${requested}">Request to join</p>
-                <p th:if="${requested}">Requested</p>
+                <p th:if="${requested}">Request sent</p>
             </button>
         </form>
     </div>
