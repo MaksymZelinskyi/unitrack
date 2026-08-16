@@ -121,14 +121,21 @@ public class ProjectController extends AuthenticatedController {
     @PreAuthorize("@authService.canUpdateOrDeleteProject(#principal.getName(), #id)")
     public String updateProject(@PathVariable Long id, Principal principal, Model model) {
         Project project = projectService.getById(id);
+        Workspace workspace = project.getWorkspace();
 
-        List<AssigneeDto> collaborators = collaboratorService.getAll(principal.getName())
+        List<AssigneeDto> collaborators = workspace.getCollaborators()
+                .stream().map(c -> {
+                    Collaborator collaborator = c.getCollaborator();
+                    return new AssigneeDto(collaborator.getId(), "", collaborator.getFullName(), collaborator.getAvatarUrl());
+                }).toList();
+        /* List<AssigneeDto> collaborators = collaboratorService.getAll(principal.getName())
                 .stream()
                 .map(c -> {
                     Participation participation = c.getProjects().stream().filter(x -> x.getProject().equals(project)).findFirst().orElse(null);
                     var role = participation != null ? participation.getRoles().stream().findFirst().orElse(null) : null;
                     return new AssigneeDto(c.getId(), role != null ? role.name() : null, c.getFullName(), c.getAvatarUrl());
                 }).toList();
+         */
         List<AssigneeDto> assignees = projectService.getProjectAssignees(project)
                 .stream()
                 .map(x -> {
