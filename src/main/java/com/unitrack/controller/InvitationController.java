@@ -22,7 +22,7 @@ public class InvitationController {
     @PostMapping("/new")
     @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
     public String invite(@RequestParam("workspaceId") Long workspaceId, @RequestParam("collaboratorId") Long collaboratorId, Principal principal, HttpServletRequest request) {
-        invitationService.inviteCollaborator(collaboratorId, workspaceId, principal.getName());
+        invitationService.inviteCollaborator(workspaceId, collaboratorId, principal.getName());
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }
