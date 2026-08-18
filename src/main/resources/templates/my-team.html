@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Uni-Track</title>
+    <th:block th:insert="fragments :: head"></th:block>
+    <script th:src="@{/js/live-search-panel.js}"></script>
+    <script th:src="@{/js/search-pages/collaborator-search.js}"></script>
+</head>
+<body>
+
+<div th:insert="fragments :: header"></div>
+
+<div class="layout">
+
+    <!-- MAIN SECTION -->
+    <section class="main">
+        <div class="header-row right">
+            <h1 class="section-title centered" th:text="${workspace.name}">My team</h1>
+        </div>
+
+        <div class="my-team-grid-wrapper">
+
+            <ul class="collaborator-list four-columns">
+
+                <li th:each="collaborator : ${collaborators}">
+                    <a th:href="@{/collaborators/{id}(id=${collaborator.id})}" class="collaborator-card">
+                        <div class="collaborator-content">
+                            <div class="project-header">
+                                <h4 class="project-title" th:text="${collaborator.fullName}">Name</h4>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+
+    <!-- Right: Sidebar -->
+    <aside class="right-sidebar workspace-search-sidebar">
+        <label class="sidebar-title">Collaborator search</label>
+
+        <div class="search-field-wrapper">
+            <input
+                    type="text"
+                    id="collaboratorQuery"
+                    name="collaborator"
+                    class="live-search-input"
+                    data-endpoint="/search/collaborator"
+                    th:data-params="|workspaceId=${workspace.id}|"
+                    data-results="collaboratorResultsPanel"
+                    data-min-length="1"
+                    data-debounce="300"
+                    autocomplete="off"
+            />
+            <ul id="collaboratorResultsPanel" class="suggestions-dropdown">
+                <p class="empty-text">Start typing to search collaborators…</p>
+            </ul>
+
+            <!-- holds the selected collaborator's id for form submission -->
+            <input type="hidden" id="collaboratorId" name="collaboratorId" />
+        </div>
+
+    </aside>
+
+</div>
+
+<div class="project-actions">
+
+    <form method="post" th:action="@{/workspaces/{id}(id=${workspace.id})}">
+        <input name="_method" type="hidden" value="delete">
+
+        <button class="btn btn-danger confirm-delete" type="submit">
+            <img alt="Delete"
+                 class="icon"
+                 src="/icons/trash.png"/>
+            <span>Delete Workspace</span>
+        </button>
+    </form>
+
+    <form method="get" th:action="@{/workspaces/update/{id}(id=${workspace.id})}">
+        <button class="btn btn-primary" type="submit">
+            <img alt="Modify"
+                 class="icon"
+                 src="/icons/pencil.png"/>
+            <span>Modify</span>
+        </button>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    const workspace = [[${workspace}]]
+</script>
+<div th:insert="fragments :: confirm-modal"></div>
+<script src="/js/confirmation.js"></script>
+</body>
+</html>
