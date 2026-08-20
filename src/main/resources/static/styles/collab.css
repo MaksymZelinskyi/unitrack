@@ -216,3 +216,25 @@
 .collab-delete-button:hover .delete-icon {
     opacity: 1;
 }
+
+.collaborators-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: #1a1a1a;
+    background-color: #f5c518;
+    border-color: #f5c518;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+    margin-left: 0.6rem;
+}
+
+.collaborators-btn:hover {
+    background-color: #e0b30f;
+    border-color: #e0b30f;
+}
