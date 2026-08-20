@@ -18,6 +18,9 @@
             <a class="stats-btn" th:href="@{/statistics}">
                 View Stats
             </a>
+            <a class="collaborators-btn" th:href="@{{id}/collaborators(id=${workspace.id})}">
+                My team
+            </a>
 
             <h1 class="section-title centered" th:text="${workspace.name}">My workspace</h1>
         </div>

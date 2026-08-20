@@ -23,4 +23,6 @@ public interface CollaboratorWorkspaceRepository extends JpaRepository<Collabora
     void deleteByCollaboratorEmailAndWorkspaceId(String email, Long workspaceId);
 
     int countByWorkspace(Workspace workspace);
+
+    void deleteByCollaboratorIdAndWorkspaceId(Long collaboratorId, Long workspaceId);
 }

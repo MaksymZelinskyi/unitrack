@@ -71,4 +71,15 @@ public class CollaboratorWorkspaceService {
         collaboratorWorkspaceRepository.deleteByCollaboratorEmailAndWorkspaceId(email, workspaceId);
         log.debug("Deleted collaborator-workspace relation. Workspace {}; Collaborator {}", workspaceId, email);
     }
+
+    @Transactional
+    public void deleteCollaboratorWorkspace(Long collaboratorId, Long workspaceId) {
+        collaboratorWorkspaceRepository.deleteByCollaboratorIdAndWorkspaceId(collaboratorId, workspaceId);
+        log.debug("Deleted collaborator-workspace relation. Workspace {}; Collaborator {}", workspaceId, collaboratorId);
+    }
+
+    public List<Collaborator> getCollaboratorsByWorkspace(Long workspaceId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId).orElseThrow(() -> new WorkspaceNotFoundException("id", workspaceId));
+        return workspace.getCollaborators().stream().map(CollaboratorWorkspace::getCollaborator).toList();
+    }
 }
