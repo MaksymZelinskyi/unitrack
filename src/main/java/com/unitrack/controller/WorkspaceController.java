@@ -159,12 +159,14 @@ public class WorkspaceController extends AuthenticatedController {
         return "redirect:" + (referer != null ? referer : "/");
     }
 
-    @GetMapping("/workspaces/{id}/collaborators")
+    @GetMapping("/{id}/collaborators")
     @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
     public String getWorkspaceCollaborators(@PathVariable("id") Long workspaceId, Model model, Principal principal) {
         List<Collaborator> collaborators = collaboratorWorkspaceService.getCollaboratorsByWorkspace(workspaceId);
         model.addAttribute("collaborators", collaborators.stream()
                 .map(x -> new WorkspaceCollaboratorDto(x.getId(), x.getFullName(), x.getAvatarUrl())).toList());
+        Workspace workspace = workspaceService.getWorkspace(workspaceId);
+        model.addAttribute("workspace", new WorkspaceNameDto(workspaceId, workspace.getName()));
         return "my-team";
     }
 }

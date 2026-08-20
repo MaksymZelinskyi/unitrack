@@ -18,14 +18,19 @@
             <h1 class="section-title centered" th:text="${workspace.name}">My team</h1>
         </div>
 
-        <div class="my-team-grid-wrapper">
+        <div class="project-grid-wrapper">
 
             <ul class="collaborator-list four-columns">
 
+                <li th:if="${collaborators == null || #lists.isEmpty(collaborators)}">No members yet</li>
                 <li th:each="collaborator : ${collaborators}">
                     <a th:href="@{/collaborators/{id}(id=${collaborator.id})}" class="collaborator-card">
                         <div class="collaborator-content">
                             <div class="project-header">
+                                <div class="avatar-wrapper">
+                                    <img th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"
+                                         class="profile-avatar" alt="Profile Picture"/>
+                                </div>
                                 <h4 class="project-title" th:text="${collaborator.fullName}">Name</h4>
                             </div>
                         </div>
@@ -63,29 +68,6 @@
 
     </aside>
 
-</div>
-
-<div class="project-actions">
-
-    <form method="post" th:action="@{/workspaces/{id}(id=${workspace.id})}">
-        <input name="_method" type="hidden" value="delete">
-
-        <button class="btn btn-danger confirm-delete" type="submit">
-            <img alt="Delete"
-                 class="icon"
-                 src="/icons/trash.png"/>
-            <span>Delete Workspace</span>
-        </button>
-    </form>
-
-    <form method="get" th:action="@{/workspaces/update/{id}(id=${workspace.id})}">
-        <button class="btn btn-primary" type="submit">
-            <img alt="Modify"
-                 class="icon"
-                 src="/icons/pencil.png"/>
-            <span>Modify</span>
-        </button>
-    </form>
 </div>
 
 <script th:inline="javascript">
