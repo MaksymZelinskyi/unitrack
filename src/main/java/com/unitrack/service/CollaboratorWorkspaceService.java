@@ -3,6 +3,7 @@ package com.unitrack.service;
 import com.unitrack.dto.WorkspaceDto;
 import com.unitrack.entity.*;
 import com.unitrack.exception.CollaboratorNotFoundException;
+import com.unitrack.exception.CollaboratorWorkspaceNotFoundException;
 import com.unitrack.exception.SecurityException;
 import com.unitrack.exception.WorkspaceNotFoundException;
 import com.unitrack.repository.CollaboratorRepository;
@@ -74,7 +75,12 @@ public class CollaboratorWorkspaceService {
 
     @Transactional
     public void deleteCollaboratorWorkspace(Long collaboratorId, Long workspaceId) {
-        collaboratorWorkspaceRepository.deleteByCollaboratorIdAndWorkspaceId(collaboratorId, workspaceId);
+        CollaboratorWorkspace collaboratorWorkspace = collaboratorWorkspaceRepository.findByCollaboratorIdAndWorkspaceId(collaboratorId, workspaceId)
+                .orElseThrow(() -> new CollaboratorWorkspaceNotFoundException("id", collaboratorId, "id", workspaceId));
+        if (collaboratorWorkspace.isAdmin()) {
+            throw new UnsupportedOperationException("Can't delete admin from workspace!");
+        }
+        collaboratorWorkspaceRepository.delete(collaboratorWorkspace);
         log.debug("Deleted collaborator-workspace relation. Workspace {}; Collaborator {}", workspaceId, collaboratorId);
     }
 
