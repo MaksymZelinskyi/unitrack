@@ -169,4 +169,13 @@ public class WorkspaceController extends AuthenticatedController {
         model.addAttribute("workspace", new WorkspaceNameDto(workspaceId, workspace.getName()));
         return "my-team";
     }
+
+    @DeleteMapping("/{workspaceId}/collaborators/{collaboratorId}")
+    @PreAuthorize("@authService.isAdmin(#principal.getName(), #workspaceId)")
+    public String deleteCollaboratorFromWorkspace(@PathVariable("workspaceId") Long workspaceId, @PathVariable("collaboratorId") Long collaboratorId, Principal principal, HttpServletRequest request) {
+        collaboratorWorkspaceService.deleteCollaboratorWorkspace(collaboratorId, workspaceId);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
 }

@@ -24,17 +24,27 @@
 
                 <li th:if="${collaborators == null || #lists.isEmpty(collaborators)}">No members yet</li>
                 <li th:each="collaborator : ${collaborators}">
-                    <a th:href="@{/collaborators/{id}(id=${collaborator.id})}" class="collaborator-card">
-                        <div class="collaborator-content">
-                            <div class="project-header">
-                                <div class="avatar-wrapper">
-                                    <img th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : assignee.avatarUrl}"
-                                         class="profile-avatar" alt="Profile Picture"/>
+                    <div class="collaborator-card">
+                        <a th:href="@{/collaborators/{id}(id=${collaborator.id})}" class="collaborator-link">
+                            <div class="collaborator-content">
+                                <div class="project-header">
+                                    <div class="avatar-wrapper">
+                                        <img th:src="${#strings.isEmpty(collaborator.avatarUrl) ? '/icons/profile-icon.png' : collaborator.avatarUrl}"
+                                             class="profile-avatar" alt="Profile Picture"/>
+                                    </div>
+                                    <h4 class="project-title" th:text="${collaborator.fullName}">Name</h4>
                                 </div>
-                                <h4 class="project-title" th:text="${collaborator.fullName}">Name</h4>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                        <form th:action="@{/workspaces/{workspaceId}/collaborators/{collaboratorId}(workspaceId=${workspace.id}, collaboratorId=${collaborator.id})}" method="post" class="collab-delete-form">
+                            <input type="hidden" name="_method" value="delete"/>
+                            <button type="submit" class="collab-delete-button"
+                                    th:data-name="${collaborator.fullName}"
+                                    onclick="return confirmDelete(this)">
+                                <img src="/icons/trash.png" alt="Delete" class="collab-delete-icon"/>
+                            </button>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -70,6 +80,12 @@
 
 </div>
 
+<script>
+    function confirmDelete(btn) {
+        const name = btn.getAttribute('data-name');
+        return confirm('Remove ' + name + ' as a collaborator?');
+    }
+</script>
 <script th:inline="javascript">
     const workspace = [[${workspace}]]
 </script>

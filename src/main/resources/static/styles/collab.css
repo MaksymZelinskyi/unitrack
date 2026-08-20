@@ -183,3 +183,36 @@
     background-color: #93c5fd;
     cursor: default;
 }
+
+
+.collab-delete-form {
+    flex-shrink: 0;
+}
+
+.collab-delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.collab-delete-button:hover {
+    background-color: #fdeaea;
+}
+
+.collab-delete-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+}
+
+.collab-delete-button:hover .delete-icon {
+    opacity: 1;
+}
