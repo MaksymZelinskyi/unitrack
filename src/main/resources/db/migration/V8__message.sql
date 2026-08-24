@@ -17,4 +17,4 @@ CREATE TABLE IF NOT EXISTS public.message
 );
 
 ALTER TABLE IF EXISTS public.message
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;

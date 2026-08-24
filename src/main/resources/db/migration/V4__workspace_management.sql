@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS public.workspace
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.workspace
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 ALTER TABLE IF EXISTS public.collaborator
     ADD COLUMN workspace_id bigint;

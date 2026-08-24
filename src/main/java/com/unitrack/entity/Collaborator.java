@@ -43,8 +43,9 @@ public class Collaborator {
 
     @CreationTimestamp
     private LocalDate joinDate;
-  
-    @ElementCollection(fetch = FetchType.EAGER)
+
+    @ElementCollection(targetClass = AuthProvider.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "collaborator_auth_providers", joinColumns = @JoinColumn(name = "collaborator_id"))
     private Set<AuthProvider> authProviders = new HashSet<>();
 
     public Collaborator(String firstName, String lastName, String email, String password) {

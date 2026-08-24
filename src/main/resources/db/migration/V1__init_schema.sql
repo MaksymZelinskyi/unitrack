@@ -3,11 +3,11 @@
 -- DROP SCHEMA IF EXISTS public ;
 
 CREATE SCHEMA IF NOT EXISTS public
-    AUTHORIZATION "unitrack-admin";
+    AUTHORIZATION CURRENT_USER;
 
 COMMENT ON SCHEMA public
     IS 'standard public schema';
 
 GRANT USAGE ON SCHEMA public TO PUBLIC;
 
-GRANT ALL ON SCHEMA public TO "unitrack-admin";
+GRANT ALL ON SCHEMA public TO CURRENT_USER;

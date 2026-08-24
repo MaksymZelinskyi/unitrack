@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS public.client
 );
 
 ALTER TABLE IF EXISTS public.client
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.collaborator
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS public.collaborator
 );
 
 ALTER TABLE IF EXISTS public.collaborator
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.project
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS public.project
 );
 
 ALTER TABLE IF EXISTS public.project
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 CREATE TABLE IF NOT EXISTS public.participation
 (
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS public.participation
 );
 
 ALTER TABLE IF EXISTS public.participation
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.collaborator_projects
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS public.collaborator_projects
 );
 
 ALTER TABLE IF EXISTS public.collaborator_projects
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.skill
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS public.skill
 );
 
 ALTER TABLE IF EXISTS public.skill
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.collaborator_skills
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS public.collaborator_skills
 
 
 ALTER TABLE IF EXISTS public.collaborator_skills
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.task
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS public.task
 
 
 ALTER TABLE IF EXISTS public.task
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 CREATE TABLE IF NOT EXISTS public.collaborator_tasks
 (
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS public.collaborator_tasks
 
 
 ALTER TABLE IF EXISTS public.collaborator_tasks
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.comment
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS public.comment
 
 
 ALTER TABLE IF EXISTS public.comment
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.project_assignees
@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS public.project_assignees
 );
 
 ALTER TABLE IF EXISTS public.project_assignees
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.project_tasks
@@ -228,7 +228,7 @@ CREATE TABLE IF NOT EXISTS public.project_tasks
 );
 
 ALTER TABLE IF EXISTS public.project_tasks
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.recovery_code
@@ -246,7 +246,7 @@ CREATE TABLE IF NOT EXISTS public.recovery_code
 );
 
 ALTER TABLE IF EXISTS public.recovery_code
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
 
 
 CREATE TABLE IF NOT EXISTS public.task_assignees
@@ -265,4 +265,4 @@ CREATE TABLE IF NOT EXISTS public.task_assignees
 );
 
 ALTER TABLE IF EXISTS public.task_assignees
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;

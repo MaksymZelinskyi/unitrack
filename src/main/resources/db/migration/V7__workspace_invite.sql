@@ -4,6 +4,10 @@ CREATE TABLE IF NOT EXISTS public.invitation
     collaborator_id bigint NOT NULL,
     workspace_id bigint NOT NULL,
     invited_by_id bigint NOT NULL,
+    recipient_id bigint NOT NULL,
+    sent_at timestamp,
+    text character varying(255) COLLATE pg_catalog."default",
+    sender_id bigint NOT NULL,
     expires_at timestamp,
     CONSTRAINT invitation_id PRIMARY KEY (id),
     CONSTRAINT invitation_collaborator_id_fk FOREIGN KEY (collaborator_id)
@@ -15,10 +19,18 @@ CREATE TABLE IF NOT EXISTS public.invitation
             ON UPDATE CASCADE
             ON DELETE CASCADE,
     CONSTRAINT invitation_invited_by_id_fk FOREIGN KEY (invited_by_id)
-            REFERENCES public.collaborator (id) MATCH SIMPLE
-                ON UPDATE CASCADE
-                ON DELETE CASCADE
+        REFERENCES public.collaborator (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE,
+    CONSTRAINT invitation_recipient_id_fk FOREIGN KEY (recipient_id)
+        REFERENCES public.collaborator (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE,
+    CONSTRAINT invitation_sender_id_fk FOREIGN KEY (sender_id)
+        REFERENCES public.collaborator (id) MATCH SIMPLE
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
 );
 
 ALTER TABLE IF EXISTS public.invitation
-    OWNER to "unitrack-admin";
+    OWNER to CURRENT_USER;
