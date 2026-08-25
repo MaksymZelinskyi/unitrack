@@ -27,6 +27,8 @@ cp .env.example .env
 
 
 ## 4. Lancement en local
+*Assurez vous d'avoir lancé Docker Desktop(sur Windows ou Mac)*
+
 Depuis la racine du répertoire exécutez
 ```bash
 docker compose up
@@ -43,3 +45,20 @@ Pour appliquer des modifications de code recréez les conteneurs
 ```bash
 docker compose up --build --force-recreate
 ```
+
+## Comment obtenir ces identifiants
+
+**SMTP (Gmail)**
+Utilisez un mot de passe d'application, pas votre mot de passe Gmail principal :
+1. Activez la validation en deux étapes sur votre compte Google
+2. Rendez-vous sur https://myaccount.google.com/apppasswords
+3. Générez un mot de passe d'application dédié à ce projet
+4. Utilisez ce mot de passe généré comme `SMTP_PASSWORD`
+
+**OAuth2 Google**
+1. Allez sur https://console.cloud.google.com/apis/credentials
+2. Créez un projet
+3. Créez des identifiants → "ID client OAuth 2.0"
+4. Type d'application : "Application Web"
+5. Ajoutez l'URI de redirection : `http://localhost:2017/login/oauth2/code/google`
+6. Copiez le Client ID et le Client Secret générés
